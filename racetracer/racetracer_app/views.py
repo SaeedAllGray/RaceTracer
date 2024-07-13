@@ -29,9 +29,15 @@ def start_rosbag_recording(request):
     try:
         topics = request.POST.get('topics')
         bag_name = request.POST.get('bag_name', 'default')
-        command = f"rosbag record -O {bag_name} {topics}"
-        subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return JsonResponse({"status": "success", "message": f"Started recording topics: {topics}"})
+        rosbag_directory = "/home/saeed/Desktop/Projects/recordings/"
+        # Ensure the directory exists
+        os.makedirs(rosbag_directory, exist_ok=True)
+
+
+        command = f"rosbag record -O {rosbag_directory}{bag_name} {topics}"
+        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # output, error = process.communicate()
+        return JsonResponse({"status": "success", "message": f"{topics}"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 
