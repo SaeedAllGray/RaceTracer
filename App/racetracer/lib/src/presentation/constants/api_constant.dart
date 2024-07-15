@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 class ApiConstants {
-  static const String baseUrl = 'https://p1car00n.eu.pythonanywhere.com/api/';
+  static const String baseUrl = 'http://192.168.64.3:8000/ros';
   static const String TOKEN = 'token';
   static const String USER = 'user';
   static const String TYPE = 'type';
