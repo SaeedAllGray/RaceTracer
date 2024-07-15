@@ -45,15 +45,41 @@ def get_ros_topics(request):
         return JsonResponse({"status": "error", "message": str(e)})
 
 def get_topic_info(request, topic_name):
-    command = f"rostopic info {topic_name}"
     try:
+        quoted_topic_name = subprocess.list2cmdline([topic_name])
+        command = f"rostopic info {quoted_topic_name}"
         output = subprocess.check_output(command, shell=True, text=True)
-        # Split the output by newline to create a list
-        topic_info = output.splitlines()
+        lines = output.splitlines()
+        topic_type = None
+        publishers = []
+        subscribers = []
+
+        section = None
+        for line in lines:
+            line = line.strip()
+            if line.startswith("Type:"):
+                topic_type = line.split("Type:")[1].strip()
+            elif line.startswith("Publishers:"):
+                section = "publishers"
+            elif line.startswith("Subscribers:"):
+                section = "subscribers"
+            elif line.startswith("*"):
+                node = line.split("*")[1].strip().split(" ")[0]
+                if section == "publishers":
+                    publishers.append(node)
+                elif section == "subscribers":
+                    subscribers.append(node)
+
+        response_data = {
+            "type": topic_type,
+            "subscribers": subscribers,
+            "publishers": publishers,
+        }
+
     except subprocess.CalledProcessError as e:
         return JsonResponse({"error": f"An error occurred: {e}"}, status=400)
     
-    return JsonResponse({"topic_info": topic_info})
+    return JsonResponse(response_data)
 
 @csrf_exempt
 def start_rosbag_recording(request):
