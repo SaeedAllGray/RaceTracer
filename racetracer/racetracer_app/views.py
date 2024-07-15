@@ -2,6 +2,25 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import subprocess
 import os
+import paramiko
+
+SSH_HOST = '192.168.64.3'
+SSH_PORT = 22
+SSH_USER = 'saeed'
+SSH_PASSWORD = '1'  # It's better to use SSH keys for authentication
+
+def ssh_execute_command(command):
+    try:
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(SSH_HOST, port=SSH_PORT, username=SSH_USER, password=SSH_PASSWORD)
+        stdin, stdout, stderr = ssh.exec_command(command)
+        output = stdout.read().decode()
+        error = stderr.read().decode()
+        ssh.close()
+        return output, error
+    except Exception as e:
+        return None, str(e)
 
 @csrf_exempt
 def start_ros_node(request):
@@ -9,10 +28,20 @@ def start_ros_node(request):
         node_name = request.POST.get('node_name')
         package_name = request.POST.get('package_name')
         command = f"rosrun {package_name} {node_name}"
-        subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = ssh_execute_command(command)
+        if error:
+            return JsonResponse({"status": "error", "message": error})
         return JsonResponse({"status": "success", "message": f"Started ROS node: {node_name}"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
+    # try:
+    #     node_name = request.POST.get('node_name')
+    #     package_name = request.POST.get('package_name')
+    #     command = f"rosrun {package_name} {node_name}"
+    #     subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    #     return JsonResponse({"status": "success", "message": f"Started ROS node: {node_name}"})
+    # except Exception as e:
+    #     return JsonResponse({"status": "error", "message": str(e)})
 
 @csrf_exempt
 def stop_ros_node(request):
