@@ -24,6 +24,37 @@ def stop_ros_node(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 
+
+def get_ros_nodes(request):
+    try:
+        command = "rosnode list"
+        output = subprocess.check_output(command, shell=True, text=True)
+        nodes = output.splitlines()
+        return JsonResponse({"nodes": nodes})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+
+
+def get_ros_topics(request):
+    try:
+        command = "rostopic list"
+        output = subprocess.check_output(command, shell=True, text=True)
+        topics = output.splitlines()
+        return JsonResponse({"topics": topics})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+
+def get_topic_info(request, topic_name):
+    command = f"rostopic info {topic_name}"
+    try:
+        output = subprocess.check_output(command, shell=True, text=True)
+        # Split the output by newline to create a list
+        topic_info = output.splitlines()
+    except subprocess.CalledProcessError as e:
+        return JsonResponse({"error": f"An error occurred: {e}"}, status=400)
+    
+    return JsonResponse({"topic_info": topic_info})
+
 @csrf_exempt
 def start_rosbag_recording(request):
     try:
