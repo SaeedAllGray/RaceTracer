@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import subprocess
+import time
 import os
 import paramiko
 
@@ -14,9 +15,21 @@ def ssh_execute_command(command):
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(SSH_HOST, port=SSH_PORT, username=SSH_USER, password=SSH_PASSWORD)
-        stdin, stdout, stderr = ssh.exec_command(command)
+        
+        # Ensure roscore is running and then execute the command
+        start_roscore_command = "source /opt/ros/noetic/setup.bash && roscore &"
+        ssh.exec_command(start_roscore_command)
+        
+        # Wait for a short period to allow roscore to start (adjust as necessary)
+        time.sleep(5)
+        
+        # Execute the desired command (rosrun in this case)
+        full_command = f"source /opt/ros/noetic/setup.bash && {command}"
+        stdin, stdout, stderr = ssh.exec_command(full_command)
+        
         output = stdout.read().decode()
         error = stderr.read().decode()
+        
         ssh.close()
         return output, error
     except Exception as e:
@@ -27,7 +40,7 @@ def start_ros_node(request):
     try:
         node_name = request.POST.get('node_name')
         package_name = request.POST.get('package_name')
-        command = f"rosrun {package_name} {node_name}"
+        command = f"rosecore; rosrun {package_name} {node_name}"
         output, error = ssh_execute_command(command)
         if error:
             return JsonResponse({"status": "error", "message": error})
