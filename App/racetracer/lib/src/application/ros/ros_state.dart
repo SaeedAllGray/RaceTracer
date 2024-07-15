@@ -11,8 +11,16 @@ final class RosInitial extends RosState {}
 
 class RosInProgress extends RosState {}
 
-class RosFetched extends RosState {
+class RosInfoInProgress extends RosState {}
+
+class TopicInfoFetched extends RosState {
+  final TopicInfo topicInfo;
+
+  const TopicInfoFetched({required this.topicInfo});
+}
+
+class TopicsFetched extends RosState {
   final List<String> topics;
 
-  const RosFetched({required this.topics});
+  const TopicsFetched({required this.topics});
 }

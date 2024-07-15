@@ -4,5 +4,8 @@
     "description": "The title of the application"
   },
   "home": "Home",
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "type": "Type",
+  "publishers": "Publishers",
+  "subscribers": "Subscribers"
 }

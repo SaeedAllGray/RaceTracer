@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:racetracer/src/presentation/features/nodes/nodes_widget.dart';
+import 'package:racetracer/src/presentation/features/nodes/topic_widget.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/';
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> getTabs() => <Widget>[
-        NodesWidget(),
+        TopicWidget(),
         Placeholder(),
         Placeholder(),
       ];

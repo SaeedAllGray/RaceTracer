@@ -7,4 +7,10 @@ sealed class RosEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetRosTopics extends RosEvent {}
+class GetTopicInfo extends RosEvent {
+  final String topic;
+
+  const GetTopicInfo({required this.topic});
+}
+
+class GetTopics extends RosEvent {}
