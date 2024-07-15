@@ -2,5 +2,7 @@
   "appTitle": "racetracer",
   "@appTitle": {
     "description": "The title of the application"
-  }
+  },
+  "home": "Home",
+  "dashboard": "Dashboard"
 }
