@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:racetracer/src/presentation/constants/api_constant.dart';
 
-class RosDataSource {
+class RosTopicDataSource {
   Dio dio = Dio();
 
   FutureOr<List<dynamic>> getTopics() async {
