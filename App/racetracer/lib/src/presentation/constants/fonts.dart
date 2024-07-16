@@ -34,6 +34,11 @@ class FontStyles {
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
   );
+  static const BLACK_MEDIUM_16 = TextStyle(
+    color: AppColors.BLACK,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w500,
+  );
   static const GRAY_MEDIUM_16 = TextStyle(
     color: AppColors.blueGrey,
     fontSize: 16.0,

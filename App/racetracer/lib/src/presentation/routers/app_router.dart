@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:racetracer/src/domain/entries/ros_topic.dart';
+import 'package:racetracer/src/presentation/features/topic/topics_info_page.dart';
+import 'package:racetracer/src/presentation/home/home_page.dart';
+import 'package:racetracer/src/sample_feature/sample_item_details_view.dart';
+import 'package:racetracer/src/sample_feature/sample_item_list_view.dart';
+import 'package:racetracer/src/settings/settings_controller.dart';
+import 'package:racetracer/src/settings/settings_view.dart';
+
+class AppRouter {
+  final SettingsController settingsController;
+
+  AppRouter(this.settingsController);
+
+  Route<dynamic> generateRoute(RouteSettings routeSettings) {
+    switch (routeSettings.name) {
+      case SettingsView.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return SettingsView(controller: settingsController);
+          },
+        );
+      case SampleItemDetailsView.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return const SampleItemDetailsView();
+          },
+        );
+      case HomePage.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return const HomePage();
+          },
+        );
+      case TopicsInfoPage.routeName:
+        final RosTopic topic = routeSettings.arguments as RosTopic;
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return TopicsInfoPage(rosTopic: topic);
+          },
+        );
+      default:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return const HomePage();
+          },
+        );
+    }
+  }
+}

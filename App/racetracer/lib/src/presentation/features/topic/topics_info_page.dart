@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:racetracer/src/application/ros/ros_bloc.dart';
+import 'package:racetracer/src/application/ros_topic/ros_topic_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:racetracer/src/domain/entries/ros_topic.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 
-class TopicInfoWidget extends StatelessWidget {
-  final String topic;
+class TopicsInfoPage extends StatelessWidget {
+  static const routeName = '/topics_Info';
 
-  const TopicInfoWidget({super.key, required this.topic});
+  final RosTopic rosTopic;
+
+  const TopicsInfoPage({super.key, required this.rosTopic});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(topic),
+          title: Text(rosTopic.name),
         ),
         body: BlocProvider(
-            create: (context) => RosBloc()..add(GetTopicInfo(topic: topic)),
-            child: BlocBuilder<RosBloc, RosState>(
+            create: (context) =>
+                RosTopicBloc()..add(GetTopicInfo(topic: rosTopic.name)),
+            child: BlocBuilder<RosTopicBloc, RosTopicState>(
               builder: (context, state) {
-                if (state is TopicInfoFetched) {
+                if (state is RosTopicInfoFetched) {
                   return ListView(
                     padding: const EdgeInsets.all(10),
                     children: [
