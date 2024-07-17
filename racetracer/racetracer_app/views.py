@@ -5,56 +5,17 @@ import time
 import os
 import paramiko
 
-SSH_HOST = '192.168.64.3'
-SSH_PORT = 22
-SSH_USER = 'saeed'
-SSH_PASSWORD = '1'  # It's better to use SSH keys for authentication
-
-def ssh_execute_command(command):
-    try:
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(SSH_HOST, port=SSH_PORT, username=SSH_USER, password=SSH_PASSWORD)
-        
-        # Ensure roscore is running and then execute the command
-        start_roscore_command = "source /opt/ros/noetic/setup.bash && roscore &"
-        ssh.exec_command(start_roscore_command)
-        
-        # Wait for a short period to allow roscore to start (adjust as necessary)
-        time.sleep(5)
-        
-        # Execute the desired command (rosrun in this case)
-        full_command = f"source /opt/ros/noetic/setup.bash && {command}"
-        stdin, stdout, stderr = ssh.exec_command(full_command)
-        
-        output = stdout.read().decode()
-        error = stderr.read().decode()
-        
-        ssh.close()
-        return output, error
-    except Exception as e:
-        return None, str(e)
 
 @csrf_exempt
 def start_ros_node(request):
     try:
         node_name = request.POST.get('node_name')
         package_name = request.POST.get('package_name')
-        command = f"rosecore; rosrun {package_name} {node_name}"
-        output, error = ssh_execute_command(command)
-        if error:
-            return JsonResponse({"status": "error", "message": error})
+        command = f"rosrun {package_name} {node_name}"
+        subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         return JsonResponse({"status": "success", "message": f"Started ROS node: {node_name}"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
-    # try:
-    #     node_name = request.POST.get('node_name')
-    #     package_name = request.POST.get('package_name')
-    #     command = f"rosrun {package_name} {node_name}"
-    #     subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    #     return JsonResponse({"status": "success", "message": f"Started ROS node: {node_name}"})
-    # except Exception as e:
-    #     return JsonResponse({"status": "error", "message": str(e)})
 
 @csrf_exempt
 def stop_ros_node(request):
@@ -86,6 +47,58 @@ def get_ros_topics(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 
+def get_node_info(request, node_name):
+    try:
+        command = f"rosnode info {node_name}"
+        output = subprocess.check_output(command, shell=True, text=True)
+        lines = output.splitlines()
+
+        node_info = {
+            "node": "",
+            "publications": [],
+            "subscriptions": [],
+            "services": [],
+            "pid": "",
+            "connections": []
+        }
+
+        current_section = None
+        for line in lines:
+            if line.startswith("Node "):
+                node_info["node"] = line.split("[")[1].split("]")[0]
+            elif line.startswith("Publications:"):
+                current_section = "publications"
+            elif line.startswith("Subscriptions:"):
+                current_section = "subscriptions"
+            elif line.startswith("Services:"):
+                current_section = "services"
+            elif line.startswith("Pid:"):
+                node_info["pid"] = line.split(": ")[1]
+            elif line.startswith("Connections:"):
+                current_section = "connections"
+            elif line.startswith("* "):
+                if current_section == "publications" or current_section == "subscriptions":
+                    topic, msg_type = line.split(" [")
+                    topic = topic.split("* ")[1]
+                    msg_type = msg_type.rstrip("]")
+                    node_info[current_section].append({"topic": topic, "type": msg_type})
+                elif current_section == "services":
+                    node_info[current_section].append(line.split("* ")[1])
+            elif line.startswith(" * topic: "):
+                connection_info = {"topic": line.split(": ")[1], "details": {}}
+                node_info["connections"].append(connection_info)
+            elif " * to: " in line:
+                node_info["connections"][-1]["details"]["to"] = line.split(": ")[1]
+            elif " * direction: " in line:
+                node_info["connections"][-1]["details"]["direction"] = line.split(": ")[1]
+            elif " * transport: " in line:
+                node_info["connections"][-1]["details"]["transport"] = line.split(": ")[1]
+
+        return JsonResponse(node_info)
+
+    except subprocess.CalledProcessError as e:
+        return JsonResponse({"error": str(e)}, status=500)
+       
 def get_topic_info(request, topic_name):
     try:
         quoted_topic_name = subprocess.list2cmdline([topic_name])
@@ -123,6 +136,7 @@ def get_topic_info(request, topic_name):
     
     return JsonResponse(response_data)
 
+
 @csrf_exempt
 def start_rosbag_recording(request):
     try:
@@ -148,3 +162,73 @@ def stop_rosbag_recording(request):
         return JsonResponse({"status": "success", "message": "Stopped rosbag recording"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
+
+def get_all_nodes_info(request):
+    try:
+        # Get the list of all nodes
+        list_command = "rosnode list"
+        nodes_output = subprocess.check_output(list_command, shell=True, text=True)
+        nodes = nodes_output.splitlines()
+
+        nodes_info = []
+
+        for node in nodes:
+            node_info = {
+                "node": node,
+                "publications": [],
+                "subscriptions": [],
+                "services": [],
+                "pid": "",
+                "connections": []
+            }
+
+            try:
+                # Get info for each node
+                info_command = f"rosnode info {node}"
+                output = subprocess.check_output(info_command, shell=True, text=True)
+                lines = output.splitlines()
+
+                current_section = None
+                for line in lines:
+                    if line.startswith("Node "):
+                        node_info["node"] = line.split("[")[1].split("]")[0]
+                    elif line.startswith("Publications:"):
+                        current_section = "publications"
+                    elif line.startswith("Subscriptions:"):
+                        current_section = "subscriptions"
+                    elif line.startswith("Services:"):
+                        current_section = "services"
+                    elif line.startswith("Pid:"):
+                        node_info["pid"] = line.split(": ")[1]
+                    elif line.startswith("Connections:"):
+                        current_section = "connections"
+                    elif line.startswith("* "):
+                        if current_section == "publications" or current_section == "subscriptions":
+                            topic, msg_type = line.split(" [")
+                            topic = topic.split("* ")[1]
+                            msg_type = msg_type.rstrip("]")
+                            node_info[current_section].append({"topic": topic, "type": msg_type})
+                        elif current_section == "services":
+                            node_info[current_section].append(line.split("* ")[1])
+                    elif line.startswith(" * topic: "):
+                        connection_info = {"topic": line.split(": ")[1], "details": {}}
+                        node_info["connections"].append(connection_info)
+                    elif " * to: " in line:
+                        node_info["connections"][-1]["details"]["to"] = line.split(": ")[1]
+                    elif " * direction: " in line:
+                        node_info["connections"][-1]["details"]["direction"] = line.split(": ")[1]
+                    elif " * transport: " in line:
+                        node_info["connections"][-1]["details"]["transport"] = line.split(": ")[1]
+
+                nodes_info.append(node_info)
+
+            except subprocess.CalledProcessError as e:
+                nodes_info.append({
+                    "node": node,
+                    "error": str(e)
+                })
+
+        return JsonResponse(nodes_info, safe=False)
+
+    except subprocess.CalledProcessError as e:
+        return JsonResponse({"error": str(e)}, status=500)
