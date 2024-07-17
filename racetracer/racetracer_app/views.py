@@ -1,53 +1,38 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from roslibpy import Ros, Topic
+from .ros_service import RosService
 import subprocess
 import time
 import os
-import paramiko
 
+service = RosService()
 
-ros = Ros(host='localhost', port=9090)
 
 def get_ros_nodes(request):
     try:
-        # Connect to ROS
-        ros.run()
-        # Get list of active nodes
-        nodes = ros.get_nodes()
-        print(nodes)
-        # Return JSON response with active nodes
+        nodes = service.get_nodes()
         return JsonResponse({'nodes': nodes})
     except Exception as e:
         return JsonResponse({'error': str(e)})
-    finally:
-        # Always close connection to ROS
-        ros.close()
+
+def get_ros_node_info(request,node_name):
+    try:
+        node_info = service.get_node_info(f'/{node_name}')
+        return JsonResponse({'nodes_info': node_info})
+    except Exception as e:
+            return JsonResponse({'error': str(e)})
 
 def get_ros_nodes_info(request):
     try:
-        # Connect to ROS
-        ros.run()
-        nodes_info = []
-        nodes = ros.get_nodes()
-
-        for node_name in nodes:
-            # Get detailed information about each node
-            node_info = ros.get_node_details(node_name)
-
-            # Append node information to the list
-            nodes_info.append({
-                'node_name': node_name,
-                'node_info': node_info
-            })
-
-        # Return JSON response with nodes information
+        nodes_info = service.get_nodes_info()
         return JsonResponse({'nodes_info': nodes_info})
     except Exception as e:
-        return JsonResponse({'error': str(e)})
-    finally:
-        # Always close connection to ROS
-        ros.close()
+            return JsonResponse({'error': str(e)})
+
+
+def get_ros_topics(request):
+    service.get_ros_topics(request)
 
 @csrf_exempt
 def start_ros_node(request):
@@ -90,57 +75,57 @@ def get_ros_topics(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 
-def get_node_info(request, node_name):
-    try:
-        command = f"rosnode info {node_name}"
-        output = subprocess.check_output(command, shell=True, text=True)
-        lines = output.splitlines()
+# def get_node_info(request, node_name):
+    # try:
+    #     command = f"rosnode info {node_name}"
+    #     output = subprocess.check_output(command, shell=True, text=True)
+    #     lines = output.splitlines()
 
-        node_info = {
-            "node": "",
-            "publications": [],
-            "subscriptions": [],
-            "services": [],
-            "pid": "",
-            "connections": []
-        }
+    #     node_info = {
+    #         "node": "",
+    #         "publications": [],
+    #         "subscriptions": [],
+    #         "services": [],
+    #         "pid": "",
+    #         "connections": []
+    #     }
 
-        current_section = None
-        for line in lines:
-            if line.startswith("Node "):
-                node_info["node"] = line.split("[")[1].split("]")[0]
-            elif line.startswith("Publications:"):
-                current_section = "publications"
-            elif line.startswith("Subscriptions:"):
-                current_section = "subscriptions"
-            elif line.startswith("Services:"):
-                current_section = "services"
-            elif line.startswith("Pid:"):
-                node_info["pid"] = line.split(": ")[1]
-            elif line.startswith("Connections:"):
-                current_section = "connections"
-            elif line.startswith("* "):
-                if current_section == "publications" or current_section == "subscriptions":
-                    topic, msg_type = line.split(" [")
-                    topic = topic.split("* ")[1]
-                    msg_type = msg_type.rstrip("]")
-                    node_info[current_section].append({"topic": topic, "type": msg_type})
-                elif current_section == "services":
-                    node_info[current_section].append(line.split("* ")[1])
-            elif line.startswith(" * topic: "):
-                connection_info = {"topic": line.split(": ")[1], "details": {}}
-                node_info["connections"].append(connection_info)
-            elif " * to: " in line:
-                node_info["connections"][-1]["details"]["to"] = line.split(": ")[1]
-            elif " * direction: " in line:
-                node_info["connections"][-1]["details"]["direction"] = line.split(": ")[1]
-            elif " * transport: " in line:
-                node_info["connections"][-1]["details"]["transport"] = line.split(": ")[1]
+    #     current_section = None
+    #     for line in lines:
+    #         if line.startswith("Node "):
+    #             node_info["node"] = line.split("[")[1].split("]")[0]
+    #         elif line.startswith("Publications:"):
+    #             current_section = "publications"
+    #         elif line.startswith("Subscriptions:"):
+    #             current_section = "subscriptions"
+    #         elif line.startswith("Services:"):
+    #             current_section = "services"
+    #         elif line.startswith("Pid:"):
+    #             node_info["pid"] = line.split(": ")[1]
+    #         elif line.startswith("Connections:"):
+    #             current_section = "connections"
+    #         elif line.startswith("* "):
+    #             if current_section == "publications" or current_section == "subscriptions":
+    #                 topic, msg_type = line.split(" [")
+    #                 topic = topic.split("* ")[1]
+    #                 msg_type = msg_type.rstrip("]")
+    #                 node_info[current_section].append({"topic": topic, "type": msg_type})
+    #             elif current_section == "services":
+    #                 node_info[current_section].append(line.split("* ")[1])
+    #         elif line.startswith(" * topic: "):
+    #             connection_info = {"topic": line.split(": ")[1], "details": {}}
+    #             node_info["connections"].append(connection_info)
+    #         elif " * to: " in line:
+    #             node_info["connections"][-1]["details"]["to"] = line.split(": ")[1]
+    #         elif " * direction: " in line:
+    #             node_info["connections"][-1]["details"]["direction"] = line.split(": ")[1]
+    #         elif " * transport: " in line:
+    #             node_info["connections"][-1]["details"]["transport"] = line.split(": ")[1]
 
-        return JsonResponse(node_info)
+    #     return JsonResponse(node_info)
 
-    except subprocess.CalledProcessError as e:
-        return JsonResponse({"error": str(e)}, status=500)
+    # except subprocess.CalledProcessError as e:
+    #     return JsonResponse({"error": str(e)}, status=500)
        
 def get_topic_info(request, topic_name):
     try:
@@ -205,73 +190,12 @@ def stop_rosbag_recording(request):
         return JsonResponse({"status": "success", "message": "Stopped rosbag recording"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
+    
 
-def get_all_nodes_info(request):
+def start_roscore(request):
     try:
-        # Get the list of all nodes
-        list_command = "rosnode list"
-        nodes_output = subprocess.check_output(list_command, shell=True, text=True)
-        nodes = nodes_output.splitlines()
-
-        nodes_info = []
-
-        for node in nodes:
-            node_info = {
-                "node": node,
-                "publications": [],
-                "subscriptions": [],
-                "services": [],
-                "pid": "",
-                "connections": []
-            }
-
-            try:
-                # Get info for each node
-                info_command = f"rosnode info {node}"
-                output = subprocess.check_output(info_command, shell=True, text=True)
-                lines = output.splitlines()
-
-                current_section = None
-                for line in lines:
-                    if line.startswith("Node "):
-                        node_info["node"] = line.split("[")[1].split("]")[0]
-                    elif line.startswith("Publications:"):
-                        current_section = "publications"
-                    elif line.startswith("Subscriptions:"):
-                        current_section = "subscriptions"
-                    elif line.startswith("Services:"):
-                        current_section = "services"
-                    elif line.startswith("Pid:"):
-                        node_info["pid"] = line.split(": ")[1]
-                    elif line.startswith("Connections:"):
-                        current_section = "connections"
-                    elif line.startswith("* "):
-                        if current_section == "publications" or current_section == "subscriptions":
-                            topic, msg_type = line.split(" [")
-                            topic = topic.split("* ")[1]
-                            msg_type = msg_type.rstrip("]")
-                            node_info[current_section].append({"topic": topic, "type": msg_type})
-                        elif current_section == "services":
-                            node_info[current_section].append(line.split("* ")[1])
-                    elif line.startswith(" * topic: "):
-                        connection_info = {"topic": line.split(": ")[1], "details": {}}
-                        node_info["connections"].append(connection_info)
-                    elif " * to: " in line:
-                        node_info["connections"][-1]["details"]["to"] = line.split(": ")[1]
-                    elif " * direction: " in line:
-                        node_info["connections"][-1]["details"]["direction"] = line.split(": ")[1]
-                    elif " * transport: " in line:
-                        node_info["connections"][-1]["details"]["transport"] = line.split(": ")[1]
-
-                nodes_info.append(node_info)
-
-            except subprocess.CalledProcessError as e:
-                nodes_info.append({
-                    "node": node,
-                    "error": str(e)
-                })
-
-        return JsonResponse(nodes_info, safe=False)
-
-    except subprocess.CalledProcessError as e:
-        return JsonResponse({"error": str(e)}, status=500)
+        command = "roscore"
+        subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return JsonResponse({"status": "success", "message": "done"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
