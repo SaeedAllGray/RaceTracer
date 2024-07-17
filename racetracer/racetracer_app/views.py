@@ -1,10 +1,53 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from roslibpy import Ros, Topic
 import subprocess
 import time
 import os
 import paramiko
 
+
+ros = Ros(host='localhost', port=9090)
+
+def get_ros_nodes(request):
+    try:
+        # Connect to ROS
+        ros.run()
+        # Get list of active nodes
+        nodes = ros.get_nodes()
+        print(nodes)
+        # Return JSON response with active nodes
+        return JsonResponse({'nodes': nodes})
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+    finally:
+        # Always close connection to ROS
+        ros.close()
+
+def get_ros_nodes_info(request):
+    try:
+        # Connect to ROS
+        ros.run()
+        nodes_info = []
+        nodes = ros.get_nodes()
+
+        for node_name in nodes:
+            # Get detailed information about each node
+            node_info = ros.get_node_details(node_name)
+
+            # Append node information to the list
+            nodes_info.append({
+                'node_name': node_name,
+                'node_info': node_info
+            })
+
+        # Return JSON response with nodes information
+        return JsonResponse({'nodes_info': nodes_info})
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+    finally:
+        # Always close connection to ROS
+        ros.close()
 
 @csrf_exempt
 def start_ros_node(request):
@@ -28,14 +71,14 @@ def stop_ros_node(request):
         return JsonResponse({"status": "error", "message": str(e)})
 
 
-def get_ros_nodes(request):
-    try:
-        command = "rosnode list"
-        output = subprocess.check_output(command, shell=True, text=True)
-        nodes = output.splitlines()
-        return JsonResponse({"nodes": nodes})
-    except Exception as e:
-        return JsonResponse({"status": "error", "message": str(e)})
+# def get_ros_nodes(request):
+#     try:
+#         command = "rosnode list"
+#         output = subprocess.check_output(command, shell=True, text=True)
+#         nodes = output.splitlines()
+#         return JsonResponse({"nodes": nodes})
+#     except Exception as e:
+#         return JsonResponse({"status": "error", "message": str(e)})
 
 
 def get_ros_topics(request):
