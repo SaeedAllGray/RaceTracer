@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:racetracer/src/domain/entries/ros_topic.dart';
+import 'package:racetracer/src/presentation/features/node/nodes_info_page.dart';
 import 'package:racetracer/src/presentation/features/topic/topics_info_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/sample_feature/sample_item_details_view.dart';
@@ -36,11 +37,18 @@ class AppRouter {
           },
         );
       case TopicsInfoPage.routeName:
-        final RosTopic topic = routeSettings.arguments as RosTopic;
+        final List<RosTopic> topics = routeSettings.arguments as List<RosTopic>;
         return MaterialPageRoute<void>(
           settings: routeSettings,
           builder: (BuildContext context) {
-            return TopicsInfoPage(rosTopic: topic);
+            return TopicsInfoPage(rosTopics: topics);
+          },
+        );
+      case NodesInfoPage.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return const NodesInfoPage();
           },
         );
       default:

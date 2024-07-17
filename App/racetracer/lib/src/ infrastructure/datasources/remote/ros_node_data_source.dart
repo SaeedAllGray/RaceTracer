@@ -16,6 +16,15 @@ class RosNodeDataSource {
     return response.data['nodes'];
   }
 
+  FutureOr<List<dynamic>> getNodesInfo() async {
+    dio.interceptors.add(PrettyDioLogger());
+
+    Response response = await dio.get(
+      '${ApiConstants.baseUrl}/nodes/info',
+    );
+    return response.data['nodes_info'];
+  }
+
   // FutureOr<dynamic> getTopicInfo(String topic) async {
   //   dio.interceptors.add(PrettyDioLogger());
 

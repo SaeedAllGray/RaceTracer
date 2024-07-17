@@ -1,10 +1,7 @@
 import 'dart:developer';
 
 import 'package:racetracer/src/%20infrastructure/datasources/remote/ros_node_data_source.dart';
-import 'package:racetracer/src/%20infrastructure/datasources/remote/ros_topic_data_source.dart';
 import 'package:racetracer/src/domain/entries/ros_node.dart';
-import 'package:racetracer/src/domain/entries/ros_topic.dart';
-import 'package:racetracer/src/domain/entries/topic_info.dart';
 
 class RosNodeRepository {
   RosNodeDataSource rosDataSource = RosNodeDataSource();
@@ -14,9 +11,9 @@ class RosNodeRepository {
     return response.map((e) => RosNode(name: e)).toList();
   }
 
-  // Future<TopicInfo> fetchTopicInfo(String topic) async {
-  //   dynamic response = await rosDataSource.getTopicInfo(topic);
-  //   log(response.toString());
-  //   return TopicInfo.fromJson(response);
-  // }
+  Future<List<RosNode>> fetchNodesInfo() async {
+    List<dynamic> response = await rosDataSource.getNodesInfo();
+    log(response.toString());
+    return response.map((e) => RosNode.fromJson(e)).toList();
+  }
 }

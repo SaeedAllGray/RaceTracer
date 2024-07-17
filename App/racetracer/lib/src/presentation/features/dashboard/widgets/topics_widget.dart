@@ -12,39 +12,45 @@ class RosTopicsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, TopicsInfoPage.routeName,
-            arguments: RosTopic(name: 'name')),
-        child: RoundedTileWidget(
-          title: AppLocalizations.of(context)!.topics,
-          child: BlocProvider(
-            create: (context) => RosTopicBloc()..add(GetRosTopics()),
-            child: BlocBuilder<RosTopicBloc, RosTopicState>(
-              builder: (context, state) {
-                if (state is RosTopicsFetched) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: state.rosTopics
-                        .map((e) => Row(
-                              children: [
-                                const Icon(
-                                  Icons.adjust,
-                                  size: 10,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(e.name)
-                              ],
-                            ))
-                        .toList(),
-                  );
-                }
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(),
+      child: RoundedTileWidget(
+        title: AppLocalizations.of(context)!.topics,
+        child: BlocProvider(
+          create: (context) => RosTopicBloc()..add(GetRosTopics()),
+          child: BlocBuilder<RosTopicBloc, RosTopicState>(
+            builder: (context, state) {
+              if (state is RosTopicsFetched) {
+                return Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: state.rosTopics
+                          .map((e) => Row(
+                                children: [
+                                  const Icon(
+                                    Icons.adjust,
+                                    size: 10,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(e.name)
+                                ],
+                              ))
+                          .toList(),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, TopicsInfoPage.routeName,
+                              arguments: state.rosTopics);
+                        },
+                        child: Text(AppLocalizations.of(context)!.more)),
+                  ],
                 );
-              },
-            ),
+              }
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            },
           ),
         ),
       ),

@@ -1,44 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:racetracer/src/application/ros_topic/ros_topic_bloc.dart';
+import 'package:racetracer/src/application/ros_node/ros_node_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:racetracer/src/domain/entries/ros_topic.dart';
+import 'package:racetracer/src/domain/entries/ros_node.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/topic/widgets/in_out_widget.dart';
 
-class TopicsInfoPage extends StatelessWidget {
-  static const routeName = '/topics_Info';
+class NodesInfoPage extends StatelessWidget {
+  static const routeName = '/nodes_Info';
 
-  final List<RosTopic> rosTopics;
-
-  const TopicsInfoPage({super.key, required this.rosTopics});
+  const NodesInfoPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.topics),
+          title: Text(AppLocalizations.of(context)!.nodes),
         ),
         body: BlocProvider(
-            create: (context) =>
-                RosTopicBloc()..add(GetTopicsInfo(topics: rosTopics)),
-            child: BlocBuilder<RosTopicBloc, RosTopicState>(
+            create: (context) => RosNodeBloc()..add(GetRosNodesInfo()),
+            child: BlocBuilder<RosNodeBloc, RosNodeState>(
               builder: (context, state) {
-                if (state is RosTopicsFetched) {
+                if (state is RosNodesFetched) {
                   return ListView.separated(
                     separatorBuilder: (context, index) => const Divider(),
-                    itemCount: state.rosTopics.length,
+                    itemCount: state.rosNodes.length,
                     itemBuilder: (context, index) => ListTile(
                       title: Text(
-                        state.rosTopics[index].name,
+                        state.rosNodes[index].name,
                         style: FontStyles.BLACK_MEDIUM_16,
                       ),
                       leading: const Icon(Icons.adjust),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(state.rosTopics[index].topicInfo?.type ?? '-'),
+                          Text('-'),
                           const SizedBox(
                             height: 16,
                           ),
@@ -61,8 +60,8 @@ class TopicsInfoPage extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                  list: state.rosTopics[index].topicInfo
-                                          ?.publishers ??
+                                  list: state.rosNodes[index].nodeInfo
+                                          ?.publishing ??
                                       ['-']),
                               const SizedBox(
                                 width: 5,
@@ -83,8 +82,8 @@ class TopicsInfoPage extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                  list: state.rosTopics[index].topicInfo
-                                          ?.subscribers ??
+                                  list: state.rosNodes[index].nodeInfo
+                                          ?.subscribing ??
                                       ['-'])
                             ],
                           )

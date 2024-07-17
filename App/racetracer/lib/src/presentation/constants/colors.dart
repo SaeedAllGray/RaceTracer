@@ -10,4 +10,6 @@ class AppColors {
   static const Color scaffoldBackgroundColor = Color.fromRGBO(240, 240, 240, 1);
   static const Color blueGrey = Colors.blueGrey;
   static const Color warning = Colors.redAccent;
+  static const Color publishers = Colors.teal;
+  static const Color subscribers = Colors.redAccent;
 }

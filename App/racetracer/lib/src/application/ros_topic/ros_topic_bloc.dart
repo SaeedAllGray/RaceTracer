@@ -13,6 +13,7 @@ class RosTopicBloc extends Bloc<RosTopicEvent, RosTopicState> {
   RosTopicBloc() : super(RosTopicInitial()) {
     on<GetRosTopics>(_onGetRosTopicsEvent);
     on<GetTopicInfo>(_onGetTopicInfoEvent);
+    on<GetTopicsInfo>(_onGetTopicsInfoEvent);
   }
   FutureOr<void> _onGetTopicInfoEvent(
       GetTopicInfo event, Emitter<RosTopicState> emit) async {
@@ -20,6 +21,19 @@ class RosTopicBloc extends Bloc<RosTopicEvent, RosTopicState> {
     RosTopicRepository repository = RosTopicRepository();
     TopicInfo topicInfo = await repository.fetchTopicInfo(event.topic);
     emit(RosTopicInfoFetched(topicInfo: topicInfo));
+  }
+
+  FutureOr<void> _onGetTopicsInfoEvent(
+      GetTopicsInfo event, Emitter<RosTopicState> emit) async {
+    emit(RosTopicInProgress());
+    RosTopicRepository repository = RosTopicRepository();
+    List<RosTopic> topics = event.topics;
+// TODO: change this damn
+    for (var i = 0; i < topics.length; i++) {
+      TopicInfo topicInfo = await repository.fetchTopicInfo(topics[i].name);
+      topics[i].topicInfo = topicInfo;
+    }
+    emit(RosTopicsFetched(rosTopics: topics));
   }
 
   FutureOr<void> _onGetRosTopicsEvent(

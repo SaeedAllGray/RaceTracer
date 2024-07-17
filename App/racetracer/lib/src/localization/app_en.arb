@@ -9,5 +9,6 @@
   "publishers": "Publishers",
   "subscribers": "Subscribers",
   "topics": "Topics",
-  "nodes": "Nodes"
+  "nodes": "Nodes",
+  "more": "more"
 }

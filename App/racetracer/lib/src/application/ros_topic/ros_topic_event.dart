@@ -14,3 +14,9 @@ class GetTopicInfo extends RosTopicEvent {
 }
 
 class GetRosTopics extends RosTopicEvent {}
+
+class GetTopicsInfo extends RosTopicEvent {
+  final List<RosTopic> topics;
+
+  const GetTopicsInfo({required this.topics});
+}
