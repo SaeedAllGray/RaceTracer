@@ -4,7 +4,10 @@ from roslibpy import Ros, Topic
 from .ros_service import RosService
 import subprocess
 import time
+import subprocess
 import os
+import signal
+import json
 
 service = RosService()
 
@@ -168,18 +171,33 @@ def get_topic_info(request, topic_name):
 @csrf_exempt
 def start_rosbag_recording(request):
     try:
+        if request.method == 'POST':
+            print(f"Request body: {request.body.decode('utf-8')}")
+            print(f"POST data: {request.POST}")
         topics = request.POST.get('topics')
+        print(topics)
+        # if topics is None:
+        #     return JsonResponse({"status": "error", "message": "No topics provided"})
+
+        topics = json.loads(topics)
+       
+        if not isinstance(topics, list):
+            return JsonResponse({"status": "error", "message": "Topics should be a list"})
+        
+        topics_str = ' '.join(topics)
         bag_name = request.POST.get('bag_name', 'default')
         rosbag_directory = "/home/saeed/Desktop/Projects/recordings/"
-        # Ensure the directory exists
         os.makedirs(rosbag_directory, exist_ok=True)
 
-
-        command = f"rosbag record -O {rosbag_directory}{bag_name} {topics}"
+        command = f"rosbag record -O {rosbag_directory}{bag_name} {topics_str}"
+        
         process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        # output, error = process.communicate()
-        return JsonResponse({"status": "success", "message": f"{topics}"})
+        
+        # Return a success response
+        return JsonResponse({"status": "success", "message": f"Recording topics: {topics}"})
     except Exception as e:
+        # Return an error response if an exception occurs
+        print(str(e))
         return JsonResponse({"status": "error", "message": str(e)})
 
 @csrf_exempt
@@ -191,11 +209,28 @@ def stop_rosbag_recording(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
     
+@csrf_exempt
+def get_rosbag_info(request,bag_name):
+    try:
+        command = f"rosbag info {bag_name}"
+        subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return JsonResponse({"status": "success", "message": "Stopped rosbag recording"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+    
 
-def start_roscore(request):
+
+
+def start_roscore(request): # TODO: it has errors, maybe I should run rosbridge here as well 
     try:
         command = "roscore"
         subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         return JsonResponse({"status": "success", "message": "done"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
+    
+
+
+
+
+
