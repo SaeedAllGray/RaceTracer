@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:racetracer/src/application/ros_node/ros_node_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:racetracer/src/domain/entries/ros_node.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/topic/widgets/in_out_widget.dart';
@@ -54,7 +53,7 @@ class NodesInfoPage extends StatelessWidget {
                                       ),
                                       Text(
                                         AppLocalizations.of(context)!
-                                            .publishers
+                                            .publishing
                                             .toUpperCase(),
                                         style: FontStyles.TEAL_BOLD_10,
                                       )
@@ -76,7 +75,7 @@ class NodesInfoPage extends StatelessWidget {
                                       ),
                                       Text(
                                         AppLocalizations.of(context)!
-                                            .subscribers
+                                            .subscribing
                                             .toUpperCase(),
                                         style: FontStyles.RED_BOLD_10,
                                       )
@@ -93,7 +92,7 @@ class NodesInfoPage extends StatelessWidget {
                   );
                 }
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator.adaptive(),
                 );
               },
             )));

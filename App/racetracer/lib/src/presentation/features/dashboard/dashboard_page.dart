@@ -17,7 +17,7 @@ class DashboardPage extends StatelessWidget {
           AppLocalizations.of(context)!.dashboard,
         ),
       ),
-      body: Column(
+      body:const Column(
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,

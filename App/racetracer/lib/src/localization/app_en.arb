@@ -10,5 +10,9 @@
   "subscribers": "Subscribers",
   "topics": "Topics",
   "nodes": "Nodes",
-  "more": "more"
+  "more": "more",
+  "publishing": "Publishing",
+  "subscribing": "Subscribing",
+  "record": "Record",
+  "rosbag": "Rosbag"
 }
