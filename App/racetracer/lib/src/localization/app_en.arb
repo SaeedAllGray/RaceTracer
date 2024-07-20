@@ -14,5 +14,8 @@
   "publishing": "Publishing",
   "subscribing": "Subscribing",
   "record": "Record",
-  "rosbag": "Rosbag"
+  "rosbag": "Rosbag",
+  "name": "name",
+  "recording": "Recording",
+  "stop_recording": "Stop Recording"
 }

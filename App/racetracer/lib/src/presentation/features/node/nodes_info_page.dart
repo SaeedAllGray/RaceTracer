@@ -36,7 +36,7 @@ class NodesInfoPage extends StatelessWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('-'),
+                          const Text('-'),
                           const SizedBox(
                             height: 16,
                           ),

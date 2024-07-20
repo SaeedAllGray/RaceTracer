@@ -12,6 +12,7 @@ class RosbagBloc extends Bloc<RosbagEvent, RosbagState> {
   List<RosTopic> rosTopics = [];
   RosbagBloc() : super(const RosbagInitial(rosTopics: [])) {
     on<StartRosBagRecording>(_onStartRosBagRecordingEvent);
+    on<StopRosBagRecording>(_onStopRosBagRecordingEvent);
     on<ToggleRosTopic>(_onToggleRosTopicEvent);
   }
   FutureOr<void> _onToggleRosTopicEvent(
@@ -30,6 +31,16 @@ class RosbagBloc extends Bloc<RosbagEvent, RosbagState> {
   FutureOr<void> _onStartRosBagRecordingEvent(
       StartRosBagRecording event, Emitter<RosbagState> emit) async {
     RosBagRepository repository = RosBagRepository();
-    repository.startRecording(event.name, rosTopics);
+    List<RosTopic> recordingTopics =
+        await repository.startRecording(event.name, rosTopics);
+    emit(RosbagRecordingStarted(rosTopics: recordingTopics));
+  }
+
+  FutureOr<void> _onStopRosBagRecordingEvent(
+      StopRosBagRecording event, Emitter<RosbagState> emit) async {
+    RosBagRepository repository = RosBagRepository();
+
+    await repository.stopRecording();
+    emit(RosbagRecordingFinishede());
   }
 }

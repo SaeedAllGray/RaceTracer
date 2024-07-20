@@ -5,7 +5,6 @@ import 'package:racetracer/src/presentation/features/rosbag/rosbag_record_page.d
 import 'package:racetracer/src/presentation/features/topic/topics_info_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/sample_feature/sample_item_details_view.dart';
-import 'package:racetracer/src/sample_feature/sample_item_list_view.dart';
 import 'package:racetracer/src/settings/settings_controller.dart';
 import 'package:racetracer/src/settings/settings_view.dart';
 

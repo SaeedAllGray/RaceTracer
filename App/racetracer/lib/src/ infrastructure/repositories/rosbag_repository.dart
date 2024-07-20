@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:racetracer/src/%20infrastructure/datasources/remote/ros_node_data_source.dart';
+import 'package:dio/dio.dart';
 import 'package:racetracer/src/%20infrastructure/datasources/remote/rosbag_data_source.dart';
 import 'package:racetracer/src/domain/entries/ros_node.dart';
 import 'package:racetracer/src/domain/entries/ros_topic.dart';
@@ -8,7 +9,8 @@ import 'package:racetracer/src/domain/entries/ros_topic.dart';
 class RosBagRepository {
   RosBagDataSource rosDataSource = RosBagDataSource();
 
-  Future<void> startRecording(String name, List<RosTopic> topics) async {
+  Future<List<RosTopic>> startRecording(
+      String name, List<RosTopic> topics) async {
     List<dynamic> response = await rosDataSource.startRecordingTopics(
         name: name,
         topics: topics
@@ -16,12 +18,13 @@ class RosBagRepository {
               (e) => e.name,
             )
             .toList());
-    // return response.map((e) => RosNode(name: e)).toList();
+    print(response.map((e) => RosTopic(name: e)).toList());
+    return response.map((e) => RosTopic(name: e)).toList();
   }
 
-  Future<List<RosNode>> stopRecording() async {
+  Future<void> stopRecording() async {
     List<dynamic> response = await rosDataSource.stopRecording();
     log(response.toString());
-    return response.map((e) => RosNode.fromJson(e)).toList();
+    // return response.map((e) => RosNode.fromJson(e)).toList();
   }
 }

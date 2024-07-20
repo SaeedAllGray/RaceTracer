@@ -20,3 +20,5 @@ class StartRosBagRecording extends RosbagEvent {
 
   const StartRosBagRecording({required this.name});
 }
+
+class StopRosBagRecording extends RosbagEvent {}

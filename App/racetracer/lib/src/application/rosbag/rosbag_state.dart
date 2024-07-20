@@ -15,6 +15,10 @@ final class RosbagInitial extends RosbagState {
   List<Object> get props => [rosTopics];
 }
 
-class RosbagRecordingStarted extends RosbagState {}
+class RosbagRecordingStarted extends RosbagState {
+  final List<RosTopic> rosTopics;
+
+  const RosbagRecordingStarted({required this.rosTopics});
+}
 
 class RosbagRecordingFinishede extends RosbagState {}

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -9,18 +10,19 @@ class RosBagDataSource {
 
   FutureOr<dynamic> startRecordingTopics(
       {required List<String> topics, required String name}) async {
-    dio.interceptors.add(PrettyDioLogger());
+    dio.interceptors.add(PrettyDioLogger(requestBody: true));
 
     Response response = await dio.post('${ApiConstants.baseUrl}/bag/record/',
         data: {'topics': topics, "bag_name": name});
-    return response.data;
+
+    return response.data["message"];
   }
 
   FutureOr<dynamic> stopRecording() async {
     dio.interceptors.add(PrettyDioLogger());
 
     Response response = await dio.post(
-      '${ApiConstants.baseUrl}/ros/bag/stop',
+      '${ApiConstants.baseUrl}/bag/stop/',
     );
     return response.data;
   }
