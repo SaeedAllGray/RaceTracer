@@ -9,5 +9,13 @@
   "publishers": "Publishers",
   "subscribers": "Subscribers",
   "topics": "Topics",
-  "nodes": "Nodes"
+  "nodes": "Nodes",
+  "more": "more",
+  "publishing": "Publishing",
+  "subscribing": "Subscribing",
+  "record": "Record",
+  "rosbag": "Rosbag",
+  "name": "name",
+  "recording": "Recording",
+  "stop_recording": "Stop Recording"
 }

@@ -34,6 +34,22 @@ class FontStyles {
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
   );
+  static const TEAL_BOLD_10 = TextStyle(
+    color: AppColors.publishers,
+    fontSize: 10.0,
+    fontWeight: FontWeight.bold,
+  );
+  static const RED_BOLD_10 = TextStyle(
+    color: AppColors.subscribers,
+    fontSize: 10.0,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const GREY_LIGHT_14 = TextStyle(
+    // color: AppColors.BLACK,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w300,
+  );
   static const BLACK_MEDIUM_16 = TextStyle(
     color: AppColors.BLACK,
     fontSize: 18.0,

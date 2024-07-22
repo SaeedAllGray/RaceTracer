@@ -11,6 +11,7 @@ part 'ros_node_state.dart';
 class RosNodeBloc extends Bloc<RosNodeEvent, RosNodeState> {
   RosNodeBloc() : super(RosNodeInitial()) {
     on<GetRosNodes>(_onGetRosNodesEvent);
+    on<GetRosNodesInfo>(_onGetRosNodesInfoEvent);
   }
 
   FutureOr<void> _onGetRosNodesEvent(
@@ -18,6 +19,14 @@ class RosNodeBloc extends Bloc<RosNodeEvent, RosNodeState> {
     emit(RosNodeInProgress());
     RosNodeRepository repository = RosNodeRepository();
     List<RosNode> rosNodes = await repository.fetchEntities();
+    emit(RosNodesFetched(rosNodes: rosNodes));
+  }
+
+  FutureOr<void> _onGetRosNodesInfoEvent(
+      GetRosNodesInfo event, Emitter<RosNodeState> emit) async {
+    emit(RosNodeInProgress());
+    RosNodeRepository repository = RosNodeRepository();
+    List<RosNode> rosNodes = await repository.fetchNodesInfo();
     emit(RosNodesFetched(rosNodes: rosNodes));
   }
 }

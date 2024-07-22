@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/features/dashboard/dashboard_page.dart';
-import 'package:racetracer/src/presentation/features/dashboard/widgets/topics_widget.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/';
@@ -49,7 +48,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> getTabs() => <Widget>[
-        DashboardPage(),
-        Placeholder(),
+        const DashboardPage(),
+        const Placeholder(),
       ];
 }

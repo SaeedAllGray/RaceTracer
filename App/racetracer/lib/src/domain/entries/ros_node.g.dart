@@ -7,9 +7,13 @@ part of 'ros_node.dart';
 // **************************************************************************
 
 RosNode _$RosNodeFromJson(Map<String, dynamic> json) => RosNode(
-      name: json['name'] as String,
+      name: json['node_name'] as String,
+      nodeInfo: json['node_info'] == null
+          ? null
+          : NodeInfo.fromJson(json['node_info'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RosNodeToJson(RosNode instance) => <String, dynamic>{
-      'name': instance.name,
+      'node_name': instance.name,
+      'node_info': instance.nodeInfo,
     };

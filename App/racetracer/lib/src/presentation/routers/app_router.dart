@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:racetracer/src/domain/entries/ros_topic.dart';
+import 'package:racetracer/src/presentation/features/node/nodes_info_page.dart';
+import 'package:racetracer/src/presentation/features/rosbag/rosbag_record_page.dart';
 import 'package:racetracer/src/presentation/features/topic/topics_info_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/sample_feature/sample_item_details_view.dart';
-import 'package:racetracer/src/sample_feature/sample_item_list_view.dart';
 import 'package:racetracer/src/settings/settings_controller.dart';
 import 'package:racetracer/src/settings/settings_view.dart';
 
@@ -35,12 +36,27 @@ class AppRouter {
             return const HomePage();
           },
         );
-      case TopicsInfoPage.routeName:
-        final RosTopic topic = routeSettings.arguments as RosTopic;
+      case RosbagRecordPage.routeName:
+        final List<RosTopic> topics = routeSettings.arguments as List<RosTopic>;
         return MaterialPageRoute<void>(
           settings: routeSettings,
           builder: (BuildContext context) {
-            return TopicsInfoPage(rosTopic: topic);
+            return RosbagRecordPage(rosTopics: topics);
+          },
+        );
+      case TopicsInfoPage.routeName:
+        final List<RosTopic> topics = routeSettings.arguments as List<RosTopic>;
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return TopicsInfoPage(rosTopics: topics);
+          },
+        );
+      case NodesInfoPage.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return const NodesInfoPage();
           },
         );
       default:

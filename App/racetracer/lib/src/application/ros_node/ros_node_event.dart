@@ -8,3 +8,5 @@ sealed class RosNodeEvent extends Equatable {
 }
 
 class GetRosNodes extends RosNodeEvent {}
+
+class GetRosNodesInfo extends RosNodeEvent {}
