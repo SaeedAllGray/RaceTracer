@@ -9,6 +9,7 @@ urlpatterns = [
     path('nodes/', views.get_ros_nodes, name='get_nodes'),
     # path('nodes/', views.get_active_nodes, name='get_nodes'),
     path('topics/', views.get_ros_topics, name='get_topics'),
+    path('topics/info/', views.get_ros_topics_info, name='get_topics_info'),
     path('nodes/info/', views.get_ros_nodes_info, name='get_nodes_info'),
     path('topic/<path:topic_name>/info/', views.get_topic_info, name='get_topic_info'),
     path('node/<path:node_name>/info/', views.get_ros_node_info, name='get_node_info'),
@@ -16,4 +17,8 @@ urlpatterns = [
     path('core/', views.start_roscore, name='roscore'),
     path('bag/record/', views.start_rosbag_recording, name='start_rosbag_recording'),
     path('bag/stop/', views.stop_rosbag_recording, name='stop_rosbag_recording'),
+
+
+    path('add/', views.git_add, name='git add'),
+    path('diff/', views.git_diff, name='git diff'),
 ]

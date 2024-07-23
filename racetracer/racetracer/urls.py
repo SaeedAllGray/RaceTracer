@@ -20,4 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ros/', include('racetracer_app.urls')),
+    path('git/', include('racetracer_app.urls')),
+
 ]

@@ -17,6 +17,7 @@ class RosService:
 
     def get_nodes(self):
         return self.ros.get_nodes()
+        
     
 
     def get_node_info(self, node_name):
@@ -36,6 +37,26 @@ class RosService:
         return nodes_info
 
 
+
+    def get_topics(self):
+          return self.ros.get_topics()
+    
+    def get_topic_info(self,topic):
+        return self.ros.get_topic_type(topic)
+    
+    def get_topics_info(self):
+        topics_info = []
+        topics = self.get_topics()
+
+        for topic_name in topics:
+            topic_info = self.get_topic_info(topic_name)
+            topics_info.append({
+                'topic': topic_name,
+                'type': topic_info
+            })
+
+        return topics_info
+    
     def shutdown(self):
         self.client.terminate()
     # def get_ros_nodes(self,request):
@@ -44,18 +65,9 @@ class RosService:
     #         return JsonResponse({'nodes': nodes})
     #     except Exception as e:
     #         return JsonResponse({'error': str(e)})
-        
-
-    
-
-
           
-    # def get_ros_topics(self):
-    #     try:
-    #         topics = self.ros.get_topics()
-    #         return JsonResponse({'topics': topics})
-    #     except Exception as e:
-    #         return JsonResponse({'error': str(e)})
+    
+       
         
     
         

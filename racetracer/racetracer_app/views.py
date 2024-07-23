@@ -2,41 +2,76 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from roslibpy import Ros, Topic
 from .ros_service import RosService
+from .git_service import GitService
+from .parser import Parser
 import subprocess
 import time
 import subprocess
 import os
-import signal
 import json
 
-service = RosService()
 
+ros_service = RosService()
+git_service = GitService('/home/saeed/catkin_ws/src/my_key_teleop/')
+
+
+def git_add(request):
+    git_service.git_add()
+    return JsonResponse({'status': 'success', 'message': 'Added all files to staging area'})
+
+def git_commit(request):
+    commit_message = request.POST.get('message', 'Default commit message')
+    git_service.git_commit(commit_message)
+    return JsonResponse({'status': 'success', 'message': f'Committed with message: {commit_message}'})
+
+def git_diff(request):
+    diff = git_service.git_diff()
+    diff_json = Parser().parse_diff_to_json(diff)
+    return JsonResponse({'status': 'success', 'diff': diff_json })
 
 def get_ros_nodes(request):
     try:
-        nodes = service.get_nodes()
+        nodes = ros_service.get_nodes()
         return JsonResponse({'nodes': nodes})
     except Exception as e:
         return JsonResponse({'error': str(e)})
 
 def get_ros_node_info(request,node_name):
     try:
-        node_info = service.get_node_info(f'/{node_name}')
+        node_info = ros_service.get_node_info(f'/{node_name}')
         return JsonResponse({'nodes_info': node_info})
     except Exception as e:
             return JsonResponse({'error': str(e)})
 
 def get_ros_nodes_info(request):
     try:
-        nodes_info = service.get_nodes_info()
+        nodes_info = ros_service.get_nodes_info()
         return JsonResponse({'nodes_info': nodes_info})
     except Exception as e:
             return JsonResponse({'error': str(e)})
 
 
 def get_ros_topics(request):
-    service.get_ros_topics(request)
+    try:
+        topics = ros_service.get_topics()
+        return JsonResponse({'topics': topics})
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+    
+def get_ros_topic_info(request,topic):
+    try:
+        topics = ros_service.get_topics()
+        return JsonResponse({'topics': topics})
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
 
+def get_ros_topics_info(request):
+    try:
+        topics_info = ros_service.get_topics_info()
+        return JsonResponse({'topics_info': topics_info})
+    except Exception as e:
+            return JsonResponse({'error': str(e)})
+    
 @csrf_exempt
 def start_ros_node(request):
     try:
@@ -69,14 +104,14 @@ def stop_ros_node(request):
 #         return JsonResponse({"status": "error", "message": str(e)})
 
 
-def get_ros_topics(request):
-    try:
-        command = "rostopic list"
-        output = subprocess.check_output(command, shell=True, text=True)
-        topics = output.splitlines()
-        return JsonResponse({"topics": topics})
-    except Exception as e:
-        return JsonResponse({"status": "error", "message": str(e)})
+# def get_ros_topics2(request):
+#     try:
+#         command = "rostopic list"
+#         output = subprocess.check_output(command, shell=True, text=True)
+#         topics = output.splitlines()
+#         return JsonResponse({"topics": topics})
+#     except Exception as e:
+#         return JsonResponse({"status": "error", "message": str(e)})
 
 # def get_node_info(request, node_name):
     # try:
