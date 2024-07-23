@@ -10,53 +10,47 @@ class RosNodesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: RoundedTileWidget(
-        title: AppLocalizations.of(context)!.nodes,
-        child: BlocProvider(
-          create: (context) => RosNodeBloc()..add(GetRosNodes()),
-          child: BlocBuilder<RosNodeBloc, RosNodeState>(
-            builder: (context, state) {
-              if (state is RosNodesFetched) {
-                return Column(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: state.rosNodes
-                          .map((e) => Row(
-                                children: [
-                                  const Icon(
-                                    Icons.hub_outlined,
-                                    size: 10,
+    return RoundedTileWidget(
+      onTap: () => Navigator.pushNamed(
+        context,
+        NodesInfoPage.routeName,
+      ),
+      title: AppLocalizations.of(context)!.nodes,
+      child: BlocProvider(
+        create: (context) => RosNodeBloc()..add(GetRosNodes()),
+        child: BlocBuilder<RosNodeBloc, RosNodeState>(
+          builder: (context, state) {
+            if (state is RosNodesFetched) {
+              return Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: state.rosNodes
+                        .map((e) => Row(
+                              children: [
+                                const Icon(
+                                  Icons.hub_outlined,
+                                  size: 10,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    e.name,
                                   ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      e.name,
-                                    ),
-                                  )
-                                ],
-                              ))
-                          .toList(),
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            NodesInfoPage.routeName,
-                          );
-                        },
-                        child: Text(AppLocalizations.of(context)!.more)),
-                  ],
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
+                                )
+                              ],
+                            ))
+                        .toList(),
+                  ),
+                ],
               );
-            },
-          ),
+            }
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          },
         ),
       ),
     );

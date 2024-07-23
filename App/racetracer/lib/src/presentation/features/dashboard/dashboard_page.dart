@@ -16,7 +16,7 @@ class DashboardPage extends StatelessWidget {
       ),
       body: const Column(
         children: [
-          Row(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [RosNodesWidget(), RosTopicsWidget()],
           ),
