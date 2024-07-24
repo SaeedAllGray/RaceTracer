@@ -29,6 +29,8 @@ genlisp==0.4.18
 genmsg==0.6.0
 gennodejs==2.0.2
 genpy==0.6.15
+gitdb==4.0.11
+GitPython==3.1.43
 hyperlink==21.0.0
 idna==3.7
 image-geometry==1.16.2
@@ -114,6 +116,7 @@ six==1.16.0
 smach==2.5.2
 smach-ros==2.5.2
 smclib==1.8.6
+smmap==5.0.1
 sqlparse==0.5.0
 tf==1.13.2
 tf-conversions==1.13.2

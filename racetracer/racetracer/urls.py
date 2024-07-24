@@ -19,5 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ros/', include('racetracer_app.urls')),
+    path('ros/', include('ros_app.urls')),
+    path('git/', include('git_app.urls')),
+
 ]
