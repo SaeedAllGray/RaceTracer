@@ -1,8 +1,6 @@
 from django.urls import path
 from . import views
 
-
-
 urlpatterns = [
     path('start_ros_node/', views.start_ros_node, name='start_ros_node'),
     path('nodes/', views.get_ros_nodes, name='get_nodes'),
