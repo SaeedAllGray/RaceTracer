@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/features/dashboard/dashboard_page.dart';
+import 'package:racetracer/src/presentation/features/documentation/documentation_page.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/';
@@ -30,15 +31,15 @@ class _HomePageState extends State<HomePage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: const Icon(
-              Icons.home_rounded,
-            ),
-            label: AppLocalizations.of(context)!.home,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(
               Icons.dashboard_customize_rounded,
             ),
             label: AppLocalizations.of(context)!.dashboard,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(
+              Icons.assignment_rounded,
+            ),
+            label: AppLocalizations.of(context)!.documentation,
           ),
         ],
         currentIndex: _selectedIndex,
@@ -49,6 +50,6 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> getTabs() => <Widget>[
         const DashboardPage(),
-        const Placeholder(),
+        const DocumentationPage(),
       ];
 }

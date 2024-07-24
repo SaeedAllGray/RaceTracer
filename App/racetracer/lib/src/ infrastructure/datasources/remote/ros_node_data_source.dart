@@ -11,7 +11,7 @@ class RosNodeDataSource {
     dio.interceptors.add(PrettyDioLogger());
 
     Response response = await dio.get(
-      '${ApiConstants.baseUrl}/nodes',
+      '${ApiConstants.baseUrl}/${ApiConstants.ROS}/nodes',
     );
     return response.data['nodes'];
   }
@@ -20,7 +20,7 @@ class RosNodeDataSource {
     dio.interceptors.add(PrettyDioLogger());
 
     Response response = await dio.get(
-      '${ApiConstants.baseUrl}/nodes/info',
+      '${ApiConstants.baseUrl}/${ApiConstants.ROS}/nodes/info',
     );
     return response.data['nodes_info'];
   }
@@ -29,7 +29,7 @@ class RosNodeDataSource {
   //   dio.interceptors.add(PrettyDioLogger());
 
   //   Response response = await dio.get(
-  //     '${ApiConstants.baseUrl}/topic/$topic/info',
+  //     '${ApiConstants.baseUrl}/${ApiConstants.ROS}/topic/$topic/info',
   //   );
   //   return response.data;
   // }

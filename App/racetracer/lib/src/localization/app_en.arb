@@ -17,5 +17,6 @@
   "rosbag": "Rosbag",
   "name": "name",
   "recording": "Recording",
-  "stop_recording": "Stop Recording"
+  "stop_recording": "Stop Recording",
+  "documentation": "Documentation"
 }

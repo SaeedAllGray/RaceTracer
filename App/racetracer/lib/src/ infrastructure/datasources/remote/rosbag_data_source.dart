@@ -12,7 +12,8 @@ class RosBagDataSource {
       {required List<String> topics, required String name}) async {
     dio.interceptors.add(PrettyDioLogger(requestBody: true));
 
-    Response response = await dio.post('${ApiConstants.baseUrl}/bag/record/',
+    Response response = await dio.post(
+        '${ApiConstants.baseUrl}/${ApiConstants.ROS}/bag/record/',
         data: {'topics': topics, "bag_name": name});
 
     return response.data["message"];
@@ -22,7 +23,7 @@ class RosBagDataSource {
     dio.interceptors.add(PrettyDioLogger());
 
     Response response = await dio.post(
-      '${ApiConstants.baseUrl}/bag/stop/',
+      '${ApiConstants.baseUrl}/${ApiConstants.ROS}/bag/stop/',
     );
     return response.data;
   }

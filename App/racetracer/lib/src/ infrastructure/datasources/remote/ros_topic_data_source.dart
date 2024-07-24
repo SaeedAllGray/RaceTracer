@@ -11,7 +11,7 @@ class RosTopicDataSource {
     dio.interceptors.add(PrettyDioLogger());
 
     Response response = await dio.get(
-      '${ApiConstants.baseUrl}/topics',
+      '${ApiConstants.baseUrl}/${ApiConstants.ROS}/topics',
     );
     return response.data['topics'];
   }
@@ -20,7 +20,7 @@ class RosTopicDataSource {
     dio.interceptors.add(PrettyDioLogger());
 
     Response response = await dio.get(
-      '${ApiConstants.baseUrl}/topic/$topic/info',
+      '${ApiConstants.baseUrl}/${ApiConstants.ROS}/topic/$topic/info',
     );
     return response.data;
   }
