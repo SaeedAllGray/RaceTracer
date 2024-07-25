@@ -10,13 +10,28 @@ from rest_framework.authtoken.models import Token
 from rest_framework import generics
 from django.contrib.auth.models import User
 
+
+
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated,AllowAny
+
+class SessionMessagesView(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        session_id = self.kwargs['session_id']
+        return Message.objects.filter(test_session_id=session_id)
+
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
 
 class ObtainAuthTokenView(generics.GenericAPIView):
     from rest_framework.authtoken.serializers import AuthTokenSerializer
-    
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         serializer = self.AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
