@@ -6,7 +6,7 @@ import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 
 class NewTestSessionPage extends StatelessWidget {
-  static const routeName = '/new_session_page';
+  static const routeName = '/new_test_session_page';
 
   const NewTestSessionPage({super.key});
 
