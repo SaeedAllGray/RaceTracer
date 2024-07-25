@@ -7,7 +7,7 @@ from .models import Message, Tag, TestSession
 from .serializers import MessageSerializer, TagSerializer, TestSessionSerializer, RegisterSerializer
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework import generics
+from rest_framework import generics 
 from django.contrib.auth.models import User
 
 
