@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:racetracer/src/%20infrastructure/repositories/ros_topic_repository.dart';
+import 'package:racetracer/src/infrastructure/repositories/ros_topic_repository.dart';
 import 'package:racetracer/src/domain/entries/ros_topic.dart';
 import 'package:racetracer/src/domain/entries/topic_info.dart';
 

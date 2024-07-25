@@ -18,5 +18,7 @@
   "name": "name",
   "recording": "Recording",
   "stop_recording": "Stop Recording",
-  "documentation": "Documentation"
+  "documentation": "Documentation",
+  "create_a_new_test_session": "Create a new test session.",
+  "test_sessions": "Test sessions"
 }

@@ -10,7 +10,7 @@ import 'package:racetracer/src/presentation/features/rosbag/widgets/blinking_ico
 class RosbagRecordPage extends StatefulWidget {
   static const routeName = '/rosbag';
   final List<RosTopic> rosTopics;
-  RosbagRecordPage({super.key, required this.rosTopics});
+  const RosbagRecordPage({super.key, required this.rosTopics});
 
   @override
   State<RosbagRecordPage> createState() => _RosbagRecordPageState();

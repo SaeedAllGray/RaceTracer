@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/features/dashboard/widgets/nodes_widget.dart';
 import 'package:racetracer/src/presentation/features/dashboard/widgets/topics_widget.dart';
+import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
+import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -14,11 +16,23 @@ class DashboardPage extends StatelessWidget {
           AppLocalizations.of(context)!.dashboard,
         ),
       ),
-      body: const Column(
+      body: Column(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [RosNodesWidget(), RosTopicsWidget()],
+            children: [
+              const RosNodesWidget(),
+              const RosTopicsWidget(),
+              StretchedButton(
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  TestSessionsPage.routeName,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.create_a_new_test_session,
+                ),
+              )
+            ],
           ),
         ],
       ),

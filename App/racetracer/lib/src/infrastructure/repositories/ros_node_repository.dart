@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:racetracer/src/%20infrastructure/datasources/remote/ros_node_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/remote/ros_node_data_source.dart';
 import 'package:racetracer/src/domain/entries/ros_node.dart';
 
 class RosNodeRepository {
