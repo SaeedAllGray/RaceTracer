@@ -11,7 +11,6 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 
 
-
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 
@@ -49,5 +48,6 @@ class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
 
 class TestSessionViewSet(viewsets.ModelViewSet):
+
     queryset = TestSession.objects.all()
     serializer_class = TestSessionSerializer

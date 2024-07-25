@@ -14,5 +14,6 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('token/', ObtainAuthTokenView.as_view(), name='obtain_auth_token'),
     path('testsessions/<int:session_id>/messages/', SessionMessagesView.as_view(), name='session-messages'),
+    
 
 ]

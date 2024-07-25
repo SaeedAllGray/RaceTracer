@@ -119,7 +119,7 @@ REST_FRAMEWORK = {
 }
 
 # Socket/channel for messenger
-ASGI_APPLICATION = "chat_project.asgi.application"
+ASGI_APPLICATION = "racetracer.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {

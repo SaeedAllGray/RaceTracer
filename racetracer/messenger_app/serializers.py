@@ -51,7 +51,8 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TestSessionSerializer(serializers.ModelSerializer):
-    messages = MessageSerializer(many=True, read_only=True)
+    # This returns all the messages with the testsession object
+    # messages = MessageSerializer(many=True, read_only=True)
     
     class Meta:
         model = TestSession

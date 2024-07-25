@@ -14,6 +14,10 @@ class GitService:
     def git_diff(self):
         print(self.repo.git.diff())
         return self.repo.git.diff()
+        
+    def git_push(self):
+        origin = self.repo.remote(name='origin')
+        origin.push()
 
     
 
