@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:racetracer/src/domain/entries/ros_topic.dart';
 import 'package:racetracer/src/presentation/features/node/nodes_info_page.dart';
 import 'package:racetracer/src/presentation/features/rosbag/rosbag_record_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/chat_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/new_session_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
 import 'package:racetracer/src/presentation/features/topic/topics_info_page.dart';
@@ -50,6 +51,13 @@ class AppRouter {
           settings: routeSettings,
           builder: (BuildContext context) {
             return const NewTestSessionPage();
+          },
+        );
+      case ChatPage.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return const ChatPage();
           },
         );
       case RosbagRecordPage.routeName:

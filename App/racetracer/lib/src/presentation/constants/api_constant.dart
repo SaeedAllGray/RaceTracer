@@ -1,9 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
 class ApiConstants {
-  // static const String baseUrl = 'http://192.168.178.48:8888/ros';
+  static const String baseUrl = 'http://192.168.178.48:8888';
 
-  static const String baseUrl = 'http://10.208.6.128:8888';
+  // static const String baseUrl = 'http://10.208.6.128:8888';
   static const String TOKEN = 'token';
   static const String ROS = 'ros';
   static const String MESSAGE = 'message';
