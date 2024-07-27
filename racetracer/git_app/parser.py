@@ -74,7 +74,7 @@ class Parser:
                         changes[key] = (changes[key][0], value)
                     else:
                         changes[key] = (None, value)
-                        
+
         formatted_changes = []
         for key, (old_value, new_value) in changes.items():
             if old_value is None:
@@ -88,5 +88,7 @@ class Parser:
         return ', '.join(formatted_changes)
 
 
-    def generate_commit_message(self):    
+    def generate_commit_message(self,m):    
         return self.parse_diff_to_json(m)
+    
+
