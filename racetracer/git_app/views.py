@@ -40,8 +40,9 @@ def git_push(request):
 def git_add_commit_push(request):
     try:
         diff = git_service.git_diff()
-        config_diff = Parser().extract_changes(diff,'a/config/key_teleop.yaml')
+        config_diff = Parser().extract_changes(diff,'config/key_teleop.yaml')
         git_service.git_add()
+        git_service.git_commit(config_diff)
         git_service.git_push()
         return JsonResponse({'status': 'success', 'diff': config_diff})
     except Exception as e:

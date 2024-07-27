@@ -11,7 +11,7 @@ urlpatterns = [
     path('topic/<path:topic_name>/info/', views.get_topic_info, name='get_topic_info'),
     path('node/<path:node_name>/info/', views.get_ros_node_info, name='get_node_info'),
     path('stop_ros_node/', views.stop_ros_node, name='stop_ros_node'),
-    path('core/', views.start_roscore, name='roscore'),
+    # path('start/', views.start_services, name='roscore'),
     path('bag/record/', views.start_rosbag_recording, name='start_rosbag_recording'),
     path('bag/stop/', views.stop_rosbag_recording, name='stop_rosbag_recording'),
 
