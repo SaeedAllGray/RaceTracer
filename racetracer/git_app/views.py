@@ -36,3 +36,14 @@ def git_push(request):
         return JsonResponse({'status': 'success', 'diff': "Pushed sucessfully" })
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
+    
+def git_add_commit_push(request):
+    try:
+        diff = git_service.git_diff()
+        config_diff = Parser().extract_changes(diff,'a/config/key_teleop.yaml')
+        git_service.git_add()
+        git_service.git_push()
+        return JsonResponse({'status': 'success', 'diff': config_diff})
+    except Exception as e:
+        print(str(e))
+        return JsonResponse({"status": "error", "message": str(e)})
