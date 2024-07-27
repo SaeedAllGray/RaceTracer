@@ -14,7 +14,6 @@ class RosTopicRepository {
 
   Future<TopicInfo> fetchTopicInfo(String topic) async {
     dynamic response = await rosDataSource.getTopicInfo(topic);
-    log(response.toString());
     return TopicInfo.fromJson(response);
   }
 }

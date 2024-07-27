@@ -13,7 +13,6 @@ class RosNodeRepository {
 
   Future<List<RosNode>> fetchNodesInfo() async {
     List<dynamic> response = await rosDataSource.getNodesInfo();
-    log(response.toString());
     return response.map((e) => RosNode.fromJson(e)).toList();
   }
 }

@@ -21,7 +21,6 @@ class RosBagRepository {
 
   Future<void> stopRecording() async {
     List<dynamic> response = await rosDataSource.stopRecording();
-    log(response.toString());
     // return response.map((e) => RosNode.fromJson(e)).toList();
   }
 }

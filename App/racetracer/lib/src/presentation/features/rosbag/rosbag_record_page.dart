@@ -6,6 +6,7 @@ import 'package:racetracer/src/domain/entries/ros_topic.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/features/rosbag/widgets/blinking_icon.dart';
+import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
 class RosbagRecordPage extends StatefulWidget {
   static const routeName = '/rosbag';
@@ -144,7 +145,7 @@ class _RosbagRecordPageState extends State<RosbagRecordPage> {
                   ],
                 );
               }
-              return const CircularProgressIndicator.adaptive();
+              return const LoadingWidget();
             },
           ),
         ),

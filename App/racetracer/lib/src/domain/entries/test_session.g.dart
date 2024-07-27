@@ -8,7 +8,7 @@ part of 'test_session.dart';
 
 TestSession _$TestSessionFromJson(Map<String, dynamic> json) => TestSession(
       id: (json['id'] as num).toInt(),
-      timestamp: DateTime.parse(json['timestamp'] as String),
+      timestamp: TestSession._dateTimeFromJson(json['timestamp'] as String),
     );
 
 Map<String, dynamic> _$TestSessionToJson(TestSession instance) =>
