@@ -74,7 +74,7 @@ class Parser:
                         changes[key] = (changes[key][0], value)
                     else:
                         changes[key] = (None, value)
-        print('---------------------------------------')
+                        
         formatted_changes = []
         for key, (old_value, new_value) in changes.items():
             if old_value is None:
