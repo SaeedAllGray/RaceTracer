@@ -4,7 +4,7 @@ import 'package:racetracer/src/presentation/features/dashboard/dashboard_page.da
 import 'package:racetracer/src/presentation/features/documentation/documentation_page.dart';
 
 class HomePage extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/home';
 
   const HomePage({super.key});
 
