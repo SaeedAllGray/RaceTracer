@@ -1,10 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:racetracer/src/application/bloc/auth_bloc.dart';
 import 'package:racetracer/src/infrastructure/datasources/git_remote/gitlab_data_source.dart';
+import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
 class AuthPage extends StatefulWidget {
+  static const routeName = '/';
   const AuthPage({super.key});
 
   @override
@@ -12,18 +16,31 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  final GitLabDataSource gitLabOAuth = GitLabDataSource();
+  final GitAuthLabDataSource gitLabOAuth = GitAuthLabDataSource();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('GitLab OAuth2 Sign-In')),
-      body: Center(
-        child: StretchedButton(
-          onPressed: () async {
-            await gitLabOAuth.signInWithGitLab();
-          },
-          child: Text('Sign in with GitLab'),
-        ),
+    return BlocProvider(
+      create: (context) => AuthBloc(),
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthSuceedState) {
+            print('{-----------------------s------------------}');
+            Navigator.pushNamed(context, HomePage.routeName);
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(title: Text('GitLab OAuth2 Sign-In')),
+            body: Center(
+              child: StretchedButton(
+                onPressed: () async {
+                  BlocProvider.of<AuthBloc>(context).add(LoginEvent());
+                },
+                child: Text('Sign in with GitLab'),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
