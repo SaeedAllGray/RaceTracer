@@ -10,6 +10,7 @@ class MarkdownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MarkdownBody(
+      selectable: true,
       data: markdownData,
       imageBuilder: (Uri uri, String? title, String? alt) {
         return CachedNetworkImage(
