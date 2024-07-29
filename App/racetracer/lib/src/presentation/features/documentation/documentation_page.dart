@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/application/attribute_diff/attribute_diff_bloc.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
+import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
 class DocumentationPage extends StatelessWidget {
   const DocumentationPage({super.key});
@@ -78,9 +79,7 @@ class DocumentationPage extends StatelessWidget {
                         ),
                       ));
             }
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
+            return const LoadingWidget();
           },
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:racetracer/src/application/ros_node/ros_node_bloc.dart';
 import 'package:racetracer/src/presentation/features/dashboard/widgets/rounded_tile_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/features/node/nodes_info_page.dart';
+import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
 class RosNodesWidget extends StatelessWidget {
   const RosNodesWidget({super.key});
@@ -47,9 +48,7 @@ class RosNodesWidget extends StatelessWidget {
                 ],
               );
             }
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
+            return const LoadingWidget();
           },
         ),
       ),

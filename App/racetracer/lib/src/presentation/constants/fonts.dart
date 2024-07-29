@@ -29,6 +29,11 @@ class FontStyles {
     fontSize: 18.0,
     fontWeight: FontWeight.normal,
   );
+  static const LIGHTGREY_REGULAR_16 = TextStyle(
+    color: AppColors.lightGrey,
+    fontSize: 16.0,
+    fontWeight: FontWeight.normal,
+  );
   static const BLACK_REGULAR_16 = TextStyle(
     color: AppColors.BLACK,
     fontSize: 16.0,

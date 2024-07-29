@@ -1,4 +1,4 @@
-import 'package:racetracer/src/%20infrastructure/datasources/remote/attribute_diff_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/remote/attribute_diff_data_source.dart';
 import 'package:racetracer/src/domain/entries/attribute_diff.dart';
 
 class AttributeDiffRepository {
