@@ -5,7 +5,7 @@ import 'package:racetracer/src/application/attribute_diff/attribute_diff_bloc.da
 import 'package:racetracer/src/application/ros_topic/ros_topic_bloc.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
-import 'package:racetracer/src/presentation/features/test_session/chat_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/commit_detail_page.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
@@ -108,7 +108,7 @@ class NewTestSessionPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushNamed(
                           context,
-                          ChatPage.routeName,
+                          CommitDetailPage.routeName,
                         );
                       },
                       child: Text(

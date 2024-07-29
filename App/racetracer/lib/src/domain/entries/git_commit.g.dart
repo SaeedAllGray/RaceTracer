@@ -24,28 +24,18 @@ GitCommit _$GitCommitFromJson(Map<String, dynamic> json) => GitCommit(
       projectId: (json['project_id'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$GitCommitToJson(GitCommit instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'short_id': instance.shortId,
-    'created_at': GitCommit._dateTimeToJson(instance.createdAt),
-    'title': instance.title,
-    'message': instance.message,
-    'author_name': instance.authorName,
-    'author_email': instance.authorEmail,
-    'authored_date': GitCommit._dateTimeToJson(instance.authoredDate),
-    'committer_name': instance.committerName,
-    'committer_email': instance.committerEmail,
-    'committed_date': GitCommit._dateTimeToJson(instance.committedDate),
-    'web_url': instance.webUrl,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('project_id', instance.projectId);
-  return val;
-}
+Map<String, dynamic> _$GitCommitToJson(GitCommit instance) => <String, dynamic>{
+      'id': instance.id,
+      'short_id': instance.shortId,
+      'created_at': GitCommit._dateTimeToJson(instance.createdAt),
+      'title': instance.title,
+      'message': instance.message,
+      'author_name': instance.authorName,
+      'author_email': instance.authorEmail,
+      'authored_date': GitCommit._dateTimeToJson(instance.authoredDate),
+      'committer_name': instance.committerName,
+      'committer_email': instance.committerEmail,
+      'committed_date': GitCommit._dateTimeToJson(instance.committedDate),
+      'web_url': instance.webUrl,
+      'project_id': instance.projectId,
+    };

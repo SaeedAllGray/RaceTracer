@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:racetracer/src/application/git_commit/test_session_bloc.dart';
-import 'package:racetracer/src/application/test_session/test_session_bloc.dart';
-import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
-import 'package:racetracer/src/presentation/features/test_session/new_session_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/commit_detail_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/test_session_page.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
 class TestSessionsPage extends StatelessWidget {
@@ -39,9 +38,18 @@ class TestSessionsPage extends StatelessWidget {
                 // padding: const EdgeInsets.all(10),
                 itemCount: state.gitCommits.length,
                 itemBuilder: (context, index) => ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      CommitDetailPage.routeName,
+                      arguments: state.gitCommits[index],
+                    );
+                  },
+                  leading: const Icon(Icons.commit),
+                  trailing: const Icon(Icons.chevron_right_rounded),
                   title: Text(
                     state.gitCommits[index].title.toString(),
-                    style: FontStyles.BLACK_MEDIUM_16,
+                    style: FontStyles.BLACK_REGULAR_16,
                   ),
                   subtitle: Text(
                     DateFormat('dd.MM.yyyy, HH:mm')

@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'git_commit.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class GitCommit {
   final String id;
   final String shortId;
