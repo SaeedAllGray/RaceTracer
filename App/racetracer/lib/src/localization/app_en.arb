@@ -18,5 +18,11 @@
   "name": "name",
   "recording": "Recording",
   "stop_recording": "Stop Recording",
-  "documentation": "Documentation"
+  "documentation": "Documentation",
+  "create_a_new_test_session": "Create a new test session.",
+  "test_sessions": "Test sessions",
+  "incoming_changes": "Incoming changes",
+  "review_changes": "Review changes",
+  "start_test_session": "Start test Session",
+  "log_a_message": "Log a message"
 }

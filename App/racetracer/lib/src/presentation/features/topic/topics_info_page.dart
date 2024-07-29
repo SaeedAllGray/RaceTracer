@@ -7,6 +7,7 @@ import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/rosbag/rosbag_record_page.dart';
 import 'package:racetracer/src/presentation/features/topic/widgets/in_out_widget.dart';
+import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
 class TopicsInfoPage extends StatelessWidget {
   static const routeName = '/topics_Info';
@@ -118,9 +119,7 @@ class TopicsInfoPage extends StatelessWidget {
                       ],
                     );
                   }
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  );
+                  return const LoadingWidget();
                 },
               )),
         ));

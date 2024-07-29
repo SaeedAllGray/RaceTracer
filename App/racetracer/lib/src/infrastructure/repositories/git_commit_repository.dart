@@ -1,0 +1,27 @@
+import 'dart:developer';
+
+import 'package:racetracer/src/domain/data_source_models/entity_repository.dart';
+import 'package:racetracer/src/domain/entries/git_commit.dart';
+import 'package:racetracer/src/domain/entries/test_session.dart';
+import 'package:racetracer/src/infrastructure/datasources/remote/git_commit_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/remote/test_session_data_source.dart';
+
+class GitCommitRepository
+    implements EntityRepository<GitCommit, GitCommitDataSource> {
+  @override
+  GitCommitDataSource api = GitCommitDataSource();
+
+  @override
+  Future<List<GitCommit>> fetchEntities() async {
+    // TODO: fix this in the API
+    dynamic response = await api.fetchEntities();
+
+    return (response as List).map((data) => GitCommit.fromJson(data)).toList();
+  }
+
+  @override
+  Future<GitCommit> fetchEntity(int id) async {
+    dynamic response = await api.fetchAnEntity(id);
+    return GitCommit.fromJson(response);
+  }
+}
