@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 
 class MarkdownWidget extends StatelessWidget {
   final String markdownData;
@@ -21,7 +22,7 @@ class MarkdownWidget extends StatelessWidget {
           placeholder: (context, url) =>
               const CircularProgressIndicator.adaptive(),
           // TODO: Remove the hard-coded token
-          httpHeaders: {'PRIVATE-TOKEN': 'gePyX2VcuPx1aZLSk8_K'},
+          httpHeaders: TokenHelper.getHeaderToken,
           // errorWidget: (context, url, error) => const Icon(Icons.error),
         );
       },

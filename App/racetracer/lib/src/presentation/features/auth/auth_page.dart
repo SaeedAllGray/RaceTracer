@@ -25,7 +25,7 @@ class _AuthPageState extends State<AuthPage> {
         listener: (context, state) {
           if (state is AuthSuceedState) {
             print('{-----------------------s------------------}');
-            Navigator.pushNamed(context, HomePage.routeName);
+            Navigator.pushReplacementNamed(context, HomePage.routeName);
           }
         },
         builder: (context, state) {

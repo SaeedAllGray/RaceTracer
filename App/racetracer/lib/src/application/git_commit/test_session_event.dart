@@ -14,3 +14,6 @@ class GetGitCommitComments extends GitCommitEvent {
 
   const GetGitCommitComments({required this.gitCommit});
 }
+
+// TODO: may have its own bloc
+class UploadImage extends GitCommitEvent {}

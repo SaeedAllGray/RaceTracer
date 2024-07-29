@@ -54,12 +54,19 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Row(
                   children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        shape: const CircleBorder(),
-                      ),
-                      onPressed: () {},
-                      child: const Icon(Icons.photo_camera_rounded),
+                    BlocBuilder<GitCommitBloc, GitCommitState>(
+                      builder: (context, state) {
+                        return TextButton(
+                          style: TextButton.styleFrom(
+                            shape: const CircleBorder(),
+                          ),
+                          onPressed: () {
+                            BlocProvider.of<GitCommitBloc>(context)
+                                .add(UploadImage());
+                          },
+                          child: const Icon(Icons.photo_camera_rounded),
+                        );
+                      },
                     ),
                     Expanded(
                       child: TextField(
