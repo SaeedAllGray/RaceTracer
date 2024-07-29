@@ -14,8 +14,9 @@ class GitCommitDataSource implements RemoteDataSource {
   @override
   Future fetchAnEntity(int id) async {
     dio.interceptors.add(PrettyDioLogger());
+    // TODO: project_id is hard-coded for now
     Response response = await dio.get(
-      'https://gitlab.fachschaften.org/api/v4/projects/3564/repository/commits/$id',
+      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id',
       options: Options(headers: {'PRIVATE-TOKEN': 'gePyX2VcuPx1aZLSk8_K'}),
     );
 
@@ -26,7 +27,17 @@ class GitCommitDataSource implements RemoteDataSource {
   Future fetchEntities() async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      'https://gitlab.fachschaften.org/api/v4/projects/3564/repository/commits/',
+      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}',
+      options: Options(headers: {'PRIVATE-TOKEN': 'gePyX2VcuPx1aZLSk8_K'}),
+    );
+
+    return response.data;
+  }
+
+  Future fetchComments(String id) async {
+    dio.interceptors.add(PrettyDioLogger());
+    Response response = await dio.get(
+      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
       options: Options(headers: {'PRIVATE-TOKEN': 'gePyX2VcuPx1aZLSk8_K'}),
     );
 

@@ -8,3 +8,9 @@ sealed class GitCommitEvent extends Equatable {
 }
 
 class GetGitCommits extends GitCommitEvent {}
+
+class GetGitCommitComments extends GitCommitEvent {
+  final GitCommit gitCommit;
+
+  const GetGitCommitComments({required this.gitCommit});
+}

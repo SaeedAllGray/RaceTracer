@@ -16,3 +16,9 @@ class GitCommitsFetched extends GitCommitState {
 
   const GitCommitsFetched({required this.gitCommits});
 }
+
+class GitCommitCommentsFetched extends GitCommitState {
+  final List<GitComment> gitComments;
+
+  const GitCommitCommentsFetched({required this.gitComments});
+}

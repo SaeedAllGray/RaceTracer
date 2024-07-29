@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:racetracer/src/domain/data_source_models/entity_repository.dart';
+import 'package:racetracer/src/domain/entries/git_comment.dart';
 import 'package:racetracer/src/domain/entries/git_commit.dart';
 import 'package:racetracer/src/domain/entries/test_session.dart';
 import 'package:racetracer/src/infrastructure/datasources/remote/git_commit_data_source.dart';
@@ -23,5 +24,13 @@ class GitCommitRepository
   Future<GitCommit> fetchEntity(int id) async {
     dynamic response = await api.fetchAnEntity(id);
     return GitCommit.fromJson(response);
+  }
+
+  @override
+  Future<List<GitComment>> fetchCommentsEntities(String id) async {
+    // TODO: fix this in the API
+    dynamic response = await api.fetchComments(id);
+
+    return (response as List).map((data) => GitComment.fromJson(data)).toList();
   }
 }
