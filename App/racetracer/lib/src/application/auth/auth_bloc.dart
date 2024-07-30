@@ -6,6 +6,7 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:racetracer/src/domain/entries/token/git_token.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
 import 'package:racetracer/src/infrastructure/repositories/auth_repository.dart';
+import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -24,7 +25,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     print(savedToken);
     if (savedToken != null) {
       final GitToken? token = await repository.refreshToken();
+
       if (token != null) {
+        TokenHelper.setToken();
+
         emit(AuthSuceedState());
       }
     }
@@ -38,6 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (authToken != null) {
       final GitToken gitToken = GitToken.fromAuthResponce(authToken);
       await dataSource.saveGitToken(gitToken);
+      TokenHelper.setToken();
       emit(AuthSuceedState());
     } else {
       emit(AuthFailedState());

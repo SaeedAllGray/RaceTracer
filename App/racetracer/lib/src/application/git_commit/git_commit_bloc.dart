@@ -2,13 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:racetracer/src/domain/entries/git_comment.dart';
 import 'package:racetracer/src/domain/entries/git_commit.dart';
 import 'package:racetracer/src/domain/entries/uploaded_file.dart';
-import 'package:racetracer/src/infrastructure/datasources/remote/upload_data_source.dart';
 import 'package:racetracer/src/infrastructure/repositories/git_commit_repository.dart';
-import 'package:racetracer/src/presentation/helpers/image_picker_helper.dart';
 
 part 'git_commit_event.dart';
 part 'git_commit_state.dart';
@@ -38,7 +35,6 @@ class GitCommitBloc extends Bloc<GitCommitEvent, GitCommitState> {
 
   FutureOr<void> _onPostGitCommitCommentEvent(
       PostGitCommitComment event, Emitter<GitCommitState> emit) async {
-    emit(GitCommitInProgress());
     GitCommitRepository repository = GitCommitRepository();
     String note = event.note +
         event.uploadedFiles

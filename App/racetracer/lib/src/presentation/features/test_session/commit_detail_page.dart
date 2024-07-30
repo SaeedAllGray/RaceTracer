@@ -141,7 +141,7 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                           child: BlocBuilder<UploadFileBloc, UploadFileState>(
                             builder: (context, state) {
                               if (state is UploadFileInProgress) {
-                                return LoadingWidget();
+                                return const LoadingWidget();
                               }
                               return TextButton(
                                 style: TextButton.styleFrom(
@@ -158,6 +158,7 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                         ),
                         Expanded(
                           child: TextField(
+                            onChanged: (value) => setState(() {}),
                             controller: messageTextEditingController,
                             minLines: 1,
                             maxLines: 5,
@@ -196,8 +197,13 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                   style: TextButton.styleFrom(
                                       shape: const CircleBorder()),
                                   onPressed: uploadFileState
-                                              is UploadFileInProgress &&
-                                          true //TODO: replace true with the textfieldcontroller state condition
+                                              is UploadFileInProgress ||
+                                          (uploadFileState
+                                                      is UploadFileCompleted &&
+                                                  uploadFileState
+                                                      .uploadedFiles.isEmpty) &&
+                                              messageTextEditingController
+                                                  .text.isEmpty
                                       ? null
                                       : () {
                                           List<UploadedFile> uploadedFiles = [];
@@ -216,6 +222,10 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                               uploadedFiles: uploadedFiles,
                                             ),
                                           );
+                                          messageTextEditingController.clear();
+                                          BlocProvider.of<UploadFileBloc>(
+                                                  context)
+                                              .add(ClearFiles());
                                         },
                                   child: const Icon(Icons.arrow_upward_rounded),
                                 );

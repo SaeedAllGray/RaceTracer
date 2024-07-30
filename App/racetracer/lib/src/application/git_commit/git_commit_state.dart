@@ -21,4 +21,6 @@ class GitCommitCommentsFetched extends GitCommitState {
   final List<GitComment> gitComments;
 
   const GitCommitCommentsFetched({required this.gitComments});
+  @override
+  List<Object> get props => [gitComments];
 }

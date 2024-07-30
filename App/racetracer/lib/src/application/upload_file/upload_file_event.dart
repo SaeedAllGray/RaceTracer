@@ -14,3 +14,5 @@ class RemoveImage extends UploadFileEvent {
 
   const RemoveImage({required this.uploadedFile});
 }
+
+class ClearFiles extends UploadFileEvent {}

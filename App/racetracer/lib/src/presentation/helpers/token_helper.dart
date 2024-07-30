@@ -1,3 +1,4 @@
+import 'package:racetracer/src/domain/entries/token/git_token.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
 
 class TokenHelper {
@@ -8,10 +9,13 @@ class TokenHelper {
   }
 
   static Map<String, String> get getHeaderToken {
-    return {'PRIVATE-TOKEN': 'gePyX2VcuPx1aZLSk8_K'};
+    print({'Authorization': 'Bearer $userToken'});
+    return {'Authorization': 'Bearer $userToken'};
   }
 
   static Future<void> setToken() async {
-    userToken = await LocalDataSource().getToken() ?? '';
+    GitToken? gitToken = await LocalDataSource().getGitToken();
+    print(gitToken?.accessToken);
+    userToken = gitToken?.accessToken ?? '';
   }
 }

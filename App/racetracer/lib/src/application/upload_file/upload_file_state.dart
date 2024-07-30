@@ -7,8 +7,6 @@ sealed class UploadFileState extends Equatable {
   List<Object> get props => [];
 }
 
-final class UploadFileInitial extends UploadFileState {}
-
 class UploadFileInProgress extends UploadFileCompleted {
   const UploadFileInProgress(super.uploadedFiles);
 

@@ -12,9 +12,10 @@ part 'upload_file_state.dart';
 
 class UploadFileBloc extends Bloc<UploadFileEvent, UploadFileState> {
   final List<UploadedFile> uplooadedFiles = [];
-  UploadFileBloc() : super(UploadFileInitial()) {
+  UploadFileBloc() : super(const UploadFileCompleted([])) {
     on<UploadImage>(_onUploadImageEvent);
     on<RemoveImage>(_onRemoveImageEvent);
+    on<ClearFiles>(_onClearFilesEvent);
   }
   FutureOr<void> _onUploadImageEvent(
       UploadImage event, Emitter<UploadFileState> emit) async {
@@ -37,7 +38,18 @@ class UploadFileBloc extends Bloc<UploadFileEvent, UploadFileState> {
     uplooadedFiles.remove(event.uploadedFile);
     List<UploadedFile> newUploadedFiles =
         List<UploadedFile>.from(uplooadedFiles);
-    print(newUploadedFiles);
+
+    emit(UploadFileCompleted(newUploadedFiles));
+  }
+
+  FutureOr<void> _onClearFilesEvent(
+      ClearFiles event, Emitter<UploadFileState> emit) async {
+    // emit(GitCommitInProgress());
+
+    uplooadedFiles.clear();
+    List<UploadedFile> newUploadedFiles =
+        List<UploadedFile>.from(uplooadedFiles);
+
     emit(UploadFileCompleted(newUploadedFiles));
   }
 }
