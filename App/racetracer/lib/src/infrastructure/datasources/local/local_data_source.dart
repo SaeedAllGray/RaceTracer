@@ -20,9 +20,7 @@ class LocalDataSource {
     GitToken? gitToken;
     String? tokenString = await secureStorage.read(key: 'git_token');
     if (tokenString != null) {
-      print(tokenString);
       Map<String, dynamic> tokenJson = json.decode(tokenString);
-      print('af sus');
       gitToken = GitToken.fromJson(tokenJson);
       return gitToken;
     }
