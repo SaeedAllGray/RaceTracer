@@ -19,7 +19,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(),
+      create: (context) => AuthBloc()..add(RetrieveDataEvent()),
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuceedState) {
@@ -31,6 +31,7 @@ class _AuthPageState extends State<AuthPage> {
             appBar: AppBar(title: Text('GitLab OAuth2 Sign-In')),
             body: Column(
               children: [
+                const Spacer(),
                 Center(
                   child: StretchedButton(
                     onPressed: () async {
