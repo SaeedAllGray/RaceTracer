@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
 import 'package:racetracer/src/presentation/features/dashboard/dashboard_page.dart';
 import 'package:racetracer/src/presentation/features/documentation/documentation_page.dart';
 
@@ -50,6 +51,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> getTabs() => <Widget>[
         const DashboardPage(),
-        const DocumentationPage(),
+        // const DocumentationPage(),
+        const AuthPage()
       ];
 }

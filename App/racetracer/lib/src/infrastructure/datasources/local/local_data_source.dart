@@ -34,10 +34,10 @@ class LocalDataSource {
         key: 'git_token', value: json.encode(gitToken.toJson()));
   }
 
-  // Future<String?> getToken() async {
-  //   final String? key = await secureStorage.read(key: 'access_token');
-  //   return key;
-  // }
+  Future<String?> getToken() async {
+    final String? key = await secureStorage.read(key: 'access_token');
+    return key;
+  }
 
   // Future<String?> getRefreshToken() async {
   //   final String? key = await secureStorage.read(key: 'refresh_token');

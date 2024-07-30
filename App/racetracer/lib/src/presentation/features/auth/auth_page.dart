@@ -19,7 +19,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc()..add(RetrieveDataEvent()),
+      create: (context) => AuthBloc(),
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuceedState) {
