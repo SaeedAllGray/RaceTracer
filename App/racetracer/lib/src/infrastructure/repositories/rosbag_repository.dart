@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:racetracer/src/infrastructure/datasources/remote/rosbag_data_source.dart';
 import 'package:racetracer/src/domain/entries/ros_topic.dart';
 
@@ -15,7 +13,7 @@ class RosBagRepository {
               (e) => e.name,
             )
             .toList());
-    print(response.map((e) => RosTopic(name: e)).toList());
+    // print(response.map((e) => RosTopic(name: e)).toList());
     return response.map((e) => RosTopic(name: e)).toList();
   }
 

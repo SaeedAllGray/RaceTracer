@@ -14,16 +14,23 @@ class MarkdownWidget extends StatelessWidget {
       selectable: true,
       data: markdownData,
       imageBuilder: (Uri uri, String? title, String? alt) {
-        return CachedNetworkImage(
-          // TODO: fix this hardcoded url
-
-          imageUrl:
-              "https://gitlab.fachschaften.org/-/project/3564" + uri.toString(),
-          placeholder: (context, url) =>
-              const CircularProgressIndicator.adaptive(),
-          // TODO: Remove the hard-coded token
-          httpHeaders: TokenHelper.getHeaderToken,
-          // errorWidget: (context, url, error) => const Icon(Icons.error),
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: CachedNetworkImage(
+              // TODO: fix this hardcoded url
+              // width: 250,
+              imageUrl: "https://gitlab.fachschaften.org/-/project/3564" +
+                  uri.toString(),
+              placeholder: (context, url) =>
+                  const CircularProgressIndicator.adaptive(),
+              // TODO: Remove the hard-coded token
+              httpHeaders: TokenHelper.getHeaderToken,
+              errorWidget: (context, url, error) =>
+                  const Icon(Icons.image_not_supported_rounded),
+            ),
+          ),
         );
       },
     );

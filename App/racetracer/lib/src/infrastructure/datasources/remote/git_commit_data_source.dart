@@ -42,4 +42,15 @@ class GitCommitDataSource implements RemoteDataSource {
 
     return response.data;
   }
+
+  Future createComment(String id, String note) async {
+    dio.interceptors.add(PrettyDioLogger());
+    Response response = await dio.post(
+      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+      queryParameters: {'note': note},
+      options: Options(headers: TokenHelper.getHeaderToken),
+    );
+
+    return response.data;
+  }
 }

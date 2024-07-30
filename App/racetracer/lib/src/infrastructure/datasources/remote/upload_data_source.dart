@@ -4,9 +4,9 @@ import 'package:racetracer/src/presentation/constants/api_constant.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 
 class UploadDataSource {
-  static Dio dio = Dio();
+  Dio dio = Dio();
 
-  static Future<void> uploadImage(String filePath) async {
+  Future<dynamic> uploadImage(String filePath) async {
     dio.interceptors.add(PrettyDioLogger());
     String fileName = filePath.split('/').last;
     FormData formData = FormData.fromMap({
@@ -19,5 +19,6 @@ class UploadDataSource {
       options: Options(headers: TokenHelper.getHeaderToken),
       data: formData,
     );
+    return response.data;
   }
 }

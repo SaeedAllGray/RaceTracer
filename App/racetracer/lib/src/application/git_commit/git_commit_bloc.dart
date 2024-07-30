@@ -5,18 +5,19 @@ import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:racetracer/src/domain/entries/git_comment.dart';
 import 'package:racetracer/src/domain/entries/git_commit.dart';
+import 'package:racetracer/src/domain/entries/uploaded_file.dart';
 import 'package:racetracer/src/infrastructure/datasources/remote/upload_data_source.dart';
 import 'package:racetracer/src/infrastructure/repositories/git_commit_repository.dart';
 import 'package:racetracer/src/presentation/helpers/image_picker_helper.dart';
 
-part 'test_session_event.dart';
-part 'test_session_state.dart';
+part 'git_commit_event.dart';
+part 'git_commit_state.dart';
 
 class GitCommitBloc extends Bloc<GitCommitEvent, GitCommitState> {
   GitCommitBloc() : super(GitCommitInitial()) {
     on<GetGitCommits>(_onGetGitCommitEvent);
     on<GetGitCommitComments>(_onGetGitCommitCommentsEvent);
-    on<UploadImage>(_onUploadImageEvent);
+    on<PostGitCommitComment>(_onPostGitCommitCommentEvent);
   }
   FutureOr<void> _onGetGitCommitEvent(
       GetGitCommits event, Emitter<GitCommitState> emit) async {
@@ -35,13 +36,20 @@ class GitCommitBloc extends Bloc<GitCommitEvent, GitCommitState> {
     emit(GitCommitCommentsFetched(gitComments: gitComments));
   }
 
-  FutureOr<void> _onUploadImageEvent(
-      UploadImage event, Emitter<GitCommitState> emit) async {
-    // emit(GitCommitInProgress());
-    XFile? image = await ImagePickerHelper().pickImage();
-    if (image != null) {
-      await UploadDataSource.uploadImage(image.path);
-    }
-    // emit();
+  FutureOr<void> _onPostGitCommitCommentEvent(
+      PostGitCommitComment event, Emitter<GitCommitState> emit) async {
+    emit(GitCommitInProgress());
+    GitCommitRepository repository = GitCommitRepository();
+    String note = event.note +
+        event.uploadedFiles
+            .map(
+              (e) => e.markdown,
+            )
+            .join();
+
+    await repository.createComment(event.gitCommit, note);
+    List<GitComment> gitComments =
+        await repository.fetchCommentsEntities(event.gitCommit.id);
+    emit(GitCommitCommentsFetched(gitComments: gitComments));
   }
 }

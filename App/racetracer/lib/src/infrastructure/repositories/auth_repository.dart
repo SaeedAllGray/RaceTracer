@@ -37,7 +37,7 @@ class AuthRepository {
         allowInsecureConnections: true,
       ),
     );
-
+    print(result?.idToken);
     return result;
   }
 }

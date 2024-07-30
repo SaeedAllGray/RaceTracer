@@ -8,7 +8,7 @@ class TokenHelper {
   }
 
   static Map<String, String> get getHeaderToken {
-    return {'Authorization': 'Bearer $userToken'};
+    return {'PRIVATE-TOKEN': 'gePyX2VcuPx1aZLSk8_K'};
   }
 
   static Future<void> setToken() async {

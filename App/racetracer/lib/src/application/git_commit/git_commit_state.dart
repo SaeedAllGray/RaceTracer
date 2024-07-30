@@ -1,4 +1,4 @@
-part of 'test_session_bloc.dart';
+part of 'git_commit_bloc.dart';
 
 sealed class GitCommitState extends Equatable {
   const GitCommitState();

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:racetracer/src/application/bloc/auth_bloc.dart';
+import 'package:racetracer/src/application/auth/auth_bloc.dart';
 import 'package:racetracer/src/infrastructure/datasources/git_remote/gitlab_data_source.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';

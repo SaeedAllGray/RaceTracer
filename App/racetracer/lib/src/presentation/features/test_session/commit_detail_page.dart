@@ -1,11 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:racetracer/src/application/git_commit/test_session_bloc.dart';
+import 'package:racetracer/src/application/git_commit/git_commit_bloc.dart';
+import 'package:racetracer/src/application/upload_file/upload_file_bloc.dart';
 import 'package:racetracer/src/domain/entries/git_commit.dart';
+import 'package:racetracer/src/domain/entries/uploaded_file.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/test_session/widgets/chat_bubble.dart';
+import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
 class CommitDetailPage extends StatefulWidget {
@@ -24,9 +28,16 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GitCommitBloc()
-        ..add(GetGitCommitComments(gitCommit: widget.gitCommit)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GitCommitBloc()
+            ..add(GetGitCommitComments(gitCommit: widget.gitCommit)),
+        ),
+        BlocProvider(
+          create: (context) => UploadFileBloc(),
+        )
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.documentation),
@@ -40,6 +51,9 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                     if (state is GitCommitCommentsFetched) {
                       return ListView.builder(
                         itemCount: state.gitComments.length,
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        reverse: true,
                         padding: const EdgeInsets.all(10),
                         itemBuilder: (context, index) => ChatBubble(
                           gitComment: state.gitComments[index],
@@ -52,57 +66,164 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Row(
+                child: Column(
                   children: [
-                    BlocBuilder<GitCommitBloc, GitCommitState>(
+                    BlocBuilder<UploadFileBloc, UploadFileState>(
                       builder: (context, state) {
-                        return TextButton(
-                          style: TextButton.styleFrom(
-                            shape: const CircleBorder(),
-                          ),
-                          onPressed: () {
-                            BlocProvider.of<GitCommitBloc>(context)
-                                .add(UploadImage());
-                          },
-                          child: const Icon(Icons.photo_camera_rounded),
-                        );
+                        if (state is UploadFileCompleted &&
+                            state.uploadedFiles.isNotEmpty) {
+                          return SizedBox(
+                            height: 80,
+                            child: ListView.separated(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4),
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                width: 5,
+                              ),
+                              itemCount: state.uploadedFiles.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: CachedNetworkImage(
+                                          httpHeaders:
+                                              TokenHelper.getHeaderToken,
+                                          imageUrl:
+                                              "https://gitlab.fachschaften.org/" +
+                                                  state.uploadedFiles[index]
+                                                      .fullPath),
+                                    ),
+                                    Positioned(
+                                      top: 2,
+                                      left: 2,
+                                      child: SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                              padding: EdgeInsets.zero,
+                                              backgroundColor: AppColors.white
+                                                  .withOpacity(0.9),
+                                              iconColor: AppColors.BLACK,
+                                              shape: const CircleBorder()),
+                                          child:
+                                              const Icon(Icons.close_rounded),
+                                          onPressed: () {
+                                            BlocProvider.of<UploadFileBloc>(
+                                                    context)
+                                                .add(
+                                              RemoveImage(
+                                                uploadedFile:
+                                                    state.uploadedFiles[index],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          );
+                        }
+
+                        return const SizedBox.shrink();
                       },
                     ),
-                    Expanded(
-                      child: TextField(
-                        controller: messageTextEditingController,
-                        minLines: 1,
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(6),
-                          isDense: true,
-                          hintText: AppLocalizations.of(context)!.log_a_message,
-                          hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: const BorderSide(
-                              color: AppColors.lightGrey,
-                            ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 60,
+                          child: BlocBuilder<UploadFileBloc, UploadFileState>(
+                            builder: (context, state) {
+                              if (state is UploadFileInProgress) {
+                                return LoadingWidget();
+                              }
+                              return TextButton(
+                                style: TextButton.styleFrom(
+                                  shape: const CircleBorder(),
+                                ),
+                                onPressed: () {
+                                  BlocProvider.of<UploadFileBloc>(context)
+                                      .add(UploadImage());
+                                },
+                                child: const Icon(Icons.photo_camera_rounded),
+                              );
+                            },
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: const BorderSide(
-                              color: AppColors.blueGrey,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: const BorderSide(
-                              color: AppColors.lightGrey,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: messageTextEditingController,
+                            minLines: 1,
+                            maxLines: 5,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(6),
+                              isDense: true,
+                              hintText:
+                                  AppLocalizations.of(context)!.log_a_message,
+                              hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                  color: AppColors.lightGrey,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                  color: AppColors.blueGrey,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                  color: AppColors.lightGrey,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(shape: const CircleBorder()),
-                      onPressed: () {},
-                      child: const Icon(Icons.send),
+                        BlocBuilder<UploadFileBloc, UploadFileState>(
+                          builder: (context, uploadFileState) {
+                            return BlocBuilder<GitCommitBloc, GitCommitState>(
+                              builder: (context, gitCommitState) {
+                                return OutlinedButton(
+                                  style: TextButton.styleFrom(
+                                      shape: const CircleBorder()),
+                                  onPressed: uploadFileState
+                                              is UploadFileInProgress &&
+                                          true //TODO: replace true with the textfieldcontroller state condition
+                                      ? null
+                                      : () {
+                                          List<UploadedFile> uploadedFiles = [];
+                                          if (uploadFileState
+                                              is UploadFileCompleted) {
+                                            uploadedFiles =
+                                                uploadFileState.uploadedFiles;
+                                          }
+                                          BlocProvider.of<GitCommitBloc>(
+                                                  context)
+                                              .add(
+                                            PostGitCommitComment(
+                                              gitCommit: widget.gitCommit,
+                                              note: messageTextEditingController
+                                                  .text,
+                                              uploadedFiles: uploadedFiles,
+                                            ),
+                                          );
+                                        },
+                                  child: const Icon(Icons.arrow_upward_rounded),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
