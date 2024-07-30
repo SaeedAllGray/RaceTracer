@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:racetracer/src/domain/entries/token/git_token.dart';
 
 class LocalDataSource {
   //TODO: rename this later
@@ -13,23 +16,40 @@ class LocalDataSource {
         key: 'expiration_date', value: authToken.toString());
   }
 
+  Future<GitToken?> getGitToken() async {
+    GitToken? gitToken;
+    String? tokenString = await secureStorage.read(key: 'git_token');
+    if (tokenString != null) {
+      Map<String, dynamic> tokenJson = json.decode(tokenString);
+      gitToken = GitToken.fromJson(tokenJson);
+      return gitToken;
+    }
+    return gitToken;
+  }
+
+  Future<void> saveGitToken(GitToken gitToken) async {
+    await secureStorage.write(
+        key: 'git_token', value: json.encode(gitToken.toJson()));
+  }
+
   Future<String?> getToken() async {
     final String? key = await secureStorage.read(key: 'access_token');
     return key;
   }
 
-  Future<String?> getRefreshToken() async {
-    final String? key = await secureStorage.read(key: 'refresh_token');
-    return key;
-  }
+  // Future<String?> getRefreshToken() async {
+  //   final String? key = await secureStorage.read(key: 'refresh_token');
 
-  Future<String?> getExpirationDate() async {
-    final String? key = await secureStorage.read(key: 'expiration_date');
-    return key;
-  }
+  //   return key;
+  // }
+
+  // Future<String?> getExpirationDate() async {
+  //   final String? key = await secureStorage.read(key: 'expiration_date');
+  //   return key;
+  // }
 
   Future<void> signOut() async {
-    await secureStorage.delete(key: 'access_token');
-    await secureStorage.delete(key: 'refresh_token');
+    await secureStorage.delete(key: 'git_token');
+    await secureStorage.deleteAll();
   }
 }

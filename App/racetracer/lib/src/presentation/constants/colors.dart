@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color BLACK = Colors.black;
-  static const Color primary = Colors.teal;
-  static const Color primaryPale = Color.fromARGB(255, 118, 202, 193);
+  static const Color primary = Color.fromRGBO(137, 9, 29, 1);
+  static const Color primaryPale = Color.fromRGBO(255, 9, 29, 1);
   static const Color white = Colors.white;
   static const Color scaffoldBackgroundColor = Color.fromRGBO(240, 240, 240, 1);
   static const Color blueGrey = Colors.blueGrey;

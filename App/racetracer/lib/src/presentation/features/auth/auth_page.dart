@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,24 +19,28 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(),
+      create: (context) => AuthBloc()..add(RetrieveDataEvent()),
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuceedState) {
-            print('{-----------------------s------------------}');
             Navigator.pushReplacementNamed(context, HomePage.routeName);
           }
         },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(title: Text('GitLab OAuth2 Sign-In')),
-            body: Center(
-              child: StretchedButton(
-                onPressed: () async {
-                  BlocProvider.of<AuthBloc>(context).add(LoginEvent());
-                },
-                child: Text('Sign in with GitLab'),
-              ),
+            body: Column(
+              children: [
+                const Spacer(),
+                Center(
+                  child: StretchedButton(
+                    onPressed: () async {
+                      BlocProvider.of<AuthBloc>(context).add(LoginEvent());
+                    },
+                    child: Text('Sign in with GitLab'),
+                  ),
+                ),
+              ],
             ),
           );
         },
