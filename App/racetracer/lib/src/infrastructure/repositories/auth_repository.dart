@@ -1,10 +1,18 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:racetracer/src/domain/entries/token/git_token.dart';
 import 'package:racetracer/src/infrastructure/datasources/git_remote/gitlab_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
 import 'package:racetracer/src/presentation/constants/api_constant.dart';
 
 class AuthRepository {
   final FlutterAppAuth appAuth = const FlutterAppAuth();
   final GitAuthLabDataSource datasource = GitAuthLabDataSource();
+  final LocalDataSource localDataSource = LocalDataSource();
+
   Future<AuthorizationTokenResponse?> signInWithGitLab() async {
     final AuthorizationTokenResponse? result =
         await appAuth.authorizeAndExchangeCode(
@@ -40,4 +48,33 @@ class AuthRepository {
 
     return result;
   }
+
+  Future<GitToken?> refreshToken() async {
+    final AuthorizationResponse? authRes = await datasource.requestAuthCode();
+    final GitToken? gitToken = await localDataSource.getGitToken();
+    if (authRes != null && gitToken != null) {
+      final Response response =
+          await datasource.refreshToken(authRes, gitToken.refreshToken);
+      if (response.statusCode! < 400) {
+        final GitToken gitToken = GitToken.fromJson(response.data);
+        await localDataSource.saveGitToken(gitToken);
+        return gitToken;
+      }
+    }
+    return null;
+  }
+
+  // Future<GitToken?> loginWithGitlab() async {
+  //   final AuthorizationResponse? authRes = await signInWithGitLab();
+  //   print(authRes?.authorizationCode);
+  //   print('9----------w-----------w');
+  //   if (authRes != null) {
+  //     Response response = await datasource.requestToken(authRes);
+  //     if (response.statusCode! < 400) {
+  //       final GitToken gitToken = GitToken.fromJson(response.data);
+  //       print(response.data);
+  //       return gitToken;
+  //     }
+  //   }
+  // }
 }
