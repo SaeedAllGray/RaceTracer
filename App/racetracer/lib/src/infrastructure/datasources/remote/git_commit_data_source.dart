@@ -15,7 +15,7 @@ class GitCommitDataSource implements RemoteDataSource {
     dio.interceptors.add(PrettyDioLogger());
     // TODO: project_id is hard-coded for now
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id',
+      '${ApiConstants.gitUrl}projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id',
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 
@@ -26,7 +26,7 @@ class GitCommitDataSource implements RemoteDataSource {
   Future fetchEntities() async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}',
+      '${ApiConstants.gitUrl}projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/',
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 
@@ -37,6 +37,17 @@ class GitCommitDataSource implements RemoteDataSource {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
       '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+      options: Options(headers: TokenHelper.getHeaderToken),
+    );
+
+    return response.data;
+  }
+
+  Future createComment(String id, String note) async {
+    dio.interceptors.add(PrettyDioLogger());
+    Response response = await dio.post(
+      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+      queryParameters: {'note': note},
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 

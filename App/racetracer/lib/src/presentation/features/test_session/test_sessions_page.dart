@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:racetracer/src/application/git_commit/test_session_bloc.dart';
+import 'package:racetracer/src/application/git_commit/git_commit_bloc.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/test_session/commit_detail_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/test_session_page.dart';

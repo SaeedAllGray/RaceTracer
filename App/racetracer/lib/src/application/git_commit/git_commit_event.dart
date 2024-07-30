@@ -1,4 +1,4 @@
-part of 'test_session_bloc.dart';
+part of 'git_commit_bloc.dart';
 
 sealed class GitCommitEvent extends Equatable {
   const GitCommitEvent();
@@ -15,5 +15,14 @@ class GetGitCommitComments extends GitCommitEvent {
   const GetGitCommitComments({required this.gitCommit});
 }
 
-// TODO: may have its own bloc
-class UploadImage extends GitCommitEvent {}
+class PostGitCommitComment extends GitCommitEvent {
+  final GitCommit gitCommit;
+  final String note;
+  final List<UploadedFile> uploadedFiles;
+
+  const PostGitCommitComment({
+    required this.gitCommit,
+    required this.note,
+    required this.uploadedFiles,
+  });
+}

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:racetracer/src/domain/data_source_models/entity_repository.dart';
 import 'package:racetracer/src/domain/entries/test_session.dart';
 import 'package:racetracer/src/infrastructure/datasources/remote/test_session_data_source.dart';

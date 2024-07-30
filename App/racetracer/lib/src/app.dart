@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
+import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/presentation/routers/app_router.dart';
 
 import 'settings/settings_controller.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.
           onGenerateRoute: appRouter.generateRoute,
-          // home: const AuthPage(),
+          // home: const HomePage(),
         );
       },
     );
