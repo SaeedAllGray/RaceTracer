@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:racetracer/src/domain/entries/token/git_token.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
 import 'package:racetracer/src/infrastructure/repositories/auth_repository.dart';
 
@@ -19,29 +20,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> _onRetrieveDataEvent(
       RetrieveDataEvent event, Emitter<AuthState> emit) async {
-    try {
-      emit(AuthInProgress());
-      final String? token = await dataSource.getToken();
-      // final String? refreshtoken = await dataSource.getRefreshToken(); //TODO: referesh Token later
-      // final DateTime? expirationDate = await dataSource.getExpirationDate();
-      if (token != null) {
-        emit(AuthSuceedState());
-      }
-    } catch (e) {
-      emit(AuthFailedState());
+    print('{-----------------------s------------------}');
+
+    // emit(AuthInProgress());
+    final GitToken? token = await repository.refreshToken();
+    if (token != null) {
+      emit(AuthSuceedState());
     }
   }
 
   FutureOr<void> _onLoginEvent(
       LoginEvent event, Emitter<AuthState> emit) async {
+    // final GitToken? authToken = await repository.loginWithGitlab();
     final AuthorizationTokenResponse? authToken =
         await repository.signInWithGitLab();
-
     if (authToken != null) {
-      await dataSource.saveToken(authToken);
-      emit(AuthSuceedState());
+      final GitToken gitToken = GitToken.fromAuthResponce(authToken);
+      await dataSource.saveGitToken(gitToken);
+      // emit(AuthSuceedState());
     } else {
-      emit(AuthFailedState());
+      // emit(AuthFailedState());
     }
   }
 }
