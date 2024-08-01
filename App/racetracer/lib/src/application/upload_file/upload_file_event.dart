@@ -11,7 +11,7 @@ class UploadMedia extends UploadFileEvent {}
 
 class UploadImageFromLibrary extends UploadMedia {}
 
-class UploadImageFroomCamera extends UploadMedia {}
+class UploadImageFromCamera extends UploadMedia {}
 
 class RemoveImage extends UploadFileEvent {
   final UploadedFile uploadedFile;

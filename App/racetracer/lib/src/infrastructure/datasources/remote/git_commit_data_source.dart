@@ -26,7 +26,7 @@ class GitCommitDataSource implements RemoteDataSource {
   Future fetchEntities() async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/',
+      '${ApiConstants.gitUrl}projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}?ref_name=new-conf', //TODO: change this
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 

@@ -154,35 +154,29 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                               if (state is UploadFileInProgress) {
                                 return const LoadingWidget();
                               }
-                              return TextButton(
-                                style: TextButton.styleFrom(
-                                  shape: const CircleBorder(),
-                                ),
-                                onPressed: () {},
-                                child: PopupMenuButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  icon: const Icon(Icons.attach_file_rounded),
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry>[
-                                    PopupMenuItem(
-                                      child: Text(
-                                          AppLocalizations.of(context)!.camera),
-                                      onTap: () {
-                                        BlocProvider.of<UploadFileBloc>(context)
-                                            .add(UploadImageFroomCamera());
-                                      },
-                                    ),
-                                    PopupMenuItem(
-                                      child: Text(AppLocalizations.of(context)!
-                                          .library),
-                                      onTap: () {
-                                        BlocProvider.of<UploadFileBloc>(context)
-                                            .add(UploadImageFromLibrary());
-                                      },
-                                    ),
-                                  ],
-                                ),
+                              return PopupMenuButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                icon: const Icon(Icons.attach_file_rounded),
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry>[
+                                  PopupMenuItem(
+                                    child: Text(
+                                        AppLocalizations.of(context)!.camera),
+                                    onTap: () {
+                                      BlocProvider.of<UploadFileBloc>(context)
+                                          .add(UploadImageFromCamera());
+                                    },
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text(
+                                        AppLocalizations.of(context)!.library),
+                                    onTap: () {
+                                      BlocProvider.of<UploadFileBloc>(context)
+                                          .add(UploadImageFromLibrary());
+                                    },
+                                  ),
+                                ],
                               );
                             },
                           ),

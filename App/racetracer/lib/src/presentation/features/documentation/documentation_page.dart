@@ -71,7 +71,7 @@ class DocumentationPage extends StatelessWidget {
                               padding: const EdgeInsets.all(3),
                               // margin: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                state.attributeDiffs[index].oldValue.toString(),
+                                state.attributeDiffs[index].newValue.toString(),
                                 style: FontStyles.BLACK_MEDIUM_16,
                               ),
                             ),

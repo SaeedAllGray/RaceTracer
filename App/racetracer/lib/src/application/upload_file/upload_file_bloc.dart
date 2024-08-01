@@ -13,9 +13,9 @@ part 'upload_file_state.dart';
 class UploadFileBloc extends Bloc<UploadFileEvent, UploadFileState> {
   final List<UploadedFile> uplooadedFiles = [];
   UploadFileBloc() : super(const UploadFileCompleted([])) {
-    on<UploadMedia>(_onUploadImageEvent);
+    // on<UploadMedia>(_onUploadImageEvent);
     on<UploadImageFromLibrary>(_onUploadImageEvent);
-    on<UploadImageFroomCamera>(_onUploadImageEvent);
+    on<UploadImageFromCamera>(_onUploadImageEvent);
     on<RemoveImage>(_onRemoveImageEvent);
     on<ClearFiles>(_onClearFilesEvent);
   }
@@ -25,7 +25,7 @@ class UploadFileBloc extends Bloc<UploadFileEvent, UploadFileState> {
     XFile? image;
     if (event is UploadImageFromLibrary) {
       image = await ImagePickerHelper().pickImage();
-    } else if (event is UploadImageFroomCamera) {
+    } else if (event is UploadImageFromCamera) {
       image = await ImagePickerHelper().takePicture();
     }
     if (image != null) {
