@@ -4,6 +4,7 @@ from roslibpy import Ros, Topic
 from .ros_service import RosService
 import subprocess
 import time
+import threading
 import subprocess
 import os
 import json
@@ -77,6 +78,24 @@ def stop_ros_node(request):
         return JsonResponse({"status": "error", "message": str(e)})
 
 
+# def start_services(request):
+#     try:
+#         services = [
+#             ("roscore", "roscore", 3),
+#             ("roslaunch rosbridge_server rosbridge_websocket.launch port:=9091", "rosbridge", 3),
+#             ("rosrun turtlesim turtlesim_node", "turtlesim", 3),
+#             ("roslaunch my_key_teleop key_teleop.launch", "key_teleop", 3),
+#         ]
+
+#         for command, log_name, sleep_time in services:
+#             ros_service.start_service(command, log_name, sleep_time)
+
+#         ros_thread = threading.Thread(target=ros_service.run())
+#         ros_thread.start()
+#         return JsonResponse({"status": "success", "message": "Roscore, rosbridge, turtle and teleop started"})
+#     except Exception as e:
+#         return JsonResponse({"status": "error", "message": str(e)})
+    
 # def get_ros_nodes(request):
 #     try:
 #         command = "rosnode list"

@@ -10,6 +10,8 @@ camera-calibration==1.17.0
 camera-calibration-parsers==1.12.0
 catkin==0.8.10
 cffi==1.16.0
+channels==4.1.0
+channels-redis==4.2.0
 constantly==23.10.4
 controller-manager==0.20.0
 controller-manager-msgs==0.20.0
@@ -20,6 +22,7 @@ diagnostic-common-diagnostics==1.11.0
 diagnostic-updater==1.11.0
 Django==5.0.7
 django-cors-headers==4.4.0
+djangorestframework==3.15.2
 dynamic-reconfigure==1.7.3
 gazebo_plugins==2.9.2
 gazebo_ros==2.9.2
@@ -40,6 +43,7 @@ joint-state-publisher==1.15.1
 joint-state-publisher-gui==1.15.1
 laser_geometry==1.6.7
 message-filters==1.16.0
+msgpack==1.0.8
 paramiko==3.4.0
 pyasn1==0.6.0
 pyasn1_modules==0.4.0
@@ -51,6 +55,7 @@ qt-dotgraph==0.4.2
 qt-gui==0.4.2
 qt-gui-cpp==0.4.2
 qt-gui-py-common==0.4.2
+redis==5.0.7
 resource_retriever==1.12.7
 rosapi==0.11.17
 rosbag==1.16.0

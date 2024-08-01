@@ -1,17 +1,32 @@
 from roslibpy import Ros, Topic
 from django.http import JsonResponse
 import roslibpy
-
+import os
+import threading
+import time
+import subprocess
+from pathlib import Path
 
 
 class RosService:
     
     def __init__(self):
         self.ros = Ros(host='localhost', port=9091)
+        self.LOG_DIR = Path.home() / 'Desktop/Projects/logs'
+        self.LOG_DIR.mkdir(parents=True, exist_ok=True)
         self.ros.run()
-        
 
         self.turtle_commander = roslibpy.Topic(self.ros, '/turtle1/cmd_vel', 'geometry_msgs/Twist')
+
+    # def run(self):
+    #     self.ros.run()
+
+    def start_service(self,command, log_name, sleep_time):
+        log_path = self.LOG_DIR / f'{log_name}.log'
+        with open(log_path, 'w') as log_file:
+            process = subprocess.Popen(command, shell=True, stdout=log_file, stderr=log_file)
+        time.sleep(sleep_time)
+        return process
 
 
 
