@@ -29,18 +29,13 @@ class _AuthPageState extends State<AuthPage> {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(title: Text('GitLab OAuth2 Sign-In')),
-            body: Column(
-              children: [
-                const Spacer(),
-                Center(
-                  child: StretchedButton(
-                    onPressed: () async {
-                      BlocProvider.of<AuthBloc>(context).add(LoginEvent());
-                    },
-                    child: Text('Sign in with GitLab'),
-                  ),
-                ),
-              ],
+            body: Center(
+              child: StretchedButton(
+                onPressed: () async {
+                  BlocProvider.of<AuthBloc>(context).add(LoginEvent());
+                },
+                child: Text('Sign in with GitLab'),
+              ),
             ),
           );
         },

@@ -41,6 +41,17 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.documentation),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Scaffold();
+                      });
+                },
+                icon: Icon(Icons.info_outline_rounded))
+          ],
         ),
         body: SafeArea(
           child: Column(
@@ -147,11 +158,31 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                 style: TextButton.styleFrom(
                                   shape: const CircleBorder(),
                                 ),
-                                onPressed: () {
-                                  BlocProvider.of<UploadFileBloc>(context)
-                                      .add(UploadImage());
-                                },
-                                child: const Icon(Icons.photo_camera_rounded),
+                                onPressed: () {},
+                                child: PopupMenuButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  icon: const Icon(Icons.attach_file_rounded),
+                                  itemBuilder: (BuildContext context) =>
+                                      <PopupMenuEntry>[
+                                    PopupMenuItem(
+                                      child: Text(
+                                          AppLocalizations.of(context)!.camera),
+                                      onTap: () {
+                                        BlocProvider.of<UploadFileBloc>(context)
+                                            .add(UploadImageFroomCamera());
+                                      },
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text(AppLocalizations.of(context)!
+                                          .library),
+                                      onTap: () {
+                                        BlocProvider.of<UploadFileBloc>(context)
+                                            .add(UploadImageFromLibrary());
+                                      },
+                                    ),
+                                  ],
+                                ),
                               );
                             },
                           ),

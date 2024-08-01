@@ -24,5 +24,7 @@
   "incoming_changes": "Incoming changes",
   "review_changes": "Review changes",
   "start_test_session": "Start test Session",
-  "log_a_message": "Log a message"
+  "log_a_message": "Log a message",
+  "camera": "Camera",
+  "library": "Library"
 }

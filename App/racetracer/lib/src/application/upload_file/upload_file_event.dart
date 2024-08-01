@@ -7,7 +7,11 @@ sealed class UploadFileEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class UploadImage extends UploadFileEvent {}
+class UploadMedia extends UploadFileEvent {}
+
+class UploadImageFromLibrary extends UploadMedia {}
+
+class UploadImageFroomCamera extends UploadMedia {}
 
 class RemoveImage extends UploadFileEvent {
   final UploadedFile uploadedFile;
