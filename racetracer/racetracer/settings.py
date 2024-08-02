@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'ros_app',
     'git_app',
     'corsheaders',
-    'messenger_app',
     'channels',
     'rest_framework',
     'rest_framework.authtoken',
