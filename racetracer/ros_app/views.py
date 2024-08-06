@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from roslibpy import Ros, Topic
+from urllib.parse import unquote
 from .ros_service import RosService
+from .models import ROSMessage
 import subprocess
 import time
 import threading
@@ -74,6 +76,30 @@ def stop_ros_node(request):
         command = f"rosnode kill {node_name}"
         subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         return JsonResponse({"status": "success", "message": f"Stopped ROS node: {node_name}"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+
+
+@csrf_exempt
+def get_message(request):
+    try:
+        encoded_topic_name = request.GET.get('topic')
+        if not encoded_topic_name:
+            return JsonResponse({'error': 'No topic specified'}, status=400)
+
+        topic_name = unquote(encoded_topic_name)
+        topic_type = ros_service.get_topic_info(topic_name)
+        
+        ros_service.subscribe_to_topic(topic_name, topic_type)
+        # Wait or check for the message; might need to handle this asynchronously
+        time.sleep(1)  # Adjust timing as needed or use async handling
+        message = ros_service.get_message()
+        print(topic_name)
+
+        if message:
+            return JsonResponse({"status": "success", "message": message})
+        else:
+            return JsonResponse({"status": "error", "message": "No message received"}, status=500)
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 
