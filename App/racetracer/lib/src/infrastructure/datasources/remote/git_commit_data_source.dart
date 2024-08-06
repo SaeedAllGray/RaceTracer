@@ -37,6 +37,7 @@ class GitCommitDataSource implements RemoteDataSource {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
       '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+      queryParameters: {"per_page": 100},
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 

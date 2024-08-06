@@ -31,7 +31,11 @@ class RosTopicsWidget extends StatelessWidget {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Text(e.name)
+                                Expanded(
+                                  child: Text(
+                                    e.name,
+                                  ),
+                                )
                               ],
                             ))
                         .toList(),
