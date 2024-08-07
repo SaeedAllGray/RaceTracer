@@ -9,6 +9,7 @@ import 'package:racetracer/src/domain/entries/uploaded_file.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/test_session/widgets/chat_bubble.dart';
+import 'package:racetracer/src/presentation/features/test_session/widgets/commit_detail_action_bottom_sheet.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
@@ -45,9 +46,12 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
             IconButton(
                 onPressed: () {
                   showModalBottomSheet<void>(
+                      isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
-                        return Scaffold();
+                        return CommitDetailActionBottomSheet(
+                          gitCommit: widget.gitCommit,
+                        );
                       });
                 },
                 icon: Icon(Icons.info_outline_rounded))

@@ -26,5 +26,12 @@
   "start_test_session": "Start test Session",
   "log_a_message": "Log a message",
   "camera": "Camera",
-  "library": "Library"
+  "library": "Library",
+  "new_session": "New Test Session",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "commit_message": "Commit Message",
+  "confirm": "Confirm",
+  "continue_text": "Continue",
+  "and_sign": "&"
 }

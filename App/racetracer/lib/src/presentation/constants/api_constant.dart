@@ -3,7 +3,8 @@
 class ApiConstants {
   // static const String baseUrl = 'http://192.168.178.48:8888';
 
-  static const String baseUrl = 'http://10.208.1.77:8000';
+  // static const String baseUrl = 'http://10.208.1.77:8000';
+  static const String baseUrl = 'http://10.208.6.128:8888';
   // https://gitlab.fachschaften.org/api/v4/projects/3564/repository/commits/5ddd9b2560d050b419b90388a2b84614949eb515/
   static const String gitUrl = 'https://gitlab.fachschaften.org/api/v4/';
   static const String COMMITS = 'commits';

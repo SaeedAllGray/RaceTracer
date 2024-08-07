@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
 import 'package:racetracer/src/presentation/features/dashboard/dashboard_page.dart';
 import 'package:racetracer/src/presentation/features/documentation/documentation_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -38,6 +39,12 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: const Icon(
+              Icons.sports_score_rounded,
+            ),
+            label: AppLocalizations.of(context)!.test_sessions,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(
               Icons.assignment_rounded,
             ),
             label: AppLocalizations.of(context)!.documentation,
@@ -51,7 +58,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> getTabs() => <Widget>[
         const DashboardPage(),
-        const DocumentationPage(),
-        // const AuthPage()
+        const TestSessionsPage(),
+        // const DocumentationPage(),
       ];
 }
