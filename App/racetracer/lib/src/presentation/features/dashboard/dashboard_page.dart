@@ -16,25 +16,23 @@ class DashboardPage extends StatelessWidget {
           AppLocalizations.of(context)!.dashboard,
         ),
       ),
-      body: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const RosNodesWidget(),
-              const RosTopicsWidget(),
-              StretchedButton(
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  TestSessionsPage.routeName,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.create_a_new_test_session,
-                ),
-              )
-            ],
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const RosNodesWidget(),
+            const RosTopicsWidget(),
+            StretchedButton(
+              onPressed: () => Navigator.pushNamed(
+                context,
+                TestSessionsPage.routeName,
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.create_a_new_test_session,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

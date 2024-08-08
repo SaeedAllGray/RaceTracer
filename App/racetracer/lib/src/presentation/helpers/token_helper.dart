@@ -9,13 +9,12 @@ class TokenHelper {
   }
 
   static Map<String, String> get getHeaderToken {
-    print({'Authorization': 'Bearer $userToken'});
     return {'Authorization': 'Bearer $userToken'};
   }
 
   static Future<void> setToken() async {
     GitToken? gitToken = await LocalDataSource().getGitToken();
-    print(gitToken?.accessToken);
+
     userToken = gitToken?.accessToken ?? '';
   }
 }

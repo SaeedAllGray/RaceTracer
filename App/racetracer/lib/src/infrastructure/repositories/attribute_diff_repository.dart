@@ -1,11 +1,11 @@
-import 'package:racetracer/src/infrastructure/datasources/remote/attribute_diff_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/remote/git_diff_data_source.dart';
 import 'package:racetracer/src/domain/entries/attribute_diff.dart';
 
-class AttributeDiffRepository {
-  AttributeDiffDataSource dataSource = AttributeDiffDataSource();
+class GitDiffRepository {
+  GitDiffDataSource dataSource = GitDiffDataSource();
 
-  Future<List<AttributeDiff>> fetchEntities() async {
-    List<dynamic> response = await dataSource.getAttributeDiffs();
-    return response.map((e) => AttributeDiff.fromJson(e)).toList();
+  Future<String> fetchEntities() async {
+    dynamic response = await dataSource.getAttributeDiffs();
+    return response.toString();
   }
 }

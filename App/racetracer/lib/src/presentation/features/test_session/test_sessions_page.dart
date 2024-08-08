@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:racetracer/src/application/git_commit/git_commit_bloc.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/test_session/commit_detail_page.dart';
-import 'package:racetracer/src/presentation/features/test_session/test_session_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/new_test_session_page.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
 class TestSessionsPage extends StatelessWidget {

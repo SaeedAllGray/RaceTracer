@@ -22,7 +22,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _onRetrieveDataEvent(
       RetrieveDataEvent event, Emitter<AuthState> emit) async {
     final GitToken? savedToken = await dataSource.getGitToken();
-    print(savedToken);
     if (savedToken != null) {
       final GitToken? token = await repository.refreshToken();
 

@@ -9,6 +9,7 @@ import 'package:racetracer/src/domain/entries/uploaded_file.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/test_session/widgets/chat_bubble.dart';
+import 'package:racetracer/src/presentation/features/test_session/widgets/commit_detail_action_bottom_sheet.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
@@ -41,6 +42,20 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.documentation),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CommitDetailActionBottomSheet(
+                          gitCommit: widget.gitCommit,
+                        );
+                      });
+                },
+                icon: Icon(Icons.info_outline_rounded))
+          ],
         ),
         body: SafeArea(
           child: Column(
@@ -143,15 +158,29 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                               if (state is UploadFileInProgress) {
                                 return const LoadingWidget();
                               }
-                              return TextButton(
-                                style: TextButton.styleFrom(
-                                  shape: const CircleBorder(),
-                                ),
-                                onPressed: () {
-                                  BlocProvider.of<UploadFileBloc>(context)
-                                      .add(UploadImage());
-                                },
-                                child: const Icon(Icons.photo_camera_rounded),
+                              return PopupMenuButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                icon: const Icon(Icons.attach_file_rounded),
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry>[
+                                  PopupMenuItem(
+                                    child: Text(
+                                        AppLocalizations.of(context)!.camera),
+                                    onTap: () {
+                                      BlocProvider.of<UploadFileBloc>(context)
+                                          .add(UploadImageFromCamera());
+                                    },
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text(
+                                        AppLocalizations.of(context)!.library),
+                                    onTap: () {
+                                      BlocProvider.of<UploadFileBloc>(context)
+                                          .add(UploadImageFromLibrary());
+                                    },
+                                  ),
+                                ],
                               );
                             },
                           ),

@@ -5,7 +5,7 @@ import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
 import 'package:racetracer/src/presentation/features/node/nodes_info_page.dart';
 import 'package:racetracer/src/presentation/features/rosbag/rosbag_record_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/commit_detail_page.dart';
-import 'package:racetracer/src/presentation/features/test_session/test_session_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/new_test_session_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
 import 'package:racetracer/src/presentation/features/topic/topics_info_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
