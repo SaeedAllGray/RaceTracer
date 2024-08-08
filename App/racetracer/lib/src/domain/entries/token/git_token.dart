@@ -8,19 +8,21 @@ class GitToken {
   final String accessToken;
   final String refreshToken;
   final String tokenType;
+  final String idToken;
 
   GitToken({
     required this.accessToken,
     required this.refreshToken,
     required this.tokenType,
+    required this.idToken,
   });
 
   factory GitToken.fromAuthResponce(AuthorizationTokenResponse authRes) =>
       GitToken(
-        accessToken: authRes.accessToken!,
-        refreshToken: authRes.refreshToken!,
-        tokenType: authRes.tokenType!,
-      );
+          accessToken: authRes.accessToken!,
+          refreshToken: authRes.refreshToken!,
+          tokenType: authRes.tokenType!,
+          idToken: authRes.idToken!);
 
   factory GitToken.fromJson(Map<String, dynamic> json) =>
       _$GitTokenFromJson(json);

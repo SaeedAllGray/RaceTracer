@@ -104,12 +104,19 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
                                       child: CachedNetworkImage(
-                                          httpHeaders:
-                                              TokenHelper.getHeaderToken,
-                                          imageUrl:
-                                              "https://gitlab.fachschaften.org/" +
-                                                  state.uploadedFiles[index]
-                                                      .fullPath),
+                                        httpHeaders:
+                                            TokenHelper.getHeaderCookies,
+                                        // errorWidget: (context, url, error) {
+                                        //   print(error);
+                                        //   print(TokenHelper.getHeaderCookies);
+                                        //   return Icon(Icons.apple);
+                                        // },
+
+                                        imageUrl:
+                                            "https://gitlab.fachschaften.org" +
+                                                state.uploadedFiles[index]
+                                                    .fullPath,
+                                      ),
                                     ),
                                     Positioned(
                                       top: 2,

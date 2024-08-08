@@ -5,6 +5,7 @@ import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommitDetailActionBottomSheet extends StatelessWidget {
   final GitCommit gitCommit;
@@ -29,8 +30,8 @@ class CommitDetailActionBottomSheet extends StatelessWidget {
               style: FontStyles.BLACK_BOLD_18,
             ),
             StretchedButton(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text("View changes on GitLab"),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(AppLocalizations.of(context)!.view_changes_on_gitlab),
               onPressed: () async {
                 await launchUrl(Uri.parse(
                   gitCommit.webUrl,

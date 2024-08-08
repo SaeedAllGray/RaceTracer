@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:racetracer/src/application/git_diff/git_diff_bloc.dart';
+import 'package:racetracer/src/application/git_diff/local_git_bloc.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/test_session/widgets/diff_viewer_widget.dart';
@@ -60,12 +60,12 @@ class _NewTestSessionPageState extends State<NewTestSessionPage> {
                     ),
                     // if (isCodeExpanded)
                     BlocProvider(
-                      create: (context) => GitDiffBloc()..add(GetGitDiffs()),
-                      child: BlocBuilder<GitDiffBloc, GitDiffState>(
+                      create: (context) => LocalGitBloc()..add(GetGitDiffs()),
+                      child: BlocBuilder<LocalGitBloc, LocalGitState>(
                         builder: (context, state) {
                           if (state is GitDiffsFetched) {
                             return AnimatedContainer(
-                              height: isCodeExpanded ? null : 300,
+                              height: isCodeExpanded ? null : 200,
                               duration: const Duration(milliseconds: 500),
                               margin: const EdgeInsets.symmetric(horizontal: 4),
                               decoration: BoxDecoration(
@@ -141,9 +141,33 @@ class _NewTestSessionPageState extends State<NewTestSessionPage> {
                 ),
               ),
             ),
-            StretchedButton(
-              child: Text(
-                  '${AppLocalizations.of(context)!.confirm} ${AppLocalizations.of(context)!.and_sign} ${AppLocalizations.of(context)!.continue_text}'),
+            BlocProvider(
+              create: (context) => LocalGitBloc(),
+              child: BlocListener<LocalGitBloc, LocalGitState>(
+                listener: (context, state) {
+                  if (state is GitPushSucceed) {
+                    Navigator.pop(context);
+                  }
+                },
+                child: BlocBuilder<LocalGitBloc, LocalGitState>(
+                  builder: (context, state) {
+                    if (state is GitPushInProgress) {
+                      return const LoadingWidget();
+                    }
+                    return StretchedButton(
+                      onPressed: commitMessageTextEditingController.text.isEmpty
+                          ? null
+                          : () {
+                              BlocProvider.of<LocalGitBloc>(context).add(
+                                  CommitAndPush(
+                                      commitMessageTextEditingController.text));
+                            },
+                      child: Text(
+                          '${AppLocalizations.of(context)!.confirm} ${AppLocalizations.of(context)!.and_sign} ${AppLocalizations.of(context)!.continue_text}'),
+                    );
+                  },
+                ),
+              ),
             )
           ],
         ),

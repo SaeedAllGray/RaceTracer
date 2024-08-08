@@ -7,7 +7,7 @@ import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 class GitCommitDataSource implements RemoteDataSource {
   @override
   String url =
-      "https://gitlab.fachschaften.org/api/v4/projects/3564/repository/commits/";
+      "https://gitlab.fachschaften.org/api/v4/projects/448/repository/commits/";
   Dio dio = Dio();
 
   @override
@@ -15,7 +15,7 @@ class GitCommitDataSource implements RemoteDataSource {
     dio.interceptors.add(PrettyDioLogger());
     // TODO: project_id is hard-coded for now
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id',
+      '${ApiConstants.gitUrl}projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id',
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 
@@ -26,7 +26,7 @@ class GitCommitDataSource implements RemoteDataSource {
   Future fetchEntities() async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}?ref_name=new-conf', //TODO: change this
+      '${ApiConstants.gitUrl}projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}?ref_name=racetracer', //TODO: change this
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 
@@ -36,7 +36,7 @@ class GitCommitDataSource implements RemoteDataSource {
   Future fetchComments(String id) async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+      '${ApiConstants.gitUrl}/projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
       queryParameters: {"per_page": 100},
       options: Options(headers: TokenHelper.getHeaderToken),
     );
@@ -47,7 +47,7 @@ class GitCommitDataSource implements RemoteDataSource {
   Future createComment(String id, String note) async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.post(
-      '${ApiConstants.gitUrl}/projects/3564/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+      '${ApiConstants.gitUrl}/projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
       queryParameters: {'note': note},
       options: Options(headers: TokenHelper.getHeaderToken),
     );

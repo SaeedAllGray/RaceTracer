@@ -33,5 +33,7 @@
   "commit_message": "Commit Message",
   "confirm": "Confirm",
   "continue_text": "Continue",
-  "and_sign": "&"
+  "and_sign": "&",
+  "view_changes_on_gitlab": "View changes on GitLab"
+
 }
