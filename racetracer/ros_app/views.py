@@ -114,7 +114,7 @@ def get_ros_message(request):
     topic = unquote(encoded_topic)
 
     # Source the ROS environment and run the rostopic command
-    command = f"source /opt/ros/noetic/setup.bash && rostopic echo -n 1 {topic}"
+    command = f"source /home/getracing/Desktop/jarvic-mono/environment.sh && rostopic echo -n 1 {topic}"
     
     try:
         # Run the command in a shell and capture the output
