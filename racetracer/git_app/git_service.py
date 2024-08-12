@@ -8,8 +8,7 @@ class GitService:
         self.repo.git.add(A=True)
 
     def git_commit(self, message):
-        commit_message = message
-        self.repo.git.commit(m = commit_message)
+        self.repo.index.commit(message)
 
     def git_diff(self):
         print(self.repo.git.diff())
@@ -17,9 +16,10 @@ class GitService:
         
     def git_push(self):
         origin = self.repo.remote(name='origin')
-        origin.push()
-
+        result = origin.push(refspec=f'racetracer:racetracer')
+        print(result)
     
-
-        
-       
+    def switchBranch(self):
+        new_branch = self.repo.create_head('racetracer')
+        self.repo.head.reference = new_branch
+        self.repo.head.reset(index=True, working_tree=True)
