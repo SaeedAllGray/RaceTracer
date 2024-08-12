@@ -43,18 +43,29 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.documentation),
           actions: [
-            IconButton(
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CommitDetailActionBottomSheet(
-                          gitCommit: widget.gitCommit,
-                        );
-                      });
-                },
-                icon: Icon(Icons.info_outline_rounded))
+            BlocBuilder<GitCommitBloc, GitCommitState>(
+              builder: (context, state) {
+                if (state is GitCommitCommentsFetched) {
+                  return IconButton(
+                      onPressed: () {
+                        showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CommitDetailActionBottomSheet(
+                                gitCommit: widget.gitCommit,
+                                gitComments: state.gitComments,
+                              );
+                            });
+                      },
+                      icon: Icon(Icons.info_outline_rounded));
+                }
+                return const IconButton(
+                  icon: LoadingWidget(),
+                  onPressed: null,
+                );
+              },
+            )
           ],
         ),
         body: SafeArea(
@@ -64,14 +75,16 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                 child: BlocBuilder<GitCommitBloc, GitCommitState>(
                   builder: (context, state) {
                     if (state is GitCommitCommentsFetched) {
-                      return ListView.builder(
-                        itemCount: state.gitComments.length,
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        reverse: true,
-                        padding: const EdgeInsets.all(10),
-                        itemBuilder: (context, index) => ChatBubble(
-                          gitComment: state.gitComments[index],
+                      return Scrollbar(
+                        child: ListView.builder(
+                          itemCount: state.gitComments.length,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          reverse: true,
+                          padding: const EdgeInsets.all(10),
+                          itemBuilder: (context, index) => ChatBubble(
+                            gitComment: state.gitComments[index],
+                          ),
                         ),
                       );
                     }
@@ -111,7 +124,6 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                         //   print(TokenHelper.getHeaderCookies);
                                         //   return Icon(Icons.apple);
                                         // },
-
                                         imageUrl:
                                             "https://gitlab.fachschaften.org" +
                                                 state.uploadedFiles[index]

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:racetracer/src/domain/data_source_models/remote_data_source.dart';
@@ -33,15 +35,31 @@ class GitCommitDataSource implements RemoteDataSource {
     return response.data;
   }
 
-  Future fetchComments(String id) async {
+  Future fetchComments(String id, {int? page}) async {
     dio.interceptors.add(PrettyDioLogger());
-    Response response = await dio.get(
-      '${ApiConstants.gitUrl}/projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
-      queryParameters: {"per_page": 100},
-      options: Options(headers: TokenHelper.getHeaderToken),
-    );
+    List<dynamic> listy = [];
+    int pageNumber = 0;
+    Response? response;
+    do {
+      pageNumber++;
+      response = await dio.get(
+        '${ApiConstants.gitUrl}/projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+        queryParameters: {
+          "order_by": "created_at",
+          "sort": "asc",
+          "page": pageNumber,
+          "per_page": 20
+        },
+        options: Options(headers: TokenHelper.getHeaderToken),
+      );
 
-    return response.data;
+      log(response.headers['x-total']![0]);
+      listy.addAll(response.data);
+    } while (int.parse(response.headers['x-total']![0]) > pageNumber * 20);
+
+    // log("list" + listy.length.toString());
+    // print(listy[0]);
+    return listy;
   }
 
   Future createComment(String id, String note) async {
