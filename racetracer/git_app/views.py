@@ -5,7 +5,7 @@ from .parser import Parser
 import subprocess
 
 
-git_service = GitService('/home/saeed/catkin_ws/src/my_key_teleop/')
+git_service = GitService('/home/getracing/Desktop/jarvic-mono/')
 
 
 def git_add(request):
@@ -25,8 +25,8 @@ def git_commit(request):
 def git_diff(request):
     try:
         diff = git_service.git_diff()
-        diff_json = Parser().parse_diff_to_json(diff)
-        return JsonResponse({'status': 'success', 'diff': diff_json })
+
+        return JsonResponse({'status': 'success', 'diff': diff })
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 
@@ -39,12 +39,15 @@ def git_push(request):
     
 def git_add_commit_push(request):
     try:
+        message = request.GET.get('message')
         diff = git_service.git_diff()
-        config_diff = Parser().extract_changes(diff,'config/key_teleop.yaml')
+        git_service.switchBranch()
         git_service.git_add()
-        git_service.git_commit(config_diff)
+        print(message)
+        commit_message = f"RaceTracer: {message}"
+        git_service.git_commit(commit_message)
         git_service.git_push()
-        return JsonResponse({'status': 'success', 'diff': config_diff})
+        return JsonResponse({'status': 'success', 'diff': diff})
     except Exception as e:
         print(str(e))
         return JsonResponse({"status": "error", "message": str(e)})
