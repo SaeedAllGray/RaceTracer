@@ -104,6 +104,28 @@ def get_message(request):
         return JsonResponse({"status": "error", "message": str(e)})
 
 
+def get_ros_message(request):
+    encoded_topic = request.GET.get('topic')
+    
+    if not encoded_topic:
+        return JsonResponse({"error": "Topic not provided"}, status=400)
+
+    # Decode the topic name
+    topic = unquote(encoded_topic)
+
+    # Source the ROS environment and run the rostopic command
+    command = f"source /opt/ros/noetic/setup.bash && rostopic echo -n 1 {topic}"
+    
+    try:
+        # Run the command in a shell and capture the output
+        result = subprocess.check_output(command, shell=True, executable='/bin/bash')
+        message = result.decode('utf-8')
+        
+        return JsonResponse({"topic": topic, "message": message})
+    
+    except subprocess.CalledProcessError as e:
+        return JsonResponse({"error": f"Failed to retrieve message: {str(e)}"}, status=500)
+
 # def start_services(request):
 #     try:
 #         services = [

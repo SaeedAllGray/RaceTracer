@@ -14,6 +14,6 @@ urlpatterns = [
     # path('start/', views.start_services, name='roscore'),
     path('bag/record/', views.start_rosbag_recording, name='start_rosbag_recording'),
     path('bag/stop/', views.stop_rosbag_recording, name='stop_rosbag_recording'),
-    path('message/', views.get_message, name='show_message'),
+    path('message/', views.get_ros_message, name='show_message'),
 
 ]
