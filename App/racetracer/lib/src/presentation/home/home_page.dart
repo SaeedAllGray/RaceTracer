@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
 import 'package:racetracer/src/presentation/features/dashboard/dashboard_page.dart';
+import 'package:racetracer/src/presentation/features/dashboard/widgets/dashboard_widget.dart';
 import 'package:racetracer/src/presentation/features/documentation/documentation_page.dart';
+import 'package:racetracer/src/presentation/features/embed/embed_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,6 +61,8 @@ class _HomePageState extends State<HomePage> {
   List<Widget> getTabs() => <Widget>[
         const DashboardPage(),
         const TestSessionsPage(),
+        const EmbedPage(),
+        // const WebViewLogger()
         // const DocumentationPage(),
       ];
 }
