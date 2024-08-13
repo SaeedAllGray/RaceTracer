@@ -32,6 +32,16 @@
   "collapse": "Collapse",
   "commit_message": "Commit Message",
   "confirm": "Confirm",
+  "configuration":"Configuration",
   "continue_text": "Continue",
-  "and_sign": "&"
+  "and_sign": "&",
+  "signIn":"Sign in with GitLab",
+  "projectID":"GitLab Project ID",
+  "hostIP":"Host IP",
+  "datalogger":"DataLogger",
+  "loggerDescription":"Add a new widget using + button.",
+  "urlInput":"Input URL to Visualize",
+  "add":"Add",
+  "configDescription":"Add the following information. You can edit them later in Configuration"
+
 }
