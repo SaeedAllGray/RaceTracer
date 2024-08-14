@@ -48,14 +48,14 @@ class GitCommitDataSource implements RemoteDataSource {
           "order_by": "created_at",
           "sort": "asc",
           "page": pageNumber,
-          "per_page": 20
+          "per_page": 100
         },
         options: Options(headers: TokenHelper.getHeaderToken),
       );
 
       log(response.headers['x-total']![0]);
       listy.addAll(response.data);
-    } while (int.parse(response.headers['x-total']![0]) > pageNumber * 20);
+    } while (int.parse(response.headers['x-total']![0]) > pageNumber * 100);
 
     // log("list" + listy.length.toString());
     // print(listy[0]);

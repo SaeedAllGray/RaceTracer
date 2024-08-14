@@ -61,9 +61,9 @@ class CommitDetailActionBottomSheet extends StatelessWidget {
             ),
             StretchedButton(
               padding: EdgeInsets.symmetric(vertical: 2),
-              child: Text("Export as md"),
+              child: Text(AppLocalizations.of(context)!.update_documentation),
               onPressed: () async {
-                CommitExportHelper.exportToMarkdown(
+                CommitExportHelper.updateDocumentation(
                     gitCommit: gitCommit, comments: gitComments);
               },
             ),

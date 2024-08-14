@@ -7,9 +7,12 @@ class ApiConstants {
   // static const String baseUrl = 'http://10.208.6.128:8888';
   // https://gitlab.fachschaften.org/api/v4/projects/448/repository/commits/5ddd9b2560d050b419b90388a2b84614949eb515/
   static const String gitUrl = 'https://gitlab.fachschaften.org/api/v4/';
+  static const String projectUrl =
+      'https://gitlab.fachschaften.org/-/project/448';
   static const String COMMITS = 'commits';
   static const String COMMENTS = 'comments';
   static const String PUSH = 'push';
+  static const String FILES = 'files';
   static const String REPOSITORY = 'repository';
   static const String PROJECTS = 'projects';
   static const String UPLOADS = 'uploads';
