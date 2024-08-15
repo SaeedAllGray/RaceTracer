@@ -5,19 +5,49 @@ from .parser import Parser
 import subprocess
 
 
-git_service = GitService('/home/saeed/catkin_ws/src/my_key_teleop/')
+git_service = GitService('/home/getracing/Desktop/jarvic-mono/')
 
 
 def git_add(request):
-    git_service.git_add()
-    return JsonResponse({'status': 'success', 'message': 'Added all files to staging area'})
-
+    try:
+        git_service.git_add()
+        return JsonResponse({'status': 'success', 'message': 'Added all files to staging area'})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
 def git_commit(request):
-    commit_message = request.POST.get('message', 'Default commit message')
-    git_service.git_commit(commit_message)
-    return JsonResponse({'status': 'success', 'message': f'Committed with message: {commit_message}'})
-
+    try:
+        commit_message = request.POST.get('message', 'Default commit message')
+        git_service.git_commit(commit_message)
+        return JsonResponse({'status': 'success', 'message': f'Committed with message: {commit_message}'})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+    
 def git_diff(request):
-    diff = git_service.git_diff()
-    diff_json = Parser().parse_diff_to_json(diff)
-    return JsonResponse({'status': 'success', 'diff': diff_json })
+    try:
+        diff = git_service.git_diff()
+
+        return JsonResponse({'status': 'success', 'diff': diff })
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+
+def git_push(request):
+    try:
+        diff = git_service.git_push()
+        return JsonResponse({'status': 'success', 'diff': "Pushed sucessfully" })
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+    
+def git_add_commit_push(request):
+    try:
+        message = request.GET.get('message')
+        diff = git_service.git_diff()
+        git_service.switchBranch()
+        git_service.git_add()
+        print(message)
+        commit_message = f"RaceTracer: {message}"
+        git_service.git_commit(commit_message)
+        git_service.git_push()
+        return JsonResponse({'status': 'success', 'diff': diff})
+    except Exception as e:
+        print(str(e))
+        return JsonResponse({"status": "error", "message": str(e)})

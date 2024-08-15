@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/saeed/Desktop/Projects/racetracer/env"
+set -gx VIRTUAL_ENV "/home/getracing/Desktop/race-tracer/env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
