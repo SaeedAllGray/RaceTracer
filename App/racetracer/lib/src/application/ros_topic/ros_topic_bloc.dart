@@ -25,22 +25,30 @@ class RosTopicBloc extends Bloc<RosTopicEvent, RosTopicState> {
 
   FutureOr<void> _onGetTopicsInfoEvent(
       GetTopicsInfo event, Emitter<RosTopicState> emit) async {
-    emit(RosTopicInProgress());
-    RosTopicRepository repository = RosTopicRepository();
-    List<RosTopic> topics = event.topics;
+    try {
+      emit(RosTopicInProgress());
+      RosTopicRepository repository = RosTopicRepository();
+      List<RosTopic> topics = event.topics;
 // TODO: change this damn
-    for (var i = 0; i < topics.length; i++) {
-      TopicInfo topicInfo = await repository.fetchTopicInfo(topics[i].name);
-      topics[i].topicInfo = topicInfo;
+      for (var i = 0; i < topics.length; i++) {
+        TopicInfo topicInfo = await repository.fetchTopicInfo(topics[i].name);
+        topics[i].topicInfo = topicInfo;
+      }
+      emit(RosTopicsFetched(rosTopics: topics));
+    } catch (e) {
+      emit(RosTopicFailed());
     }
-    emit(RosTopicsFetched(rosTopics: topics));
   }
 
   FutureOr<void> _onGetRosTopicsEvent(
       GetRosTopics event, Emitter<RosTopicState> emit) async {
-    emit(RosTopicInProgress());
-    RosTopicRepository repository = RosTopicRepository();
-    List<RosTopic> topics = await repository.fetchTopics();
-    emit(RosTopicsFetched(rosTopics: topics));
+    try {
+      emit(RosTopicInProgress());
+      RosTopicRepository repository = RosTopicRepository();
+      List<RosTopic> topics = await repository.fetchTopics();
+      emit(RosTopicsFetched(rosTopics: topics));
+    } catch (e) {
+      emit(RosTopicFailed());
+    }
   }
 }

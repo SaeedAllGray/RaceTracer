@@ -42,6 +42,8 @@ class RosTopicsWidget extends StatelessWidget {
                   ),
                 ],
               );
+            } else if (state is RosTopicFailed) {
+              return Text(AppLocalizations.of(context)!.serverConnectionFailed);
             }
             return const LoadingWidget();
           },

@@ -1,30 +1,29 @@
-# racetracer
 
-A new Flutter project.
+# RaceTracer
+
+A brief description of what this project does and who it's for
+
+
 
 ## Getting Started
 
-This project is a starting point for a Flutter application that follows the
-[simple app state management
-tutorial](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple).
+RaceTracer is developed for formula student teams. To use it, some configurations should be done. 
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Develop and deploy with Flutter [Read More](https://docs.flutter.dev/get-started/install)
 
-## Assets
 
-The `assets` directory houses images, fonts, and any other files you want to
-include with your application.
+## GitLab OAuth
+It's assumed that you are using gitlab for development. In this case the following steps should be taken:
 
-The `assets/images` directory contains [resolution-aware
-images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
+-  Create a user-owned application [Read More](https://docs.gitlab.com/ee/integration/oauth_provider.html#create-a-user-owned-application)
+- Navigate to `lib/src/presentation/constants/api_constant.dart` and change the following attributes based on the Gitlab: 
 
-## Localization
+```dart
+static const String CLIENT_ID = 'TO BE CHANGED';
+static const String CLIENT_SECTRET = 'TO BE CHANGED';
+static const String REDIRECT_URL = 'TO BE CHANGED';
+static const String ISSUER = 'TO BE CHANGED';
+static const String DISCOVERY_URL = 'TO BE CHANGED';
+```
 
-This project generates localized messages based on arb files found in
-the `lib/src/localization` directory.
-
-To support additional languages, please visit the tutorial on
-[Internationalizing Flutter
-apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+## GitLab API

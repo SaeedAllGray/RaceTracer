@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
+import 'package:racetracer/src/presentation/features/config/config_page.dart';
 import 'package:racetracer/src/presentation/features/dashboard/dashboard_page.dart';
 import 'package:racetracer/src/presentation/features/dashboard/widgets/dashboard_widget.dart';
 import 'package:racetracer/src/presentation/features/documentation/documentation_page.dart';
@@ -51,6 +52,12 @@ class _HomePageState extends State<HomePage> {
             ),
             label: AppLocalizations.of(context)!.documentation,
           ),
+          BottomNavigationBarItem(
+            icon: const Icon(
+              Icons.settings,
+            ),
+            label: AppLocalizations.of(context)!.configuration,
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -62,6 +69,7 @@ class _HomePageState extends State<HomePage> {
         const DashboardPage(),
         const TestSessionsPage(),
         const EmbedPage(),
+        const ConfigPage()
         // const WebViewLogger()
         // const DocumentationPage(),
       ];

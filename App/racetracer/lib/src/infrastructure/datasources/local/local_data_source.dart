@@ -37,16 +37,25 @@ class LocalDataSource {
     return key;
   }
 
-  // Future<String?> getRefreshToken() async {
-  //   final String? key = await secureStorage.read(key: 'refresh_token');
+  Future<String?> getHostIP() async {
+    final String? key = await secureStorage.read(key: 'host_ip');
 
-  //   return key;
-  // }
+    return key;
+  }
 
-  // Future<String?> getExpirationDate() async {
-  //   final String? key = await secureStorage.read(key: 'expiration_date');
-  //   return key;
-  // }
+  Future<void> saveHostIP(String hostip) async {
+    await secureStorage.write(key: 'host_ip', value: hostip);
+  }
+
+  Future<String?> getProjectID() async {
+    final String? key = await secureStorage.read(key: 'project_id');
+
+    return key;
+  }
+
+  Future<void> saveProjectID(String projectID) async {
+    await secureStorage.write(key: 'project_id', value: projectID);
+  }
 
   Future<void> signOut() async {
     await secureStorage.delete(key: 'git_token');

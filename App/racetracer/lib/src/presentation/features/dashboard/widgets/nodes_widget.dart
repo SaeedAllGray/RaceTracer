@@ -47,6 +47,8 @@ class RosNodesWidget extends StatelessWidget {
                   ),
                 ],
               );
+            } else if (state is RosNodeFailed) {
+              return Text(AppLocalizations.of(context)!.serverConnectionFailed);
             }
             return const LoadingWidget();
           },

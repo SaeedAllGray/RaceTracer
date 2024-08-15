@@ -12,15 +12,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:racetracer/src/application/embed/embed_bloc.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-// #docregion platform_imports
-// Import for Android features.
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-// Import for iOS features.
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-// #enddocregion platform_imports
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() => runApp(const MaterialApp(home: EmbedPage()));
 
@@ -98,7 +93,7 @@ class _EmbedPageState extends State<EmbedPage> {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('DataLogger'),
+              title: Text(AppLocalizations.of(context)!.datalogger),
               actions: [
                 IconButton(
                     onPressed: () {
@@ -109,13 +104,14 @@ class _EmbedPageState extends State<EmbedPage> {
               ],
             ),
             body: state is! UpdatedState
-                ? const Center(
-                    child: Text('Add a new widget using + button.'),
+                ? Center(
+                    child:
+                        Text(AppLocalizations.of(context)!.loggerDescription),
                   )
                 : Expanded(
                     child: ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: state.controllerList.length,
                       itemBuilder: (context, index) => SizedBox(
                         height: MediaQuery.of(context).size.height - 120,
@@ -139,7 +135,7 @@ class _EmbedPageState extends State<EmbedPage> {
         return BlocProvider.value(
           value: bloc,
           child: AlertDialog.adaptive(
-            title: const Text('Input URL to Visualize'),
+            title: Text(AppLocalizations.of(context)!.urlInput),
             content: Material(
               child: TextField(
                 decoration: const InputDecoration(labelText: 'URL'),
@@ -156,7 +152,7 @@ class _EmbedPageState extends State<EmbedPage> {
                     Navigator.pop(context);
                   }
                 },
-                child: const Text('Add'),
+                child: Text(AppLocalizations.of(context)!.add),
               ),
             ],
           ),
