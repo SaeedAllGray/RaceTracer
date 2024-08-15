@@ -43,11 +43,9 @@ class EmbedBloc extends Bloc<EmbedEvent, EmbedState> {
       )
       ..loadRequest(Uri.parse('${event.url}&kiosk'));
     if (state is UpdatedState) {
-      (state as UpdatedState).controllerList.add(controller);
-      emit(
-          UpdatedState(controllerList: (state as UpdatedState).controllerList));
+      emit(UpdatedState(controller: controller));
     } else {
-      emit(UpdatedState(controllerList: [controller]));
+      emit(UpdatedState(controller: controller));
     }
   }
 }
