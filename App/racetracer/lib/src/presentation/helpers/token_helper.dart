@@ -11,12 +11,10 @@ class TokenHelper {
 
   static Map<String, String> get getHeaderToken {
     return {'Authorization': 'Bearer $userToken'};
-  }
 
-  static Map<String, String> get getHeaderCookies {
-    print(gitToken?.idToken);
+    // print(gitToken?.idToken);
     // return {"PRIVATE-TOKEN": "yxTqWxZF2_jWxpWQz5Va"};
-    return {'Cookie': '_gitlab_session=397a1cb4457e6bdbdbfd6f5f50890185;'};
+    // return {'Cookie': '_gitlab_session=397a1cb4457e6bdbdbfd6f5f50890185;'};
   }
 
   static Future<void> setToken() async {

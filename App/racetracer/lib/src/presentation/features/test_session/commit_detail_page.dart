@@ -12,6 +12,7 @@ import 'package:racetracer/src/presentation/features/test_session/widgets/chat_b
 import 'package:racetracer/src/presentation/features/test_session/widgets/commit_detail_action_bottom_sheet.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
+import 'package:vania/vania.dart';
 
 class CommitDetailPage extends StatefulWidget {
   final GitCommit gitCommit;
@@ -26,7 +27,7 @@ class CommitDetailPage extends StatefulWidget {
 class _CommitDetailPageState extends State<CommitDetailPage> {
   final TextEditingController messageTextEditingController =
       TextEditingController();
-
+  final ScrollController messagesScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -58,7 +59,7 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                               );
                             });
                       },
-                      icon: Icon(Icons.info_outline_rounded));
+                      icon: const Icon(Icons.info_outline_rounded));
                 }
                 return const IconButton(
                   icon: LoadingWidget(),
@@ -80,6 +81,7 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                           itemCount: state.gitComments.length,
                           keyboardDismissBehavior:
                               ScrollViewKeyboardDismissBehavior.onDrag,
+                          controller: messagesScrollController,
                           reverse: true,
                           padding: const EdgeInsets.all(10),
                           itemBuilder: (context, index) => ChatBubble(
@@ -93,7 +95,7 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   children: [
                     BlocBuilder<UploadFileBloc, UploadFileState>(
@@ -117,13 +119,13 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
                                       child: CachedNetworkImage(
-                                        httpHeaders:
-                                            TokenHelper.getHeaderCookies,
+                                        httpHeaders: TokenHelper.getHeaderToken,
                                         // errorWidget: (context, url, error) {
                                         //   print(error);
                                         //   print(TokenHelper.getHeaderCookies);
                                         //   return Icon(Icons.apple);
                                         // },
+                                        // TODO: add it to the constants
                                         imageUrl:
                                             "https://gitlab.fachschaften.org" +
                                                 state.uploadedFiles[index]
@@ -274,6 +276,13 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                           BlocProvider.of<UploadFileBloc>(
                                                   context)
                                               .add(ClearFiles());
+                                          messagesScrollController.animateTo(
+                                            messagesScrollController
+                                                .position.minScrollExtent,
+                                            duration: const Duration(
+                                                milliseconds: 800),
+                                            curve: Curves.easeIn,
+                                          );
                                         },
                                   child: const Icon(Icons.arrow_upward_rounded),
                                 );

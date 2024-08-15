@@ -25,7 +25,7 @@ class MarkdownWidget extends StatelessWidget {
                   uri.toString(),
               placeholder: (context, url) =>
                   const CircularProgressIndicator.adaptive(),
-              httpHeaders: TokenHelper.getHeaderCookies,
+              httpHeaders: TokenHelper.getHeaderToken,
 
               errorWidget: (context, url, error) =>
                   const Icon(Icons.image_not_supported_rounded),
