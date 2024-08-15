@@ -16,17 +16,25 @@ class RosNodeBloc extends Bloc<RosNodeEvent, RosNodeState> {
 
   FutureOr<void> _onGetRosNodesEvent(
       GetRosNodes event, Emitter<RosNodeState> emit) async {
-    emit(RosNodeInProgress());
-    RosNodeRepository repository = RosNodeRepository();
-    List<RosNode> rosNodes = await repository.fetchEntities();
-    emit(RosNodesFetched(rosNodes: rosNodes));
+    try {
+      emit(RosNodeInProgress());
+      RosNodeRepository repository = RosNodeRepository();
+      List<RosNode> rosNodes = await repository.fetchEntities();
+      emit(RosNodesFetched(rosNodes: rosNodes));
+    } catch (e) {
+      emit(RosNodeFailed());
+    }
   }
 
   FutureOr<void> _onGetRosNodesInfoEvent(
       GetRosNodesInfo event, Emitter<RosNodeState> emit) async {
-    emit(RosNodeInProgress());
-    RosNodeRepository repository = RosNodeRepository();
-    List<RosNode> rosNodes = await repository.fetchNodesInfo();
-    emit(RosNodesFetched(rosNodes: rosNodes));
+    try {
+      emit(RosNodeInProgress());
+      RosNodeRepository repository = RosNodeRepository();
+      List<RosNode> rosNodes = await repository.fetchNodesInfo();
+      emit(RosNodesFetched(rosNodes: rosNodes));
+    } catch (e) {
+      emit(RosNodeFailed());
+    }
   }
 }

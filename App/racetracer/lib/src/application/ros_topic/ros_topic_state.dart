@@ -13,6 +13,8 @@ class RosTopicInProgress extends RosTopicState {}
 
 class RosTopicInfoInProgress extends RosTopicState {}
 
+class RosTopicFailed extends RosTopicState {}
+
 class RosTopicInfoFetched extends RosTopicState {
   final TopicInfo topicInfo;
 

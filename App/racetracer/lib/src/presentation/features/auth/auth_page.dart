@@ -25,7 +25,7 @@ class _AuthPageState extends State<AuthPage> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuceedState) {
-            Navigator.pushReplacementNamed(context, ConfigPage.routeName);
+            Navigator.pushReplacementNamed(context, HomePage.routeName);
           }
         },
         builder: (context, state) {

@@ -11,6 +11,8 @@ final class RosNodeInitial extends RosNodeState {}
 
 class RosNodeInProgress extends RosNodeState {}
 
+class RosNodeFailed extends RosNodeState {}
+
 class RosNodesFetched extends RosNodeState {
   final List<RosNode> rosNodes;
 

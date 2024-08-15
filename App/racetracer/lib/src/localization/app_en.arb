@@ -42,6 +42,11 @@
   "loggerDescription":"Add a new widget using + button.",
   "urlInput":"Input URL to Visualize",
   "add":"Add",
+  "save":"Save",
+  "shouldNotBeEmpty":"This field cannot be empty",
+  "upTo5Digits":"The Number should be up to 5 digits",
+  "validIP":"Enter a valid URL or IP address",
+  "serverConnectionFailed": "Server connection failed, adjust the configuration or contact your adminstator.",
   "configDescription":"Add the following information. You can edit them later in Configuration"
 
 }
