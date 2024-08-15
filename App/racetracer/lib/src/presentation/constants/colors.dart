@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color BLACK = Colors.black;
-  static const Color primary = Color.fromRGBO(137, 9, 29, 1);
+  static const Color primary = Colors.blueGrey;
   static const Color primaryPale = Color.fromRGBO(255, 9, 29, 1);
   static const Color white = Colors.white;
   static const Color scaffoldBackgroundColor = Color.fromRGBO(240, 240, 240, 1);
@@ -13,6 +13,6 @@ class AppColors {
   static const Color warning = Colors.redAccent;
   static const Color newChanges = Colors.lightGreen;
   static const Color publishers = Colors.teal;
-  static const Color bubble = Color.fromRGBO(216, 226, 255, 1);
+  static const Color bubble = Color.fromARGB(255, 184, 208, 220);
   static const Color subscribers = Colors.redAccent;
 }

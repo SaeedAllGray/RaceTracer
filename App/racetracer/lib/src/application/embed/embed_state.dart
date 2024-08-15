@@ -10,10 +10,10 @@ sealed class EmbedState extends Equatable {
 final class EmbedInitial extends EmbedState {}
 
 final class UpdatedState extends EmbedState {
-  final List<WebViewController> controllerList;
+  final WebViewController controller;
 
-  const UpdatedState({required this.controllerList});
+  const UpdatedState({required this.controller});
 
   @override
-  List<Object> get props => [controllerList.length];
+  List<Object> get props => [controller.currentUrl()];
 }

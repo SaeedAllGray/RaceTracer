@@ -108,17 +108,9 @@ class _EmbedPageState extends State<EmbedPage> {
                     child:
                         Text(AppLocalizations.of(context)!.loggerDescription),
                   )
-                : Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.controllerList.length,
-                      itemBuilder: (context, index) => SizedBox(
-                        height: MediaQuery.of(context).size.height - 120,
-                        child: WebViewWidget(
-                            controller: state.controllerList[index]),
-                      ),
-                    ),
+                : SizedBox(
+                    height: MediaQuery.of(context).size.height - 120,
+                    child: WebViewWidget(controller: state.controller),
                   ),
           );
         },
