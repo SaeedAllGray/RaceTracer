@@ -21,12 +21,12 @@ class MarkdownWidget extends StatelessWidget {
             child: CachedNetworkImage(
               // TODO: fix this hardcoded url
               // width: 250,
-              imageUrl: "https://gitlab.fachschaften.org/-/project/3564" +
+              imageUrl: "https://gitlab.fachschaften.org/-/project/448" +
                   uri.toString(),
               placeholder: (context, url) =>
                   const CircularProgressIndicator.adaptive(),
-              // TODO: Remove the hard-coded token
               httpHeaders: TokenHelper.getHeaderToken,
+
               errorWidget: (context, url, error) =>
                   const Icon(Icons.image_not_supported_rounded),
             ),

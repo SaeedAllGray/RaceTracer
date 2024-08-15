@@ -3,6 +3,7 @@ import 'package:racetracer/src/infrastructure/datasources/local/local_data_sourc
 
 class TokenHelper {
   static String userToken = '';
+  static GitToken? gitToken;
 
   static String get getToken {
     return userToken;
@@ -10,10 +11,14 @@ class TokenHelper {
 
   static Map<String, String> get getHeaderToken {
     return {'Authorization': 'Bearer $userToken'};
+
+    // print(gitToken?.idToken);
+    // return {"PRIVATE-TOKEN": "yxTqWxZF2_jWxpWQz5Va"};
+    // return {'Cookie': '_gitlab_session=397a1cb4457e6bdbdbfd6f5f50890185;'};
   }
 
   static Future<void> setToken() async {
-    GitToken? gitToken = await LocalDataSource().getGitToken();
+    gitToken = await LocalDataSource().getGitToken();
 
     userToken = gitToken?.accessToken ?? '';
   }
