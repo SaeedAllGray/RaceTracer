@@ -1,3 +1,4 @@
+import os
 import roslibpy
 from pathlib import Path
 import subprocess
@@ -5,11 +6,26 @@ import time
 
 class RosService:
     def __init__(self):
+        command = 'source /opt/ros/noetic/setup.bash'  # Adjust the path to your ROS setup file
+    # Use subprocess to run the command in a shell
+        proc = subprocess.Popen(['bash', '-c', command + ' && env'], stdout=subprocess.PIPE, executable='/bin/bash')
+        output, _ = proc.communicate()
+
+
+        # Update the current environment with the sourced environment variables
+        for line in output.splitlines():
+            key, _, value = line.partition(b"=")
+            os.environ[key.decode("utf-8")] = value.decode("utf-8")
         self.ros = roslibpy.Ros(host='localhost', port=9091)
         self.LOG_DIR = Path.home() / 'Desktop/Projects/logs'
         self.LOG_DIR.mkdir(parents=True, exist_ok=True)
         self.ros.on_ready(self.on_ready)
         self.ros.run()  # Ensure you call run after setting up the on_ready callback
+
+        if not self.ros.is_connected:
+            print("Failed to connect to ROS bridge")
+        else:
+            print("Successfully connected to ROS bridge")
         self.message = None
         self.subscriber = None
 
@@ -40,7 +56,7 @@ class RosService:
     def get_topics(self):
         return self.ros.get_topics()
     
-    def get_topic_info(self, topic):
+    def get_topic_info(self, topic) -> str:
         return self.ros.get_topic_type(topic)
     
     def get_topics_info(self):
@@ -61,14 +77,29 @@ class RosService:
         print("ROS is ready")
         # Initialize other aspects of your ROS setup here
 
-    def subscribe_to_topic(self, topic_name, msg_type):
+    def subscribe_to_topic(self, topic_name):
+        type = self.ros.get_topic_type(topic_name)
+        print(f"Topic type of {topic_name}: {type}")
+
+        if not type:
+            print(f"Failed to get type for topic {topic_name}")
+            return
+
         if self.subscriber:
-            self.subscriber.unsubscribe()  # Unsubscribe from previous topic
-        self.subscriber = roslibpy.Topic(self.ros, topic_name, msg_type)
+            self.subscriber.unsubscribe()
+            print(f"Unsubscribed from previous topic")
+
+        self.subscriber = roslibpy.Topic(self.ros, topic_name, type)
+        print(f"Subscribing to topic {topic_name} with type {type}")
+        time.sleep(1)
+
         self.subscriber.subscribe(self.callback)
+        time.sleep(1)
+        print('Subscription completed')
 
     def callback(self, message):
+        print('Received message:', message)
         self.message = message
 
-    def get_message(self):
-        return self.message
+
+

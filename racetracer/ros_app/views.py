@@ -1,3 +1,4 @@
+import asyncio
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from roslibpy import Ros, Topic
@@ -10,7 +11,8 @@ import threading
 import subprocess
 import os
 import json
-
+import roslibpy
+import time
 
 ros_service = RosService()
 
@@ -89,12 +91,11 @@ def get_message(request):
 
         topic_name = unquote(encoded_topic_name)
         topic_type = ros_service.get_topic_info(topic_name)
-        
+        print(topic_type)
         ros_service.subscribe_to_topic(topic_name, topic_type)
         # Wait or check for the message; might need to handle this asynchronously
         time.sleep(1)  # Adjust timing as needed or use async handling
         message = ros_service.get_message()
-        print(topic_name)
 
         if message:
             return JsonResponse({"status": "success", "message": message})
@@ -104,28 +105,72 @@ def get_message(request):
         return JsonResponse({"status": "error", "message": str(e)})
 
 
-def get_ros_message(request):
+
+def get_ros_message22(request):
     encoded_topic = request.GET.get('topic')
     
     if not encoded_topic:
         return JsonResponse({"error": "Topic not provided"}, status=400)
 
     # Decode the topic name
-    topic = unquote(encoded_topic)
+    topic = unquote(encoded_topic)            
 
-    # Source the ROS environment and run the rostopic command
-    command = f"source /home/getracing/Desktop/jarvic-mono/environment.sh && rostopic echo -n 1 {topic}"
+    try:
+        # Source the environment
+        source_command = 'source /home/getracing/Desktop/get/jarvic-mono/environment.sh && env'
+        process = subprocess.Popen(source_command, stdout=subprocess.PIPE, shell=True, executable='/bin/bash')
+        env_output, _ = process.communicate()
+
+        # Extract environment variables
+        env_vars = dict(line.split('=', 1) for line in env_output.decode('utf-8').splitlines() if '=' in line)
+
+        # Create a ROS client
+        ros = roslibpy.Ros(host='localhost', port=9091)
+        ros.run()
+        
+
+        # Create a topic listener
+        type = ros_service.get_topic_info(topic)
+        listener = roslibpy.Topic(ros, topic, type)
+
+        # Function to handle incoming messages
+        def on_message(message):
+            print(message)
+            ros.terminate()
+            return JsonResponse({"topic": topic, "message": message})
+
+        listener.subscribe(on_message)
+
+        # Wait until a message is received or timeout (you might want to add a timeout handler)
+        ros.spin()
+
+    except Exception as e:
+        return JsonResponse({"error": f"Failed to retrieve message: {str(e)}"}, status=500)
+    
+
+
+def get_ros_message11(request):
+    # Get the encoded topic from the request
+    encoded_topic = request.GET.get('topic')
+    
+    if not encoded_topic:
+        return JsonResponse({"error": "Topic not provided"}, status=400)
+
+    # Decode the topic name from URL encoding
+    topic = unquote(encoded_topic)
     
     try:
-        # Run the command in a shell and capture the output
-        result = subprocess.check_output(command, shell=True, executable='/bin/bash')
-        message = result.decode('utf-8')
-        
-        return JsonResponse({"topic": topic, "message": message})
-    
-    except subprocess.CalledProcessError as e:
-        return JsonResponse({"error": f"Failed to retrieve message: {str(e)}"}, status=500)
+       
+        ros_service.subscribe_to_topic(topic)
+        message = ros_service.message()
+        # if client.is_connected:
+        #     print('Connected to ROS Bridge!')
 
+     
+        return JsonResponse({"topic": topic, "message": message})
+
+    except Exception as e:
+        return JsonResponse({"error": f"Failed to connect to ROS: {str(e)}"}, status=500)
 # def start_services(request):
 #     try:
 #         services = [

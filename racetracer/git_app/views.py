@@ -5,7 +5,7 @@ from .parser import Parser
 import subprocess
 
 
-git_service = GitService('/home/getracing/Desktop/jarvic-mono/')
+git_service = GitService('/home/getracing/Desktop/get/jarvic-mono/')
 
 
 def git_add(request):
