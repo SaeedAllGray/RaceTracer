@@ -11,7 +11,7 @@ class LocalGitDataSource {
     dio.interceptors.add(PrettyDioLogger());
 
     Response response = await dio.get(
-      '${ApiConstants.baseUrl}/${ApiConstants.GIT}/diff',
+      '${ApiConstants.getBaseUrl}/${ApiConstants.GIT}/diff',
     );
     return response.data['diff'];
   }
@@ -19,7 +19,7 @@ class LocalGitDataSource {
   Future commitAndPushActiveLocalBranch(String message) async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      '${ApiConstants.baseUrl}/${ApiConstants.GIT}/${ApiConstants.PUSH}',
+      '${ApiConstants.getBaseUrl}/${ApiConstants.GIT}/${ApiConstants.PUSH}',
       queryParameters: {'message': message},
     );
 

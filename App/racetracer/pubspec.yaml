@@ -30,7 +30,7 @@ dependencies:
   image_picker: ^1.1.2
   webview_flutter: ^4.8.0
   url_launcher: ^6.3.0
-  hugeicons: ^0.0.7
+  json_view: ^0.4.2
 
 dev_dependencies:
   flutter_test:

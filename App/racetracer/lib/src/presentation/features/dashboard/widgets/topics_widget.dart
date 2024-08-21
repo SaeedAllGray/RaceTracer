@@ -3,6 +3,7 @@ import 'package:racetracer/src/application/ros_topic/ros_topic_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:racetracer/src/presentation/features/dashboard/widgets/rounded_tile_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:racetracer/src/presentation/features/topic/topics_page.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 
 class RosTopicsWidget extends StatelessWidget {
@@ -11,6 +12,10 @@ class RosTopicsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RoundedTileWidget(
+      onTap: () => Navigator.pushNamed(
+        context,
+        TopicsPage.routeName,
+      ),
       title: AppLocalizations.of(context)!.topics,
       child: BlocProvider(
         create: (context) => RosTopicBloc()..add(GetRosTopics()),

@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/application/git_diff/local_git_bloc.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
+import 'package:racetracer/src/presentation/features/test_session/commit_detail_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/widgets/diff_viewer_widget.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
@@ -129,7 +130,7 @@ class _NewTestSessionPageState extends State<NewTestSessionPage> {
                             height: 20,
                           ),
                           const Text(
-                            "• Changes are commited and pushed into the branch \"Branch_name\".",
+                            "• Changes are commited and pushed into the branch \"racetracer\".",
                           ),
                           const Text(
                             "• A new test session is created and associated with this commit.",
@@ -146,7 +147,9 @@ class _NewTestSessionPageState extends State<NewTestSessionPage> {
               child: BlocListener<LocalGitBloc, LocalGitState>(
                 listener: (context, state) {
                   if (state is GitPushSucceed) {
-                    Navigator.pop(context);
+                    Navigator.pushReplacementNamed(
+                        context, CommitDetailPage.routeName,
+                        arguments: state.gitCommit);
                   }
                 },
                 child: BlocBuilder<LocalGitBloc, LocalGitState>(

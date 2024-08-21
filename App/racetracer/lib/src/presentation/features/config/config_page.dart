@@ -50,6 +50,7 @@ class _ConfigPageState extends State<ConfigPage> {
                         children: [
                           ListTile(
                             title: TextFormField(
+                              onChanged: (value) => setState(() {}),
                               validator: (input) =>
                                   Validators.validateNumber(context, input),
                               controller: _numberController,
@@ -65,6 +66,7 @@ class _ConfigPageState extends State<ConfigPage> {
                           ),
                           ListTile(
                             title: TextFormField(
+                              onChanged: (value) => setState(() {}),
                               validator: (input) =>
                                   Validators.urlValidator(context, input),
                               controller: _urlController,

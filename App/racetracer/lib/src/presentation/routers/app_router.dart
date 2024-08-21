@@ -9,6 +9,7 @@ import 'package:racetracer/src/presentation/features/test_session/commit_detail_
 import 'package:racetracer/src/presentation/features/test_session/new_test_session_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
 import 'package:racetracer/src/presentation/features/topic/topics_info_page.dart';
+import 'package:racetracer/src/presentation/features/topic/topics_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/sample_feature/sample_item_details_view.dart';
 import 'package:racetracer/src/settings/settings_controller.dart';
@@ -72,6 +73,13 @@ class AppRouter {
           settings: routeSettings,
           builder: (BuildContext context) {
             return RosbagRecordPage(rosTopics: topics);
+          },
+        );
+      case TopicsPage.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return TopicsPage();
           },
         );
       case TopicsInfoPage.routeName:

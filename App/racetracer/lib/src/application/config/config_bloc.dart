@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
+import 'package:racetracer/src/presentation/constants/api_constant.dart';
 
 part 'config_event.dart';
 part 'config_state.dart';
@@ -27,6 +28,8 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
     final String? projectID = await localDataSource.getProjectID();
     if (projectID != null && hostIP != null) {
       emit(FetchSucceedState(hostIP: hostIP, projectID: projectID));
+      await ApiConstants.setBaseUrl();
+      await ApiConstants.setProjectId();
     } else {}
   }
 }
