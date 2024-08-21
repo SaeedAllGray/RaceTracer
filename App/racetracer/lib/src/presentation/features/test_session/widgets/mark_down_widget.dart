@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:racetracer/src/presentation/constants/api_constant.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 
 class MarkdownWidget extends StatelessWidget {
@@ -21,12 +22,11 @@ class MarkdownWidget extends StatelessWidget {
             child: CachedNetworkImage(
               // TODO: fix this hardcoded url
               // width: 250,
-              imageUrl: "https://gitlab.fachschaften.org/-/project/3564" +
-                  uri.toString(),
+              imageUrl: ApiConstants.projectUrl + uri.toString(),
               placeholder: (context, url) =>
                   const CircularProgressIndicator.adaptive(),
-              // TODO: Remove the hard-coded token
               httpHeaders: TokenHelper.getHeaderToken,
+
               errorWidget: (context, url, error) =>
                   const Icon(Icons.image_not_supported_rounded),
             ),

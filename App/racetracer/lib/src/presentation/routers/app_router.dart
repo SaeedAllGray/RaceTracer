@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:racetracer/src/domain/entries/git_commit.dart';
 import 'package:racetracer/src/domain/entries/ros_topic.dart';
 import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
+import 'package:racetracer/src/presentation/features/config/config_page.dart';
 import 'package:racetracer/src/presentation/features/node/nodes_info_page.dart';
 import 'package:racetracer/src/presentation/features/rosbag/rosbag_record_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/commit_detail_page.dart';
-import 'package:racetracer/src/presentation/features/test_session/test_session_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/new_test_session_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
 import 'package:racetracer/src/presentation/features/topic/topics_info_page.dart';
+import 'package:racetracer/src/presentation/features/topic/topics_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/sample_feature/sample_item_details_view.dart';
 import 'package:racetracer/src/settings/settings_controller.dart';
@@ -73,6 +75,13 @@ class AppRouter {
             return RosbagRecordPage(rosTopics: topics);
           },
         );
+      case TopicsPage.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return TopicsPage();
+          },
+        );
       case TopicsInfoPage.routeName:
         final List<RosTopic> topics = routeSettings.arguments as List<RosTopic>;
         return MaterialPageRoute<void>(
@@ -93,6 +102,13 @@ class AppRouter {
           settings: routeSettings,
           builder: (BuildContext context) {
             return const AuthPage();
+          },
+        );
+      case ConfigPage.routeName:
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            return const ConfigPage();
           },
         );
       default:

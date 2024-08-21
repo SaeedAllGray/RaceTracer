@@ -20,3 +20,15 @@ class GetTopicsInfo extends RosTopicEvent {
 
   const GetTopicsInfo({required this.topics});
 }
+
+class FilterTopics extends RosTopicEvent {
+  final String searchTerm;
+
+  const FilterTopics({required this.searchTerm});
+}
+
+class GetRosTopicMessage extends RosTopicEvent {
+  final RosTopic topic;
+
+  const GetRosTopicMessage({required this.topic});
+}

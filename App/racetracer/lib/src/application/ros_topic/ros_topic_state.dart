@@ -13,6 +13,8 @@ class RosTopicInProgress extends RosTopicState {}
 
 class RosTopicInfoInProgress extends RosTopicState {}
 
+class RosTopicFailed extends RosTopicState {}
+
 class RosTopicInfoFetched extends RosTopicState {
   final TopicInfo topicInfo;
 
@@ -23,4 +25,12 @@ class RosTopicsFetched extends RosTopicState {
   final List<RosTopic> rosTopics;
 
   const RosTopicsFetched({required this.rosTopics});
+  @override
+  List<Object> get props => rosTopics;
+}
+
+class RosTopicMessageFetched extends RosTopicState {
+  final Map<String, dynamic> message;
+
+  const RosTopicMessageFetched(this.message);
 }

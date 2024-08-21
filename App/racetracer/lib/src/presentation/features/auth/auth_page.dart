@@ -3,8 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:racetracer/src/application/auth/auth_bloc.dart';
 import 'package:racetracer/src/infrastructure/datasources/git_remote/gitlab_data_source.dart';
+import 'package:racetracer/src/presentation/features/config/config_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthPage extends StatefulWidget {
   static const routeName = '/';
@@ -28,19 +30,19 @@ class _AuthPageState extends State<AuthPage> {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(title: Text('GitLab OAuth2 Sign-In')),
-            body: Column(
-              children: [
-                const Spacer(),
-                Center(
-                  child: StretchedButton(
-                    onPressed: () async {
-                      BlocProvider.of<AuthBloc>(context).add(LoginEvent());
-                    },
-                    child: Text('Sign in with GitLab'),
-                  ),
+            appBar: AppBar(
+                title: Text(
+              AppLocalizations.of(context)!.appTitle,
+            )),
+            body: Center(
+              child: StretchedButton(
+                onPressed: () async {
+                  BlocProvider.of<AuthBloc>(context).add(LoginEvent());
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.signIn,
                 ),
-              ],
+              ),
             ),
           );
         },

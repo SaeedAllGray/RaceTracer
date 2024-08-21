@@ -9,8 +9,10 @@ import 'package:racetracer/src/domain/entries/uploaded_file.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/test_session/widgets/chat_bubble.dart';
+import 'package:racetracer/src/presentation/features/test_session/widgets/commit_detail_action_bottom_sheet.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
+import 'package:vania/vania.dart';
 
 class CommitDetailPage extends StatefulWidget {
   final GitCommit gitCommit;
@@ -25,7 +27,7 @@ class CommitDetailPage extends StatefulWidget {
 class _CommitDetailPageState extends State<CommitDetailPage> {
   final TextEditingController messageTextEditingController =
       TextEditingController();
-
+  final ScrollController messagesScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -41,6 +43,31 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.documentation),
+          actions: [
+            BlocBuilder<GitCommitBloc, GitCommitState>(
+              builder: (context, state) {
+                if (state is GitCommitCommentsFetched) {
+                  return IconButton(
+                      onPressed: () {
+                        showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CommitDetailActionBottomSheet(
+                                gitCommit: widget.gitCommit,
+                                gitComments: state.gitComments,
+                              );
+                            });
+                      },
+                      icon: const Icon(Icons.info_outline_rounded));
+                }
+                return const IconButton(
+                  icon: LoadingWidget(),
+                  onPressed: null,
+                );
+              },
+            )
+          ],
         ),
         body: SafeArea(
           child: Column(
@@ -49,14 +76,17 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                 child: BlocBuilder<GitCommitBloc, GitCommitState>(
                   builder: (context, state) {
                     if (state is GitCommitCommentsFetched) {
-                      return ListView.builder(
-                        itemCount: state.gitComments.length,
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        reverse: true,
-                        padding: const EdgeInsets.all(10),
-                        itemBuilder: (context, index) => ChatBubble(
-                          gitComment: state.gitComments[index],
+                      return Scrollbar(
+                        child: ListView.builder(
+                          itemCount: state.gitComments.length,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          controller: messagesScrollController,
+                          reverse: true,
+                          padding: const EdgeInsets.all(10),
+                          itemBuilder: (context, index) => ChatBubble(
+                            gitComment: state.gitComments[index],
+                          ),
                         ),
                       );
                     }
@@ -65,7 +95,7 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   children: [
                     BlocBuilder<UploadFileBloc, UploadFileState>(
@@ -89,12 +119,18 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
                                       child: CachedNetworkImage(
-                                          httpHeaders:
-                                              TokenHelper.getHeaderToken,
-                                          imageUrl:
-                                              "https://gitlab.fachschaften.org/" +
-                                                  state.uploadedFiles[index]
-                                                      .fullPath),
+                                        httpHeaders: TokenHelper.getHeaderToken,
+                                        // errorWidget: (context, url, error) {
+                                        //   print(error);
+                                        //   print(TokenHelper.getHeaderCookies);
+                                        //   return Icon(Icons.apple);
+                                        // },
+                                        // TODO: add it to the constants
+                                        imageUrl:
+                                            "https://gitlab.fachschaften.org" +
+                                                state.uploadedFiles[index]
+                                                    .fullPath,
+                                      ),
                                     ),
                                     Positioned(
                                       top: 2,
@@ -143,15 +179,29 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                               if (state is UploadFileInProgress) {
                                 return const LoadingWidget();
                               }
-                              return TextButton(
-                                style: TextButton.styleFrom(
-                                  shape: const CircleBorder(),
-                                ),
-                                onPressed: () {
-                                  BlocProvider.of<UploadFileBloc>(context)
-                                      .add(UploadImage());
-                                },
-                                child: const Icon(Icons.photo_camera_rounded),
+                              return PopupMenuButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                icon: const Icon(Icons.attach_file_rounded),
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry>[
+                                  PopupMenuItem(
+                                    child: Text(
+                                        AppLocalizations.of(context)!.camera),
+                                    onTap: () {
+                                      BlocProvider.of<UploadFileBloc>(context)
+                                          .add(UploadImageFromCamera());
+                                    },
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text(
+                                        AppLocalizations.of(context)!.library),
+                                    onTap: () {
+                                      BlocProvider.of<UploadFileBloc>(context)
+                                          .add(UploadImageFromLibrary());
+                                    },
+                                  ),
+                                ],
                               );
                             },
                           ),
@@ -226,6 +276,13 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                                           BlocProvider.of<UploadFileBloc>(
                                                   context)
                                               .add(ClearFiles());
+                                          messagesScrollController.animateTo(
+                                            messagesScrollController
+                                                .position.minScrollExtent,
+                                            duration: const Duration(
+                                                milliseconds: 800),
+                                            curve: Curves.easeIn,
+                                          );
                                         },
                                   child: const Icon(Icons.arrow_upward_rounded),
                                 );
