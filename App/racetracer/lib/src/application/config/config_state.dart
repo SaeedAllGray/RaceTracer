@@ -9,6 +9,8 @@ sealed class ConfigState extends Equatable {
 
 final class ConfigInitial extends ConfigState {}
 
+final class ConfigInProgressState extends ConfigState {}
+
 final class FetchSucceedState extends ConfigState {
   final String projectID;
   final String hostIP;
@@ -20,3 +22,5 @@ final class FetchSucceedState extends ConfigState {
 }
 
 final class WaitingForNewValuesState extends ConfigState {}
+
+final class DataDeletedState extends ConfigState {}

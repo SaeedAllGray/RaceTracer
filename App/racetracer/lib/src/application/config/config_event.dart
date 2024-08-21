@@ -18,3 +18,5 @@ final class SaveEvent extends ConfigEvent {
 }
 
 final class FetchDataEvent extends ConfigEvent {}
+
+final class SignoutEvent extends ConfigEvent {}
