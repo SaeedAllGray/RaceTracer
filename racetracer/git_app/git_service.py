@@ -8,7 +8,8 @@ class GitService:
         self.repo.git.add(A=True)
 
     def git_commit(self, message):
-        self.repo.index.commit(message)
+        result = self.repo.index.commit(message)
+        return result
 
     def git_diff(self):
         print(self.repo.git.diff())

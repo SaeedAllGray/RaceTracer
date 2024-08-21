@@ -6,28 +6,32 @@ import time
 
 class RosService:
     def __init__(self):
-        command = 'source /opt/ros/noetic/setup.bash'  # Adjust the path to your ROS setup file
-    # Use subprocess to run the command in a shell
-        proc = subprocess.Popen(['bash', '-c', command + ' && env'], stdout=subprocess.PIPE, executable='/bin/bash')
-        output, _ = proc.communicate()
+        try:
+            command = 'source /opt/ros/noetic/setup.bash'
+            proc = subprocess.Popen(['bash', '-c', command + ' && env'], stdout=subprocess.PIPE, executable='/bin/bash')
+            output, _ = proc.communicate()
 
+            for line in output.splitlines():
+                key, _, value = line.partition(b"=")
+                os.environ[key.decode("utf-8")] = value.decode("utf-8")
 
-        # Update the current environment with the sourced environment variables
-        for line in output.splitlines():
-            key, _, value = line.partition(b"=")
-            os.environ[key.decode("utf-8")] = value.decode("utf-8")
+        except Exception as e:
+            print(f"Failed to source ROS environment: {e}")
+            raise
+
         self.ros = roslibpy.Ros(host='localhost', port=9091)
-        self.LOG_DIR = Path.home() / 'Desktop/Projects/logs'
-        self.LOG_DIR.mkdir(parents=True, exist_ok=True)
         self.ros.on_ready(self.on_ready)
-        self.ros.run()  # Ensure you call run after setting up the on_ready callback
+        self.ros.run()
 
         if not self.ros.is_connected:
             print("Failed to connect to ROS bridge")
         else:
             print("Successfully connected to ROS bridge")
+
         self.message = None
         self.subscriber = None
+        self.LOG_DIR = Path.home() / 'Desktop/Projects/logs'
+        self.LOG_DIR.mkdir(parents=True, exist_ok=True)
 
     def start_service(self, command, log_name, sleep_time):
         log_path = self.LOG_DIR / f'{log_name}.log'
@@ -91,15 +95,18 @@ class RosService:
 
         self.subscriber = roslibpy.Topic(self.ros, topic_name, type)
         print(f"Subscribing to topic {topic_name} with type {type}")
-        time.sleep(1)
+        # time.sleep(10)
 
         self.subscriber.subscribe(self.callback)
-        time.sleep(1)
+        time.sleep(2)
         print('Subscription completed')
 
     def callback(self, message):
         print('Received message:', message)
         self.message = message
+
+    def get_message(self):
+        return self.message
 
 
 

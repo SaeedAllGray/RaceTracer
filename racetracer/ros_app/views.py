@@ -7,7 +7,7 @@ from .ros_service import RosService
 from .models import ROSMessage
 import subprocess
 import time
-import threading
+import yaml
 import subprocess
 import os
 import json
@@ -90,11 +90,9 @@ def get_message(request):
             return JsonResponse({'error': 'No topic specified'}, status=400)
 
         topic_name = unquote(encoded_topic_name)
-        topic_type = ros_service.get_topic_info(topic_name)
-        print(topic_type)
-        ros_service.subscribe_to_topic(topic_name, topic_type)
-        # Wait or check for the message; might need to handle this asynchronously
-        time.sleep(1)  # Adjust timing as needed or use async handling
+    
+        ros_service.subscribe_to_topic(topic_name)
+       
         message = ros_service.get_message()
 
         if message:
@@ -103,100 +101,56 @@ def get_message(request):
             return JsonResponse({"status": "error", "message": "No message received"}, status=500)
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
-
-
-
-def get_ros_message22(request):
+# /home/getracing/Desktop/get/jarvic-mono/environment.sh
+def get_ros_message(request):
     encoded_topic = request.GET.get('topic')
     
     if not encoded_topic:
         return JsonResponse({"error": "Topic not provided"}, status=400)
 
     # Decode the topic name
-    topic = unquote(encoded_topic)            
-
-    try:
-        # Source the environment
-        source_command = 'source /home/getracing/Desktop/get/jarvic-mono/environment.sh && env'
-        process = subprocess.Popen(source_command, stdout=subprocess.PIPE, shell=True, executable='/bin/bash')
-        env_output, _ = process.communicate()
-
-        # Extract environment variables
-        env_vars = dict(line.split('=', 1) for line in env_output.decode('utf-8').splitlines() if '=' in line)
-
-        # Create a ROS client
-        ros = roslibpy.Ros(host='localhost', port=9091)
-        ros.run()
-        
-
-        # Create a topic listener
-        type = ros_service.get_topic_info(topic)
-        listener = roslibpy.Topic(ros, topic, type)
-
-        # Function to handle incoming messages
-        def on_message(message):
-            print(message)
-            ros.terminate()
-            return JsonResponse({"topic": topic, "message": message})
-
-        listener.subscribe(on_message)
-
-        # Wait until a message is received or timeout (you might want to add a timeout handler)
-        ros.spin()
-
-    except Exception as e:
-        return JsonResponse({"error": f"Failed to retrieve message: {str(e)}"}, status=500)
-    
-
-
-def get_ros_message11(request):
-    # Get the encoded topic from the request
-    encoded_topic = request.GET.get('topic')
-    
-    if not encoded_topic:
-        return JsonResponse({"error": "Topic not provided"}, status=400)
-
-    # Decode the topic name from URL encoding
     topic = unquote(encoded_topic)
+
+    # Create a temporary shell script to source the environment and run rostopic echo
+    script_content = f"""
+    #!/bin/bash
+    source /home/getracing/Desktop/get/jarvic-mono/environment.sh > /dev/null
+    rostopic echo -n 1 {topic}
+    """
+    
+    # Write the script to a temporary file
+    with open('/tmp/ros_temp_script.sh', 'w') as script_file:
+        script_file.write(script_content)
+    
+    # Make the script executable
+    subprocess.run(['chmod', '+x', '/tmp/ros_temp_script.sh'])
     
     try:
-       
-        ros_service.subscribe_to_topic(topic)
-        message = ros_service.message()
-        # if client.is_connected:
-        #     print('Connected to ROS Bridge!')
+        # Run the temporary script and capture the output
+        result = subprocess.check_output('/tmp/ros_temp_script.sh', shell=True, executable='/bin/bash', stderr=subprocess.STDOUT)
+        message_str = result.decode('utf-8')
+      
+        # Parse the YAML-like output from rostopic into a Python dictionary
+        polished_str = remove_trailing_document(message_str)
+        message_dict = yaml.safe_load(polished_str)
+        
+        return JsonResponse({"topic": topic, "message": message_dict})
 
-     
-        return JsonResponse({"topic": topic, "message": message})
+    except subprocess.CalledProcessError as e:
+        return JsonResponse({"error": f"Failed to retrieve message: {str(e.output.decode('utf-8'))}"}, status=500)
 
-    except Exception as e:
-        return JsonResponse({"error": f"Failed to connect to ROS: {str(e)}"}, status=500)
-# def start_services(request):
-#     try:
-#         services = [
-#             ("roscore", "roscore", 3),
-#             ("roslaunch rosbridge_server rosbridge_websocket.launch port:=9091", "rosbridge", 3),
-#             ("rosrun turtlesim turtlesim_node", "turtlesim", 3),
-#             ("roslaunch my_key_teleop key_teleop.launch", "key_teleop", 3),
-#         ]
-
-#         for command, log_name, sleep_time in services:
-#             ros_service.start_service(command, log_name, sleep_time)
-
-#         ros_thread = threading.Thread(target=ros_service.run())
-#         ros_thread.start()
-#         return JsonResponse({"status": "success", "message": "Roscore, rosbridge, turtle and teleop started"})
-#     except Exception as e:
-#         return JsonResponse({"status": "error", "message": str(e)})
+def remove_trailing_document(yaml_string):
+    # Find the index of the trailing '---'
+    separator_index = yaml_string.rfind('---')
     
-# def get_ros_nodes(request):
-#     try:
-#         command = "rosnode list"
-#         output = subprocess.check_output(command, shell=True, text=True)
-#         nodes = output.splitlines()
-#         return JsonResponse({"nodes": nodes})
-#     except Exception as e:
-#         return JsonResponse({"status": "error", "message": str(e)})
+    if separator_index != -1:
+        # Slice the string to exclude the trailing separator and any content after it
+        cleaned_yaml = yaml_string[203:separator_index].rstrip()
+    else:
+        # No separator found, return the original string
+        cleaned_yaml = yaml_string
+    
+    return cleaned_yaml
 
 
 # def get_ros_topics2(request):

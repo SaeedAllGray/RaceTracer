@@ -45,9 +45,12 @@ def git_add_commit_push(request):
         git_service.git_add()
         print(message)
         commit_message = f"RaceTracer: {message}"
-        git_service.git_commit(commit_message)
+        commit=git_service.git_commit(commit_message)
+        
+        print(commit.hexsha)
         git_service.git_push()
-        return JsonResponse({'status': 'success', 'diff': diff})
+        return JsonResponse({'status': 'success', 'hexsha': commit.hexsha})
     except Exception as e:
         print(str(e))
         return JsonResponse({"status": "error", "message": str(e)})
+    
