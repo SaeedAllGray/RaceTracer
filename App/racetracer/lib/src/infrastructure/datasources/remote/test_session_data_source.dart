@@ -12,7 +12,7 @@ class TestSessionDataSource implements RemoteDataSource {
   Future fetchAnEntity(int id) async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      '${ApiConstants.baseUrl}$url/$id/',
+      '${ApiConstants.getBaseUrl}$url/$id/',
       options: Options(headers: {
         'Authorization': 'Token 42fa248a75e37b116d220db21b8afebbe64d0e2a'
       }),
@@ -25,7 +25,7 @@ class TestSessionDataSource implements RemoteDataSource {
   Future fetchEntities() async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      '${ApiConstants.baseUrl}/$url/',
+      '${ApiConstants.getBaseUrl}/$url/',
       options: Options(
         headers: {
           'Authorization': 'Token 42fa248a75e37b116d220db21b8afebbe64d0e2a'

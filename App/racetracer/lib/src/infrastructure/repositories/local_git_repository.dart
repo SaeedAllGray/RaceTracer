@@ -11,6 +11,6 @@ class LocalGitRepository {
 
   Future<String> commitAndPush(String message) async {
     dynamic response = await dataSource.commitAndPushActiveLocalBranch(message);
-    return response['diff'];
+    return response['hexsha'];
   }
 }

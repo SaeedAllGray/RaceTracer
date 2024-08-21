@@ -17,7 +17,18 @@ class GitCommitDataSource implements RemoteDataSource {
     dio.interceptors.add(PrettyDioLogger());
     // TODO: project_id is hard-coded for now
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id',
+      '${ApiConstants.gitUrl}${ApiConstants.PROJECTS}/${ApiConstants.getProjectId}/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id',
+      options: Options(headers: TokenHelper.getHeaderToken),
+    );
+
+    return response.data;
+  }
+
+  Future fetchAnEntityWithSha(String sha) async {
+    dio.interceptors.add(PrettyDioLogger());
+    // TODO: project_id is hard-coded for now
+    Response response = await dio.get(
+      '${ApiConstants.gitUrl}projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$sha',
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 

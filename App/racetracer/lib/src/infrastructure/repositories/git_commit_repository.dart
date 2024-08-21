@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:racetracer/src/domain/data_source_models/entity_repository.dart';
 import 'package:racetracer/src/domain/entries/git_comment.dart';
 import 'package:racetracer/src/domain/entries/git_commit.dart';
@@ -19,6 +21,12 @@ class GitCommitRepository
   @override
   Future<GitCommit> fetchEntity(int id) async {
     dynamic response = await api.fetchAnEntity(id);
+    return GitCommit.fromJson(response);
+  }
+
+  Future<GitCommit> fetchEntityWithSha(String sha) async {
+    dynamic response = await api.fetchAnEntityWithSha(sha);
+    log(response.toString());
     return GitCommit.fromJson(response);
   }
 

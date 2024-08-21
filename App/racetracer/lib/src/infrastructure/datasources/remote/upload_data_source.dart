@@ -15,7 +15,7 @@ class UploadDataSource {
     });
 
     Response response = await dio.post(
-      '${ApiConstants.gitUrl}/${ApiConstants.PROJECTS}/448/${ApiConstants.UPLOADS}',
+      '${ApiConstants.gitUrl}/${ApiConstants.PROJECTS}/${ApiConstants.getProjectId}/${ApiConstants.UPLOADS}',
       options: Options(headers: TokenHelper.getHeaderToken),
       data: formData,
     );

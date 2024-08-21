@@ -19,6 +19,10 @@ class GitDiffsFetched extends LocalGitState {
 
 class GitPushInProgress extends LocalGitState {}
 
-class GitPushSucceed extends LocalGitState {}
+class GitPushSucceed extends LocalGitState {
+  final GitCommit gitCommit;
+
+  const GitPushSucceed({required this.gitCommit});
+}
 
 class GitPushFailed extends LocalGitState {}

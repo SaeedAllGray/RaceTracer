@@ -21,12 +21,19 @@ class TestSessionsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.test_sessions),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              NewTestSessionPage.routeName,
+        floatingActionButton: BlocBuilder<GitCommitBloc, GitCommitState>(
+          builder: (context, state) {
+            return FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  NewTestSessionPage.routeName,
+                ).whenComplete(
+                  () => BlocProvider.of<GitCommitBloc>(context)
+                      .add(GetGitCommits()),
+                );
+              },
             );
           },
         ),
