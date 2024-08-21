@@ -59,6 +59,8 @@ class LocalDataSource {
 
   Future<void> signOut() async {
     await secureStorage.delete(key: 'git_token');
+    await secureStorage.delete(key: 'project_id');
+    await secureStorage.delete(key: 'host_ip');
     await secureStorage.deleteAll();
   }
 }

@@ -14,11 +14,16 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
   ConfigBloc() : super(ConfigInitial()) {
     on<SaveEvent>(_onSaveEvent);
     on<FetchDataEvent>(_onFetchedDataEvent);
+    on<SignoutEvent>(_onSignoutEvent);
   }
 
-  FutureOr<void> _onSaveEvent(SaveEvent event, Emitter<ConfigState> emit) {
-    localDataSource.saveHostIP(event.hostIP);
-    localDataSource.saveProjectID(event.projectID);
+  FutureOr<void> _onSaveEvent(
+      SaveEvent event, Emitter<ConfigState> emit) async {
+    emit(ConfigInProgressState());
+    await localDataSource.saveHostIP(event.hostIP);
+    await localDataSource.saveProjectID(event.projectID);
+    await ApiConstants.setBaseUrl();
+    await ApiConstants.setProjectId();
     emit(FetchSucceedState(hostIP: event.hostIP, projectID: event.projectID));
   }
 
@@ -28,8 +33,12 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
     final String? projectID = await localDataSource.getProjectID();
     if (projectID != null && hostIP != null) {
       emit(FetchSucceedState(hostIP: hostIP, projectID: projectID));
-      await ApiConstants.setBaseUrl();
-      await ApiConstants.setProjectId();
-    } else {}
+    }
+  }
+
+  FutureOr<void> _onSignoutEvent(
+      SignoutEvent event, Emitter<ConfigState> emit) async {
+    await localDataSource.signOut();
+    emit(DataDeletedState());
   }
 }
