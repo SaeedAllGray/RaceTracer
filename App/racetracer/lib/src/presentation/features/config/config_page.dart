@@ -6,6 +6,8 @@ import 'package:racetracer/src/application/core/validators.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
+import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
+import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -36,6 +38,10 @@ class _ConfigPageState extends State<ConfigPage> {
               create: (context) => ConfigBloc()..add(FetchDataEvent()),
               child: BlocListener<ConfigBloc, ConfigState>(
                 listener: (context, state) {
+                  if (state is DataDeletedState) {
+                    Navigator.pushReplacementNamed(context, AuthPage.routeName);
+                  }
+
                   if (state is FetchSucceedState) {
                     _numberController.text = state.projectID;
                     _urlController.text = state.hostIP;
@@ -43,56 +49,77 @@ class _ConfigPageState extends State<ConfigPage> {
                 },
                 child: BlocBuilder<ConfigBloc, ConfigState>(
                   builder: (context, state) {
-                    return Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ListTile(
-                            title: TextFormField(
-                              onChanged: (value) => setState(() {}),
-                              validator: (input) =>
-                                  Validators.validateNumber(context, input),
-                              controller: _numberController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(6),
-                                isDense: true,
-                                hintText:
-                                    AppLocalizations.of(context)!.projectID,
-                                hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
-                              ),
+                    return state is! ConfigInProgressState
+                        ? Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ListTile(
+                                  title: TextFormField(
+                                    onChanged: (value) => setState(() {}),
+                                    validator: (input) =>
+                                        Validators.validateNumber(
+                                            context, input),
+                                    controller: _numberController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.all(6),
+                                      isDense: true,
+                                      hintText: AppLocalizations.of(context)!
+                                          .projectID,
+                                      hintStyle:
+                                          FontStyles.LIGHTGREY_REGULAR_16,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  title: TextFormField(
+                                    onChanged: (value) => setState(() {}),
+                                    validator: (input) =>
+                                        Validators.urlValidator(context, input),
+                                    controller: _urlController,
+                                    keyboardType: TextInputType.url,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.all(6),
+                                      isDense: true,
+                                      hintText:
+                                          AppLocalizations.of(context)!.hostIP,
+                                      hintStyle:
+                                          FontStyles.LIGHTGREY_REGULAR_16,
+                                    ),
+                                  ),
+                                ),
+                                StretchedButton(
+                                  onPressed: _isFormValid()
+                                      ? () {
+                                          BlocProvider.of<ConfigBloc>(context)
+                                              .add(SaveEvent(
+                                                  projectID:
+                                                      _numberController.text,
+                                                  hostIP: _urlController.text));
+                                        }
+                                      : null,
+                                  child:
+                                      Text(AppLocalizations.of(context)!.save),
+                                ),
+                                StretchedButton(
+                                  onPressed: () {
+                                    BlocProvider.of<ConfigBloc>(context)
+                                        .add(SignoutEvent());
+                                  },
+                                  child: Text(
+                                    AppLocalizations.of(context)!.signout,
+                                    style: const TextStyle(
+                                        color: AppColors.primaryPale),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          ListTile(
-                            title: TextFormField(
-                              onChanged: (value) => setState(() {}),
-                              validator: (input) =>
-                                  Validators.urlValidator(context, input),
-                              controller: _urlController,
-                              keyboardType: TextInputType.url,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(6),
-                                isDense: true,
-                                hintText: AppLocalizations.of(context)!.hostIP,
-                                hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
-                              ),
-                            ),
-                          ),
-                          StretchedButton(
-                            onPressed: _isFormValid()
-                                ? () {
-                                    BlocProvider.of<ConfigBloc>(context).add(
-                                        SaveEvent(
-                                            projectID: _numberController.text,
-                                            hostIP: _urlController.text));
-                                  }
-                                : null,
-                            child: Text(AppLocalizations.of(context)!.save),
-                          ),
-                        ],
-                      ),
-                    );
+                          )
+                        : const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
                   },
                 ),
               ),
