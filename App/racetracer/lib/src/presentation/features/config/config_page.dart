@@ -21,6 +21,7 @@ class _ConfigPageState extends State<ConfigPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,61 +34,65 @@ class _ConfigPageState extends State<ConfigPage> {
             padding: const EdgeInsets.all(8.0),
             child: BlocProvider(
               create: (context) => ConfigBloc()..add(FetchDataEvent()),
-              child: BlocBuilder<ConfigBloc, ConfigState>(
-                builder: (context, state) {
+              child: BlocListener<ConfigBloc, ConfigState>(
+                listener: (context, state) {
                   if (state is FetchSucceedState) {
                     _numberController.text = state.projectID;
                     _urlController.text = state.hostIP;
                   }
-                  return Form(
-                    onChanged: () => setState(() {}),
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ListTile(
-                          title: TextFormField(
-                            validator: (input) =>
-                                Validators.validateNumber(context, input),
-                            controller: _numberController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(6),
-                              isDense: true,
-                              hintText: AppLocalizations.of(context)!.projectID,
-                              hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
-                            ),
-                          ),
-                        ),
-                        ListTile(
-                          title: TextFormField(
-                            validator: (input) =>
-                                Validators.urlValidator(context, input),
-                            controller: _urlController,
-                            keyboardType: TextInputType.url,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(6),
-                              isDense: true,
-                              hintText: AppLocalizations.of(context)!.hostIP,
-                              hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
-                            ),
-                          ),
-                        ),
-                        StretchedButton(
-                          onPressed: _isFormValid()
-                              ? () {
-                                  BlocProvider.of<ConfigBloc>(context).add(
-                                      SaveEvent(
-                                          projectID: _numberController.text,
-                                          hostIP: _urlController.text));
-                                }
-                              : null,
-                          child: Text(AppLocalizations.of(context)!.save),
-                        )
-                      ],
-                    ),
-                  );
                 },
+                child: BlocBuilder<ConfigBloc, ConfigState>(
+                  builder: (context, state) {
+                    return Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ListTile(
+                            title: TextFormField(
+                              validator: (input) =>
+                                  Validators.validateNumber(context, input),
+                              controller: _numberController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(6),
+                                isDense: true,
+                                hintText:
+                                    AppLocalizations.of(context)!.projectID,
+                                hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            title: TextFormField(
+                              validator: (input) =>
+                                  Validators.urlValidator(context, input),
+                              controller: _urlController,
+                              keyboardType: TextInputType.url,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(6),
+                                isDense: true,
+                                hintText: AppLocalizations.of(context)!.hostIP,
+                                hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
+                              ),
+                            ),
+                          ),
+                          StretchedButton(
+                            onPressed: _isFormValid()
+                                ? () {
+                                    BlocProvider.of<ConfigBloc>(context).add(
+                                        SaveEvent(
+                                            projectID: _numberController.text,
+                                            hostIP: _urlController.text));
+                                  }
+                                : null,
+                            child: Text(AppLocalizations.of(context)!.save),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
