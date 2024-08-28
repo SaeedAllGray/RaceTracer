@@ -25,7 +25,7 @@ class CommitExportHelper {
   }) {
     StringBuffer markdownContent = StringBuffer();
     markdownContent.writeln(
-        "# Commit on ${DateFormat('dd.MM.yyyy').format(gitCommit.committedDate)} at ${DateFormat('HH:mm:ss').format(gitCommit.committedDate)}.\n");
+        "# Commit on ${DateFormat('dd.MM.yyyy').format(gitCommit.committedDate.toLocal())} at ${DateFormat('HH:mm:ss').format(gitCommit.committedDate)}.\n");
     markdownContent.writeln("### ${gitCommit.title}");
     markdownContent.writeln("${gitCommit.message}");
     markdownContent.writeln("[View changed files](${gitCommit.webUrl})\n");
@@ -36,7 +36,7 @@ class CommitExportHelper {
       String processedNote = replaceLocalImagePaths(comment.note);
 
       markdownContent.writeln(
-          "## @${comment.author.username}, ${DateFormat('HH:mm:ss').format(comment.createdAt)}");
+          "## @${comment.author.username}, ${DateFormat('HH:mm:ss').format(comment.createdAt.toLocal())}");
       markdownContent.writeln("<sub>${comment.author.name}</sub>");
       markdownContent.writeln("> $processedNote");
       markdownContent.writeln("\n---\n");
@@ -55,10 +55,12 @@ class CommitExportHelper {
     GitFileDataSource gitFileDataSource = GitFileDataSource();
     try {
       await gitFileDataSource.updateFile(
-          gitCommit.committedDate.toString(), markdownContent);
+          "src/documentation/racetracer/${gitCommit.committedDate}.md",
+          markdownContent);
     } catch (e) {
-      await gitFileDataSource.pushFile(
-          gitCommit.committedDate.toString(), markdownContent);
+      await gitFileDataSource.writeFile(
+          "src/documentation/racetracer/${gitCommit.committedDate}.md",
+          markdownContent);
       log(e.toString());
     }
   }
