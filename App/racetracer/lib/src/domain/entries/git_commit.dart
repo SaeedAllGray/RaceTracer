@@ -38,13 +38,12 @@ class GitCommit {
     this.projectId,
   });
 
-  static String _dateTimeToJson(DateTime dateTime) {
-    return DateFormat('yyyy-MM-dd').format(dateTime);
-  }
+  // Custom fromJson for DateTime
+  static DateTime _dateTimeFromJson(String date) =>
+      DateTime.parse(date).toLocal();
 
-  static DateTime _dateTimeFromJson(String dateTime) {
-    return DateTime.parse(dateTime);
-  }
+  // Custom toJson for DateTime
+  static String _dateTimeToJson(DateTime date) => date.toIso8601String();
 
   factory GitCommit.fromJson(Map<String, dynamic> json) =>
       _$GitCommitFromJson(json);

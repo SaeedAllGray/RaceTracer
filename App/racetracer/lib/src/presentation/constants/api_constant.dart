@@ -23,6 +23,7 @@ class ApiConstants {
   static const String MESSAGE = 'message';
   static const String TESTSESSIONS = 'testsessions';
   static const String GIT = 'git';
+  static const String RAW = 'raw';
 
   static const String CLIENT_ID =
       'eeb2fc864632a0d97159329e35207be737efc6df3c9f0ccc2dcb1a92197ca8dc';

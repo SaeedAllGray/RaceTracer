@@ -70,8 +70,8 @@ class _HomePageState extends State<HomePage> {
         const DashboardPage(),
         const TestSessionsPage(),
         const WatchlistPage(),
-        // const ConfigPage()
-        const WebViewLogger()
+        const ConfigPage()
+        // const WebViewLogger()
         // const DocumentationPage(),
       ];
 }
