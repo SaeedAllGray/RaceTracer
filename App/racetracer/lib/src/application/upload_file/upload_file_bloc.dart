@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:racetracer/src/domain/entries/git_file.dart';
 import 'package:racetracer/src/domain/entries/uploaded_file.dart';
+import 'package:racetracer/src/infrastructure/repositories/git_file_repository.dart';
 import 'package:racetracer/src/infrastructure/repositories/upload_file_repository.dart';
 import 'package:racetracer/src/presentation/helpers/image_picker_helper.dart';
 
@@ -12,6 +15,7 @@ part 'upload_file_state.dart';
 
 class UploadFileBloc extends Bloc<UploadFileEvent, UploadFileState> {
   final List<UploadedFile> uplooadedFiles = [];
+  final List<GitFile> gitFiles = [];
   UploadFileBloc() : super(const UploadFileCompleted([])) {
     // on<UploadMedia>(_onUploadImageEvent);
     on<UploadImageFromLibrary>(_onUploadImageEvent);
@@ -34,6 +38,8 @@ class UploadFileBloc extends Bloc<UploadFileEvent, UploadFileState> {
       uplooadedFiles.add(uploadedFile);
       List<UploadedFile> newUploadedFiles =
           List<UploadedFile>.from(uplooadedFiles);
+      GitFileRepository()
+          .uploadFile("src/documentation/racetracer/images/", File(image.path));
       emit(UploadFileCompleted(newUploadedFiles));
     }
   }

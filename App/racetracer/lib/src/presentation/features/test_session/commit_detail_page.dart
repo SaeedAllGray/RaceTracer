@@ -227,7 +227,7 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: const BorderSide(
-                                  color: AppColors.blueGrey,
+                                  color: AppColors.primary,
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
