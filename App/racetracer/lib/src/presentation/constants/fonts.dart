@@ -61,7 +61,7 @@ class FontStyles {
     fontWeight: FontWeight.w500,
   );
   static const GRAY_MEDIUM_16 = TextStyle(
-    color: AppColors.blueGrey,
+    color: AppColors.primary,
     fontSize: 16.0,
     fontWeight: FontWeight.w500,
   );
