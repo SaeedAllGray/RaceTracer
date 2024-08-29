@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
+import 'package:racetracer/src/presentation/widgets/outlined_text_field.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -88,19 +89,13 @@ class _ConfigPageState extends State<ConfigPage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              TextFormField(
+                              OutlinedTextField(
                                 onChanged: (value) => setState(() {}),
+                                hintText: AppLocalizations.of(context)!.hostIP,
                                 validator: (input) =>
                                     Validators.urlValidator(context, input),
                                 controller: _urlController,
                                 keyboardType: TextInputType.url,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(6),
-                                  isDense: true,
-                                  hintText:
-                                      AppLocalizations.of(context)!.hostIP,
-                                  hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
-                                ),
                               ),
                               Text(AppLocalizations.of(context)!
                                   .configDescription),
