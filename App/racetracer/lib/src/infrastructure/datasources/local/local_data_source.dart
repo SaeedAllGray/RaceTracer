@@ -1,19 +1,25 @@
 import 'dart:convert';
-
-import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
 import 'package:racetracer/src/domain/entries/token/git_token.dart';
 
 class LocalDataSource {
   //TODO: rename this later
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-  Future<void> saveToken(AuthorizationTokenResponse authToken) async {
-    await secureStorage.write(
-        key: 'access_token', value: authToken.accessToken);
-    await secureStorage.write(
-        key: 'refresh_token', value: authToken.refreshToken);
-    await secureStorage.write(
-        key: 'expiration_date', value: authToken.toString());
+
+  Future<void> saveOauth(OauthAtrributes oauth) async {
+    await secureStorage.write(key: 'oauth', value: json.encode(oauth.toJson()));
+  }
+
+  Future<OauthAtrributes?> getOauth() async {
+    OauthAtrributes? oauthAtrributes;
+    String? oauthString = await secureStorage.read(key: 'oauth');
+    if (oauthString != null) {
+      Map<String, dynamic> tokenJson = json.decode(oauthString);
+      oauthAtrributes = OauthAtrributes.fromJson(tokenJson);
+      return oauthAtrributes;
+    }
+    return oauthAtrributes;
   }
 
   Future<GitToken?> getGitToken() async {
@@ -59,7 +65,6 @@ class LocalDataSource {
 
   Future<void> signOut() async {
     await secureStorage.delete(key: 'git_token');
-    await secureStorage.delete(key: 'project_id');
     await secureStorage.delete(key: 'host_ip');
     await secureStorage.deleteAll();
   }

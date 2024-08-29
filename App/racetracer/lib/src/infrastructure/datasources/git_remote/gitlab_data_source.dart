@@ -2,10 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
 import 'package:racetracer/src/presentation/constants/api_constant.dart';
 
-class GitAuthLabDataSource {
+class GitAuthsDataSource {
   final FlutterAppAuth appAuth = const FlutterAppAuth();
   final Dio dio = Dio();
 
@@ -56,15 +57,15 @@ class GitAuthLabDataSource {
     return response;
   }
 
-  Future<Response> refreshToken(
-      AuthorizationResponse authRes, String refreshToken) async {
+  Future<Response> refreshToken(AuthorizationResponse authRes,
+      String refreshToken, OauthAtrributes oauth) async {
     dio.interceptors.add(PrettyDioLogger());
     Response response =
         await dio.post('${ApiConstants.ISSUER}/oauth/token', queryParameters: {
-      'client_id': ApiConstants.CLIENT_ID,
+      'client_id': oauth.clientId,
       'refresh_token': refreshToken,
       'grant_type': 'refresh_token',
-      'client_secret': ApiConstants.CLIENT_SECTRET,
+      'client_secret': oauth.clientSecret,
       'redirect_uri': ApiConstants.REDIRECT_URL,
       'code_verifier': authRes.codeVerifier,
     });

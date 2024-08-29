@@ -1,3 +1,4 @@
+import 'package:blinking_text/blinking_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +12,10 @@ import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
 class ConfigPage extends StatefulWidget {
-  static const routeName = '/config';
+  final bool? firstPage;
+  static const routeName = '/';
 
-  const ConfigPage({super.key});
+  const ConfigPage({super.key, this.firstPage = true});
 
   @override
   State<ConfigPage> createState() => _ConfigPageState();
@@ -21,110 +23,136 @@ class ConfigPage extends StatefulWidget {
 
 class _ConfigPageState extends State<ConfigPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _numberController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.configuration),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: BlocProvider(
-              create: (context) => ConfigBloc()..add(FetchDataEvent()),
-              child: BlocListener<ConfigBloc, ConfigState>(
-                listener: (context, state) {
-                  if (state is DataDeletedState) {
-                    Navigator.pushReplacementNamed(context, AuthPage.routeName);
-                  }
-
-                  if (state is FetchSucceedState) {
-                    _numberController.text = state.projectID;
-                    _urlController.text = state.hostIP;
-                  }
-                },
-                child: BlocBuilder<ConfigBloc, ConfigState>(
-                  builder: (context, state) {
-                    return state is! ConfigInProgressState
-                        ? Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ListTile(
-                                  title: TextFormField(
-                                    onChanged: (value) => setState(() {}),
-                                    validator: (input) =>
-                                        Validators.validateNumber(
-                                            context, input),
-                                    controller: _numberController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      contentPadding: const EdgeInsets.all(6),
-                                      isDense: true,
-                                      hintText: AppLocalizations.of(context)!
-                                          .projectID,
-                                      hintStyle:
-                                          FontStyles.LIGHTGREY_REGULAR_16,
-                                    ),
-                                  ),
-                                ),
-                                ListTile(
-                                  title: TextFormField(
-                                    onChanged: (value) => setState(() {}),
-                                    validator: (input) =>
-                                        Validators.urlValidator(context, input),
-                                    controller: _urlController,
-                                    keyboardType: TextInputType.url,
-                                    decoration: InputDecoration(
-                                      contentPadding: const EdgeInsets.all(6),
-                                      isDense: true,
-                                      hintText:
-                                          AppLocalizations.of(context)!.hostIP,
-                                      hintStyle:
-                                          FontStyles.LIGHTGREY_REGULAR_16,
-                                    ),
-                                  ),
-                                ),
-                                StretchedButton(
-                                  onPressed: _isFormValid()
-                                      ? () {
-                                          BlocProvider.of<ConfigBloc>(context)
-                                              .add(SaveEvent(
-                                                  projectID:
-                                                      _numberController.text,
-                                                  hostIP: _urlController.text));
-                                        }
-                                      : null,
-                                  child:
-                                      Text(AppLocalizations.of(context)!.save),
-                                ),
-                                StretchedButton(
-                                  onPressed: () {
-                                    BlocProvider.of<ConfigBloc>(context)
-                                        .add(SignoutEvent());
-                                  },
-                                  child: Text(
-                                    AppLocalizations.of(context)!.signout,
-                                    style: const TextStyle(
-                                        color: AppColors.primaryPale),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : const Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          );
-                  },
+    return BlocProvider(
+      create: (context) => ConfigBloc()
+        ..add(FetchDataEvent())
+        ..add(DownloadDataEvent(hostIP: _urlController.text)),
+      child: BlocListener<ConfigBloc, ConfigState>(
+        listener: (context, state) {
+          if (state is DataDeletedState) {
+            Navigator.pushReplacementNamed(context, ConfigPage.routeName);
+          } else if (state is DownloadSucceedState && widget.firstPage!) {
+            Navigator.pushReplacementNamed(context, AuthPage.routeName);
+          } else if (state is SavedSucceedState) {
+            _urlController.text = state.hostIP;
+          } else if (state is FetchSucceedState) {
+            if (widget.firstPage!) {
+              Navigator.pushReplacementNamed(context, HomePage.routeName);
+            } else {
+              _urlController.text = state.hostIP;
+            }
+          }
+        },
+        child: BlocBuilder<ConfigBloc, ConfigState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor:
+                    state is DownloadSucceedState || state is FetchSucceedState
+                        ? AppColors.green
+                        : AppColors.warning,
+                title: Text(
+                  AppLocalizations.of(context)!.configuration,
+                  style: FontStyles.WHITE_REGULAR_24,
                 ),
+                actions: [
+                  !(widget.firstPage!)
+                      ? IconButton(
+                          onPressed: _isFormValid()
+                              ? () {
+                                  BlocProvider.of<ConfigBloc>(context).add(
+                                      SaveEvent(hostIP: _urlController.text));
+                                  BlocProvider.of<ConfigBloc>(context).add(
+                                      DownloadDataEvent(
+                                          hostIP: _urlController.text));
+                                }
+                              : null,
+                          icon: const Icon(
+                            Icons.refresh,
+                            color: AppColors.white,
+                          ),
+                        )
+                      : const SizedBox.shrink()
+                ],
               ),
-            ),
-          ),
+              body: SafeArea(
+                child: state is! ConfigInProgressState
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextFormField(
+                                onChanged: (value) => setState(() {}),
+                                validator: (input) =>
+                                    Validators.urlValidator(context, input),
+                                controller: _urlController,
+                                keyboardType: TextInputType.url,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(6),
+                                  isDense: true,
+                                  hintText:
+                                      AppLocalizations.of(context)!.hostIP,
+                                  hintStyle: FontStyles.LIGHTGREY_REGULAR_16,
+                                ),
+                              ),
+                              Text(AppLocalizations.of(context)!
+                                  .configDescription),
+                              Visibility(
+                                visible: state is! ConfigInProgressState,
+                                child: Align(
+                                  alignment: FractionalOffset.bottomCenter,
+                                  child: widget.firstPage!
+                                      ? StretchedButton(
+                                          onPressed: _isFormValid()
+                                              ? () {
+                                                  BlocProvider.of<ConfigBloc>(
+                                                          context)
+                                                      .add(DownloadDataEvent(
+                                                          hostIP: _urlController
+                                                              .text));
+                                                }
+                                              : null,
+                                          child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .download),
+                                        )
+                                      : StretchedButton(
+                                          onPressed: () {
+                                            BlocProvider.of<ConfigBloc>(context)
+                                                .add(SignoutEvent());
+                                          },
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .signout,
+                                            style: const TextStyle(
+                                                color: AppColors.primaryPale),
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: BlinkText(
+                          endColor: AppColors.white,
+                          beginColor: AppColors.primary,
+                          duration: const Duration(seconds: 2),
+                          AppLocalizations.of(context)!.loading,
+                          style: FontStyles.WHITE_BOLD_24,
+                        ),
+                      ),
+              ),
+            );
+          },
         ),
       ),
     );

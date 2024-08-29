@@ -12,13 +12,25 @@ final class ConfigInitial extends ConfigState {}
 final class ConfigInProgressState extends ConfigState {}
 
 final class FetchSucceedState extends ConfigState {
-  final String projectID;
   final String hostIP;
 
-  const FetchSucceedState({required this.projectID, required this.hostIP});
+  const FetchSucceedState({required this.hostIP});
 
   @override
-  List<Object> get props => [projectID, hostIP];
+  List<Object> get props => [hostIP];
+}
+
+final class DownloadSucceedState extends ConfigState {}
+
+final class DownloadFailedState extends ConfigState {}
+
+final class SavedSucceedState extends ConfigState {
+  final String hostIP;
+
+  const SavedSucceedState({required this.hostIP});
+
+  @override
+  List<Object> get props => [hostIP];
 }
 
 final class WaitingForNewValuesState extends ConfigState {}
