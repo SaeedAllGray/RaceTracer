@@ -20,7 +20,6 @@ from incremental.update import _run, run
 
 class NonCreatedUpdateTests(TestCase):
     def setUp(self):
-
         self.srcdir = FilePath(self.mktemp())
         self.srcdir.makedirs()
 
@@ -84,7 +83,6 @@ __all__ = ["__version__"]
 
 class MissingTests(TestCase):
     def setUp(self):
-
         self.srcdir = FilePath(self.mktemp())
         self.srcdir.makedirs()
 
@@ -124,7 +122,7 @@ __all__ = ["__version__"]
         out = []
         with self.assertRaises(ValueError):
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=False,
@@ -140,7 +138,6 @@ __all__ = ["__version__"]
 
 class CreatedUpdateInSrcTests(TestCase):
     def setUp(self):
-
         self.srcdir = FilePath(self.mktemp())
         self.srcdir.makedirs()
 
@@ -179,7 +176,7 @@ __all__ = ["__version__"]
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -210,7 +207,7 @@ __all__ = ["__version__"]
         )
 
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -242,11 +239,9 @@ __all__ = ["__version__"]
 
 
 class CreatedUpdateTests(TestCase):
-
     maxDiff = None
 
     def setUp(self):
-
         self.srcdir = FilePath(self.mktemp())
         self.srcdir.makedirs()
 
@@ -283,7 +278,7 @@ __all__ = ["__version__"]
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=self.packagedir.path,
             newversion=None,
             patch=False,
@@ -318,7 +313,7 @@ __all__ = ["__version__"]
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -354,7 +349,7 @@ __all__ = ["__version__"]
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=True,
@@ -406,7 +401,7 @@ __all__ = ["__version__"]
 
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=True,
@@ -442,7 +437,7 @@ __all__ = ["__version__"]
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=True,
@@ -475,7 +470,7 @@ __all__ = ["__version__"]
             b"""
 from incremental import Version
 introduced_in = Version("inctestpkg", 1, 2, 4, release_candidate=1).short()
-next_released_version = "inctestpkg 1.2.4.rc1"
+next_released_version = "inctestpkg 1.2.4rc1"
 """,
         )
 
@@ -494,7 +489,7 @@ __all__ = ["__version__"]
 
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -527,7 +522,7 @@ __all__ = ["__version__"]
             b"""
 from incremental import Version
 introduced_in = Version("inctestpkg", 1, 2, 3, release_candidate=2).short()
-next_released_version = "inctestpkg 1.2.3.rc2"
+next_released_version = "inctestpkg 1.2.3rc2"
 """,
         )
 
@@ -547,7 +542,7 @@ __all__ = ["__version__"]
 
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -580,7 +575,7 @@ __all__ = ["__version__"]
             b"""
 from incremental import Version
 introduced_in = Version("inctestpkg", 16, 8, 0, release_candidate=1).short()
-next_released_version = "inctestpkg 16.8.0.rc1"
+next_released_version = "inctestpkg 16.8.0rc1"
 """,
         )
 
@@ -591,7 +586,7 @@ next_released_version = "inctestpkg 16.8.0.rc1"
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -624,12 +619,12 @@ __all__ = ["__version__"]
             b"""
 from incremental import Version
 introduced_in = Version("inctestpkg", 16, 8, 0, release_candidate=1).short()
-next_released_version = "inctestpkg 16.8.0.rc1"
+next_released_version = "inctestpkg 16.8.0rc1"
 """,
         )
 
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -674,7 +669,7 @@ next_released_version = "inctestpkg 16.8.0"
         out = []
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=False,
@@ -698,7 +693,7 @@ next_released_version = "inctestpkg 16.8.0"
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -743,7 +738,7 @@ __all__ = ["__version__"]
 
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -787,7 +782,7 @@ __all__ = ["__version__"]
 
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion=None,
             patch=False,
@@ -832,7 +827,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
         out = []
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion="1",
                 patch=True,
@@ -848,7 +843,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion="1",
                 patch=False,
@@ -864,7 +859,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion="1",
                 patch=False,
@@ -880,7 +875,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion="1",
                 patch=False,
@@ -901,7 +896,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
         out = []
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=True,
@@ -917,7 +912,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=False,
@@ -933,7 +928,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=False,
@@ -955,7 +950,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
         out = []
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=True,
@@ -971,7 +966,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion="1",
                 patch=False,
@@ -987,7 +982,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=False,
@@ -1003,7 +998,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=False,
@@ -1019,7 +1014,7 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
         with self.assertRaises(ValueError) as e:
             _run(
-                u"inctestpkg",
+                "inctestpkg",
                 path=None,
                 newversion=None,
                 patch=False,
@@ -1035,14 +1030,14 @@ next_released_version = "inctestpkg 1.2.3.post2"
 
     def test_newversion(self):
         """
-        `incremental.update package --newversion=1.2.3.rc1.post2.dev3`, will
+        `incremental.update package --newversion=1.2.3rc1.post2.dev3`, will
         set that version in the package.
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
-            newversion="1.2.3.rc1.post2.dev3",
+            newversion="1.2.3rc1.post2.dev3",
             patch=False,
             rc=False,
             post=False,
@@ -1076,7 +1071,7 @@ __all__ = ["__version__"]
 from incremental import Version
 introduced_in = Version("inctestpkg", 1, 2, 3, """
                 b"""release_candidate=1, post=2, dev=3).short()
-next_released_version = "inctestpkg 1.2.3.rc1.post2.dev3"
+next_released_version = "inctestpkg 1.2.3rc1.post2.dev3"
 """
             ),
         )
@@ -1088,7 +1083,7 @@ next_released_version = "inctestpkg 1.2.3.rc1.post2.dev3"
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion="1",
             patch=False,
@@ -1132,7 +1127,7 @@ next_released_version = "inctestpkg 1.0.0"
         """
         out = []
         _run(
-            u"inctestpkg",
+            "inctestpkg",
             path=None,
             newversion="1.1",
             patch=False,
@@ -1172,7 +1167,6 @@ next_released_version = "inctestpkg 1.1.0"
 
 class ScriptTests(TestCase):
     def setUp(self):
-
         self.srcdir = FilePath(self.mktemp())
         self.srcdir.makedirs()
 
@@ -1256,6 +1250,6 @@ __all__ = ["__version__"]
             b"""
 from incremental import Version
 introduced_in = Version("inctestpkg", 16, 8, 0, release_candidate=1).short()
-next_released_version = "inctestpkg 16.8.0.rc1"
+next_released_version = "inctestpkg 16.8.0rc1"
 """,
         )

@@ -3,19 +3,16 @@ import rospy
 from std_msgs.msg import String
 from ros_app.models import ROSMessage
 
-def callback(data):
-    rospy.loginfo("I heard %s", data.data)
-    # Save the message to the database
-    ROSMessage.objects.update_or_create(id=1, defaults={'message': data.data})
 
-def listener():
-    rospy.init_node('listener', anonymous=True)
-    rospy.Subscriber('chatter', String, callback)
-    rospy.spin()
+class RosNode:
+    def __init__(self):
+        rospy.init_node('django_ros_node', anonymous=True)
+        self.data = None
+        rospy.Subscriber('chatter', String, self.callback)
 
-if __name__ == '__main__':
-    import django
-    import os
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myproject.settings")
-    django.setup()
-    listener()
+    def callback(self, data):
+        rospy.loginfo(rospy.get_caller_id() + " I heard %s", data.data)
+        self.data = data.data
+
+    def get_data(self):
+        return self.data
