@@ -12,7 +12,7 @@ class AppColors {
   static const Color lightGrey = Color.fromRGBO(215, 215, 215, 1);
   static const Color warning = Colors.redAccent;
   static const Color newChanges = Colors.lightGreen;
-  static const Color publishers = Colors.teal;
+  static const Color green = Colors.teal;
   static const Color bubble = Color.fromARGB(255, 184, 208, 220);
   static const Color subscribers = Colors.redAccent;
 }

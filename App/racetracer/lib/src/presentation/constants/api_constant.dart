@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
 
 class ApiConstants {
@@ -23,6 +24,8 @@ class ApiConstants {
   static const String MESSAGE = 'message';
   static const String TESTSESSIONS = 'testsessions';
   static const String GIT = 'git';
+
+  static late OauthAtrributes _oauthAtrributes;
 
   static const String CLIENT_ID =
       'eeb2fc864632a0d97159329e35207be737efc6df3c9f0ccc2dcb1a92197ca8dc';
@@ -52,5 +55,13 @@ class ApiConstants {
 
   static String get projectUrl {
     return 'https://gitlab.fachschaften.org/-/project/$getProjectId/';
+  }
+
+  static set setOauth(OauthAtrributes oauthAtt) {
+    _oauthAtrributes = oauthAtt;
+  }
+
+  static OauthAtrributes get oauth {
+    return _oauthAtrributes;
   }
 }

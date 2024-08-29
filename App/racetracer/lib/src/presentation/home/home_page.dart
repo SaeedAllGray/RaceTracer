@@ -69,7 +69,9 @@ class _HomePageState extends State<HomePage> {
         const DashboardPage(),
         const TestSessionsPage(),
         const EmbedPage(),
-        const ConfigPage()
+        const ConfigPage(
+          firstPage: false,
+        )
         // const WebViewLogger()
         // const DocumentationPage(),
       ];

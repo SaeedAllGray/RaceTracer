@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
 import 'package:racetracer/src/domain/entries/token/git_token.dart';
 import 'package:racetracer/src/infrastructure/datasources/git_remote/gitlab_data_source.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
@@ -10,17 +11,18 @@ import 'package:racetracer/src/presentation/constants/api_constant.dart';
 
 class AuthRepository {
   final FlutterAppAuth appAuth = const FlutterAppAuth();
-  final GitAuthLabDataSource datasource = GitAuthLabDataSource();
+  final GitAuthsDataSource datasource = GitAuthsDataSource();
   final LocalDataSource localDataSource = LocalDataSource();
 
-  Future<AuthorizationTokenResponse?> signInWithGitLab() async {
+  Future<AuthorizationTokenResponse?> signInWithGitLab(
+      OauthAtrributes oauth) async {
     final AuthorizationTokenResponse? result =
         await appAuth.authorizeAndExchangeCode(
       AuthorizationTokenRequest(
-        ApiConstants.CLIENT_ID,
+        oauth.clientId,
         ApiConstants.REDIRECT_URL,
-        clientSecret: ApiConstants.CLIENT_SECTRET,
-        discoveryUrl: ApiConstants.DISCOVERY_URL,
+        clientSecret: oauth.clientSecret,
+        discoveryUrl: oauth.discoveryUrl,
         scopes: [
           'openid',
           'profile',
@@ -45,16 +47,15 @@ class AuthRepository {
         allowInsecureConnections: true,
       ),
     );
-    print(result?.idToken);
     return result;
   }
 
-  Future<GitToken?> refreshToken() async {
+  Future<GitToken?> refreshToken(OauthAtrributes oauth) async {
     final AuthorizationResponse? authRes = await datasource.requestAuthCode();
     final GitToken? gitToken = await localDataSource.getGitToken();
     if (authRes != null && gitToken != null) {
       final Response response =
-          await datasource.refreshToken(authRes, gitToken.refreshToken);
+          await datasource.refreshToken(authRes, gitToken.refreshToken, oauth);
       if (response.statusCode! < 400) {
         final GitToken gitToken = GitToken.fromJson(response.data);
         await localDataSource.saveGitToken(gitToken);
