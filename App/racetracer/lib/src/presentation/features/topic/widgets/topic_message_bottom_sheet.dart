@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +44,8 @@ class TopicMessageBottomSheet extends StatelessWidget {
                   child: BlocBuilder<RosTopicBloc, RosTopicState>(
                       builder: (context, state) {
                     if (state is RosTopicMessageFetched) {
+                      log(state.message.toString());
+                      log("state.message.toString()");
                       return JsonConfig(
                           data: JsonConfigData(
                               style: const JsonStyleScheme(

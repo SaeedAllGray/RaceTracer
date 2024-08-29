@@ -21,13 +21,11 @@ class GitComment {
     required this.createdAt,
   });
 
-  static String _dateTimeToJson(DateTime dateTime) {
-    return DateFormat('yyyy-MM-dd').format(dateTime);
-  }
+  static DateTime _dateTimeFromJson(String date) =>
+      DateTime.parse(date).toLocal();
 
-  static DateTime _dateTimeFromJson(String dateTime) {
-    return DateTime.parse(dateTime);
-  }
+  // Custom toJson for DateTime
+  static String _dateTimeToJson(DateTime date) => date.toIso8601String();
 
   factory GitComment.fromJson(Map<String, dynamic> json) =>
       _$GitCommentFromJson(json);

@@ -11,6 +11,8 @@
   "topics": "Topics",
   "nodes": "Nodes",
   "more": "more",
+  "edit":"Edit",
+  "done":"Done",
   "publishing": "Publishing",
   "subscribing": "Subscribing",
   "record": "Record",
@@ -56,6 +58,8 @@
   "search": "Search",
   "download":"Save and Download",
   "loading":"Warming up the tires...",
-  "signout":"Sign Out"
+  "signout":"Sign Out",
+  "refresh":"refresh",
+  "watchList":"Watch List"
 
 }

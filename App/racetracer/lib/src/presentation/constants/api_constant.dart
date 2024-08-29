@@ -24,6 +24,7 @@ class ApiConstants {
   static const String MESSAGE = 'message';
   static const String TESTSESSIONS = 'testsessions';
   static const String GIT = 'git';
+  static const String RAW = 'raw';
 
   static late OauthAtrributes _oauthAtrributes;
 

@@ -55,7 +55,7 @@ class TestSessionsPage extends StatelessWidget {
                   leading: const Icon(Icons.commit),
                   trailing: const Icon(Icons.chevron_right_rounded),
                   title: Text(
-                    state.gitCommits[index].title.toString(),
+                    state.gitCommits[index].message.toString(),
                     style: FontStyles.BLACK_REGULAR_16,
                   ),
                   subtitle: Text(

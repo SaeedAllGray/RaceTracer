@@ -11,13 +11,11 @@ class TestSession {
 
   TestSession({required this.id, required this.timestamp});
 
-  static String _dateTimeToJson(DateTime dateTime) {
-    return DateFormat('yyyy-MM-dd').format(dateTime);
-  }
+  static DateTime _dateTimeFromJson(String date) =>
+      DateTime.parse(date).toLocal();
 
-  static DateTime _dateTimeFromJson(String dateTime) {
-    return DateTime.parse(dateTime);
-  }
+  // Custom toJson for DateTime
+  static String _dateTimeToJson(DateTime date) => date.toIso8601String();
 
   factory TestSession.fromJson(Map<String, dynamic> json) =>
       _$TestSessionFromJson(json);

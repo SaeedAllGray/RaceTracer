@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/features/topic/widgets/topic_message_bottom_sheet.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
+import 'package:racetracer/src/presentation/widgets/outlined_text_field.dart';
 
 class TopicsPage extends StatelessWidget {
   static const routeName = '/topics_page';
@@ -33,36 +34,19 @@ class TopicsPage extends StatelessWidget {
               ),
               child: BlocBuilder<RosTopicBloc, RosTopicState>(
                 builder: (context, state) {
-                  return TextFormField(
+                  return OutlinedTextField(
+                    hintText: AppLocalizations.of(context)!.search,
                     controller: searchController,
-                    decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.search,
-                        fillColor: AppColors.primary.withOpacity(0.15),
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: AppColors.white,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: AppColors.white,
-                          ),
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            BlocProvider.of<RosTopicBloc>(context)
-                                .add(const FilterTopics(searchTerm: ''));
-                            searchController.clear();
-                          },
-                          icon: const Icon(Icons.clear),
-                        ),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 10)),
-                    onChanged: (v) => BlocProvider.of<RosTopicBloc>(context)
-                        .add(FilterTopics(searchTerm: searchController.text)),
+                    onChanged: (v) =>
+                        BlocProvider.of<RosTopicBloc>(context).add(
+                      FilterTopics(searchTerm: searchController.text),
+                    ),
+                    onClearPressed: () =>
+                        BlocProvider.of<RosTopicBloc>(context).add(
+                      const FilterTopics(
+                        searchTerm: '',
+                      ),
+                    ),
                   );
                 },
               ),

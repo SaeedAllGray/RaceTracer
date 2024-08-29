@@ -8,7 +8,6 @@ class AppColors {
   static const Color primaryPale = Color.fromRGBO(255, 9, 29, 1);
   static const Color white = Colors.white;
   static const Color scaffoldBackgroundColor = Color.fromRGBO(240, 240, 240, 1);
-  static const Color blueGrey = Colors.blueGrey;
   static const Color lightGrey = Color.fromRGBO(215, 215, 215, 1);
   static const Color warning = Colors.redAccent;
   static const Color newChanges = Colors.lightGreen;

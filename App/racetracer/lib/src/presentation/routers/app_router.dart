@@ -111,6 +111,7 @@ class AppRouter {
             return const ConfigPage();
           },
         );
+
       default:
         return MaterialPageRoute<void>(
           settings: routeSettings,

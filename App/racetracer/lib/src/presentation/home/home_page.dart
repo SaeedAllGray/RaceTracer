@@ -7,6 +7,7 @@ import 'package:racetracer/src/presentation/features/dashboard/widgets/dashboard
 import 'package:racetracer/src/presentation/features/documentation/documentation_page.dart';
 import 'package:racetracer/src/presentation/features/embed/embed_page.dart';
 import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
+import 'package:racetracer/src/presentation/features/watchlist/watchlist_page.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
