@@ -9,6 +9,11 @@ class FontStyles {
     fontSize: 36.0,
     fontWeight: FontWeight.bold,
   );
+  static const WHITE_BOLD_24 = TextStyle(
+    color: AppColors.white,
+    fontSize: 24.0,
+    fontWeight: FontWeight.bold,
+  );
   static const BLACK_MEDIUM_22 = TextStyle(
     color: AppColors.BLACK,
     fontSize: 22.0,
@@ -39,8 +44,18 @@ class FontStyles {
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
   );
+  static const WHITE_REGULAR_24 = TextStyle(
+    color: AppColors.white,
+    fontSize: 24.0,
+    fontWeight: FontWeight.normal,
+  );
+  static const WHITE_REGULAR_20 = TextStyle(
+    color: AppColors.white,
+    fontSize: 20.0,
+    fontWeight: FontWeight.normal,
+  );
   static const TEAL_BOLD_10 = TextStyle(
-    color: AppColors.publishers,
+    color: AppColors.green,
     fontSize: 10.0,
     fontWeight: FontWeight.bold,
   );
@@ -53,6 +68,11 @@ class FontStyles {
     fontFamily: "Courier",
     fontWeight: FontWeight.bold,
     fontSize: 16,
+  );
+  static const RED_BOLD_20 = TextStyle(
+    color: AppColors.subscribers,
+    fontSize: 20.0,
+    fontWeight: FontWeight.bold,
   );
 
   static const GREY_LIGHT_14 = TextStyle(

@@ -59,7 +59,7 @@ class TopicsInfoPage extends StatelessWidget {
                                             children: [
                                               const Icon(
                                                 Icons.north_east,
-                                                color: AppColors.publishers,
+                                                color: AppColors.green,
                                                 size: 10,
                                               ),
                                               Text(

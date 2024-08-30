@@ -8,15 +8,23 @@ sealed class ConfigEvent extends Equatable {
 }
 
 final class SaveEvent extends ConfigEvent {
-  final String projectID;
   final String hostIP;
 
-  const SaveEvent({required this.projectID, required this.hostIP});
+  const SaveEvent({required this.hostIP});
 
   @override
-  List<Object> get props => [hostIP, projectID];
+  List<Object> get props => [hostIP];
 }
 
 final class FetchDataEvent extends ConfigEvent {}
+
+final class DownloadDataEvent extends ConfigEvent {
+  final String hostIP;
+
+  const DownloadDataEvent({required this.hostIP});
+
+  @override
+  List<Object> get props => [hostIP];
+}
 
 final class SignoutEvent extends ConfigEvent {}

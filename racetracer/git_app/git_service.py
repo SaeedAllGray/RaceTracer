@@ -8,11 +8,20 @@ class GitService:
         self.repo.git.add(A=True)
 
     def git_commit(self, message):
-        self.repo.index.commit(message)
+        result = self.repo.index.commit('racetracer\n'+message)
+        return result
 
-    def git_diff(self):
-        print(self.repo.git.diff())
-        return self.repo.git.diff()
+    # def git_diff(self):
+    #     print(self.repo.git.diff())
+    #     return self.repo.git.diff()
+
+    def git_diff(self, file_paths=None):
+        if file_paths:
+            diff = self.repo.git.diff(' '.join(file_paths))
+        else:
+            diff = self.repo.git.diff()
+        print(diff)
+        return diff
         
     def git_push(self):
         origin = self.repo.remote(name='origin')
@@ -20,6 +29,11 @@ class GitService:
         print(result)
     
     def switchBranch(self):
-        new_branch = self.repo.create_head('racetracer')
-        self.repo.head.reference = new_branch
-        self.repo.head.reset(index=True, working_tree=True)
+        if 'racetracer' in self.repo.heads:
+            # Switch to existing branch
+            new_branch = self.repo.heads['racetracer']
+            self.repo.head.reference = new_branch
+        else:
+            # Create and switch to a new branch
+            new_branch = self.repo.create_head('racetracer')
+            self.repo.head.reference = new_branch

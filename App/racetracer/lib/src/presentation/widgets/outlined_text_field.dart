@@ -6,19 +6,24 @@ class OutlinedTextField extends StatelessWidget {
   final String? hintText;
   final VoidCallback? onClearPressed;
   final Function(String)? onChanged;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
   const OutlinedTextField({
     super.key,
     this.controller,
     this.hintText,
     this.onClearPressed,
     this.onChanged,
+    this.keyboardType,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: validator,
+      keyboardType: keyboardType,
       controller: controller,
-      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           hintText: hintText,
           fillColor: AppColors.primary.withOpacity(0.15),
