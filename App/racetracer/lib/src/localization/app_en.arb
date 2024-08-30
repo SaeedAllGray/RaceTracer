@@ -60,6 +60,7 @@
   "loading":"Warming up the tires...",
   "signout":"Sign Out",
   "refresh":"refresh",
-  "watchList":"Watch List"
-
+  "watchList":"Watch List",
+  "observe_topic": "Observe a Topic",
+  "observe": "Observe"
 }

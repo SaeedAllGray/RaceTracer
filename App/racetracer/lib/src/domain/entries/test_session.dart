@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:intl/intl.dart';
 
 part 'test_session.g.dart';
 
