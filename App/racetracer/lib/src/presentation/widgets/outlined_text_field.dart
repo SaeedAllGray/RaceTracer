@@ -18,6 +18,7 @@ class OutlinedTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           hintText: hintText,
           fillColor: AppColors.primary.withOpacity(0.15),

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 
 class FontStyles {
-  static const BLACK_BOLD_24 = TextStyle(
+  static const BLACK_BOLD_36 = TextStyle(
     color: AppColors.BLACK,
-    fontSize: 24.0,
+    fontSize: 36.0,
     fontWeight: FontWeight.bold,
   );
   static const BLACK_MEDIUM_22 = TextStyle(
@@ -48,6 +48,11 @@ class FontStyles {
     color: AppColors.subscribers,
     fontSize: 10.0,
     fontWeight: FontWeight.bold,
+  );
+  static const CODE_REGULAR_16 = TextStyle(
+    fontFamily: "Courier",
+    fontWeight: FontWeight.bold,
+    fontSize: 16,
   );
 
   static const GREY_LIGHT_14 = TextStyle(

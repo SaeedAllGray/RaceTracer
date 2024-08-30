@@ -65,6 +65,7 @@ class TopicsPage extends StatelessWidget {
                     showModalBottomSheet<void>(
                         isScrollControlled: true,
                         context: context,
+                        backgroundColor: Colors.transparent,
                         builder: (BuildContext context) {
                           return TopicMessageBottomSheet(
                             rosTopic: state.rosTopics[index],
