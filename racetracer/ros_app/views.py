@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from roslibpy import Ros, Topic
 from urllib.parse import unquote
 from .ros_service import RosService
+from collections import defaultdict
 from .models import ROSMessage
 import subprocess
 import time
@@ -104,28 +105,28 @@ def get_message(request):
         return JsonResponse({"status": "error", "message": str(e)})
 # /home/getracing/Desktop/get/jarvic-mono/environment.sh
 
-def get_code_titles(request):
+def get_code_labels(request):
     try:
-        code_titles = []
+        code_labels = []
         for item in general["scripts"]:
-            code_titles.append(item["title"])
+            code_labels.append(item["label"])
     
-        return JsonResponse({"status": "success", "message": code_titles})
+        return JsonResponse({"status": "success", "message": code_labels})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 
 
 
-def find_script_by_title(title):
+def find_script_by_label(label):
     for item in general["scripts"]:
-        if item["title"] == title:
+        if item["label"] == label:
             return item
     return None
 
 
 
-def runCode(code_title):
-    item = find_script_by_title(code_title)
+def runCode(code_label):
+    item = find_script_by_label(code_label)
     ros_service.subscribe_to_topic(item['topic'])
     x = ros_service.get_message()
 
@@ -142,9 +143,9 @@ def evaluate(request):
 
         topic_name = unquote(encoded_topic_name)
     
-        code_title = request.GET.get('title')
+        code_label = request.GET.get('label')
         
-        code = find_script_by_title(code_title)
+        code = find_script_by_label(code_label)
         ros_service.subscribe_to_topic(topic_name)
         x = ros_service.get_message()
 
@@ -156,35 +157,46 @@ def evaluate(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 
-@csrf_exempt
+
 def executeTopicMessages(request):
-    try:
-        # Ensure the request is a POST request
-        if request.method != 'POST':
-            return JsonResponse({"status": "error", "message": "Invalid request method. Use POST."})
+    try:        
         
         # Parse the JSON data from the request body
         data = json.loads(request.body)
         
-        # Extract 'topics' and 'titles' from the dictionary
-        topics = data.get('topics', [])
-        code_titles = data.get('titles', [])
+        # Extract 'topics' and 'labels' from the dictionary
+        topicJsons = data.get('topics', [])
+        code_labels = data.get('labels', [])
         
         messages = []
+
+        topic_dict = defaultdict(list)
+
+        for item in topicJsons:
+            topic = item["topic"]
+            key = item["value_key"]
+            topic_dict[topic].append(key)
+        print(topic_dict)
+
+        # Convert the defaultdict to the desired output format
+        topics = [{"topic": topic, "value_keys": keys} for topic, keys in topic_dict.items()]
         
+
         # Handle ROS messages
-        for topic in topics:
-            ros_service.subscribe_to_topic(topic)
+        for topicJson in topics:
+            ros_service.subscribe_to_topic(topicJson['topic'])
             message = ros_service.get_message()
-            messages.append({'title':None,'topic': topic,'data': message})
+            for key in topicJson['value_keys']:
+                messages.append({'value_key':key,'topic': topicJson['topic'],'value': message})
+
             print(message)
         
         # Handle code execution
-        for title in code_titles:
-            message = runCode(title)
-            item = find_script_by_title(title)
+        for label in code_labels:
+            message = runCode(label)
+            item = find_script_by_label(label)
             topic = item['topic']
-            messages.append({'title':title, 'topic':topic, 'data':message})
+            messages.append({'label':label, 'topic':topic, 'value':message})
             
         
         # Return the successful response
