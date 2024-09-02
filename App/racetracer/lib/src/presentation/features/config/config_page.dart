@@ -41,10 +41,10 @@ class _ConfigPageState extends State<ConfigPage> {
           } else if (state is SavedSucceedState) {
             _urlController.text = state.hostIP;
           } else if (state is FetchSucceedState) {
+            print(state.hostIP);
+            _urlController.text = state.hostIP;
             if (widget.firstPage!) {
               Navigator.pushReplacementNamed(context, HomePage.routeName);
-            } else {
-              _urlController.text = state.hostIP;
             }
           }
         },
@@ -52,13 +52,8 @@ class _ConfigPageState extends State<ConfigPage> {
           builder: (context, state) {
             return Scaffold(
               appBar: AppBar(
-                backgroundColor:
-                    state is DownloadSucceedState || state is FetchSucceedState
-                        ? AppColors.green
-                        : AppColors.warning,
                 title: Text(
                   AppLocalizations.of(context)!.configuration,
-                  style: FontStyles.WHITE_REGULAR_24,
                 ),
                 actions: [
                   !(widget.firstPage!)
@@ -74,7 +69,6 @@ class _ConfigPageState extends State<ConfigPage> {
                               : null,
                           icon: const Icon(
                             Icons.refresh,
-                            color: AppColors.white,
                           ),
                         )
                       : const SizedBox.shrink()
@@ -87,7 +81,6 @@ class _ConfigPageState extends State<ConfigPage> {
                         child: Form(
                           key: _formKey,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               OutlinedTextField(
                                 onChanged: (value) => setState(() {}),
@@ -97,39 +90,61 @@ class _ConfigPageState extends State<ConfigPage> {
                                 controller: _urlController,
                                 keyboardType: TextInputType.url,
                               ),
-                              Text(AppLocalizations.of(context)!
-                                  .configDescription),
+                              const SizedBox(height: 10),
+                              Visibility(
+                                visible: state is DownloadSucceedState ||
+                                    state is FetchSucceedState,
+                                child: Text(
+                                  AppLocalizations.of(context)!.connected,
+                                  style: FontStyles.GREEN_LIGHT_14,
+                                ),
+                              ),
+                              Visibility(
+                                  visible: state is DownloadFailedState,
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .serverConnectionFailed,
+                                    style: FontStyles.RED_LIGHT_14,
+                                  )),
+                              const SizedBox(height: 10),
+                              Text(
+                                AppLocalizations.of(context)!.configDescription,
+                                style: FontStyles.GREY_LIGHT_14,
+                              ),
                               Visibility(
                                 visible: state is! ConfigInProgressState,
-                                child: Align(
-                                  alignment: FractionalOffset.bottomCenter,
-                                  child: widget.firstPage!
-                                      ? StretchedButton(
-                                          onPressed: _isFormValid()
-                                              ? () {
-                                                  BlocProvider.of<ConfigBloc>(
-                                                          context)
-                                                      .add(DownloadDataEvent(
-                                                          hostIP: _urlController
-                                                              .text));
-                                                }
-                                              : null,
-                                          child: Text(
+                                child: Expanded(
+                                  child: Align(
+                                    alignment: FractionalOffset.bottomCenter,
+                                    child: widget.firstPage!
+                                        ? StretchedButton(
+                                            onPressed: _isFormValid()
+                                                ? () {
+                                                    BlocProvider.of<ConfigBloc>(
+                                                            context)
+                                                        .add(DownloadDataEvent(
+                                                            hostIP:
+                                                                _urlController
+                                                                    .text));
+                                                  }
+                                                : null,
+                                            child: Text(
                                               AppLocalizations.of(context)!
-                                                  .download),
-                                        )
-                                      : StretchedButton(
-                                          onPressed: () {
-                                            BlocProvider.of<ConfigBloc>(context)
-                                                .add(SignoutEvent());
-                                          },
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .signout,
-                                            style: const TextStyle(
-                                                color: AppColors.primaryPale),
+                                                  .download,
+                                            ),
+                                          )
+                                        : StretchedButton(
+                                            onPressed: () {
+                                              BlocProvider.of<ConfigBloc>(
+                                                      context)
+                                                  .add(SignoutEvent());
+                                            },
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .signout,
+                                            ),
                                           ),
-                                        ),
+                                  ),
                                 ),
                               ),
                             ],

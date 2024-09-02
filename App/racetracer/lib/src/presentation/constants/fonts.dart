@@ -49,6 +49,11 @@ class FontStyles {
     fontSize: 24.0,
     fontWeight: FontWeight.normal,
   );
+  static const GREY_REGULAR_24 = TextStyle(
+    color: Colors.grey,
+    fontSize: 24.0,
+    fontWeight: FontWeight.normal,
+  );
   static const WHITE_REGULAR_20 = TextStyle(
     color: AppColors.white,
     fontSize: 20.0,
@@ -74,6 +79,16 @@ class FontStyles {
     // color: AppColors.BLACK,
     fontSize: 14.0,
     fontWeight: FontWeight.w300,
+  );
+  static const GREEN_LIGHT_14 = TextStyle(
+    color: AppColors.green,
+    fontSize: 14.0,
+    fontWeight: FontWeight.bold,
+  );
+  static const RED_LIGHT_14 = TextStyle(
+    color: AppColors.warning,
+    fontSize: 14.0,
+    fontWeight: FontWeight.bold,
   );
   static const BLACK_MEDIUM_16 = TextStyle(
     color: AppColors.BLACK,
