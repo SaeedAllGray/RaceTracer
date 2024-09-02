@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from roslibpy import Ros, Topic
 from urllib.parse import unquote
 from .ros_service import RosService
+from collections import defaultdict
 from .models import ROSMessage
 import subprocess
 import time
@@ -13,6 +14,7 @@ import os
 import json
 import roslibpy
 import time
+from racetracer.utils import general
 
 ros_service = RosService()
 
@@ -102,55 +104,109 @@ def get_message(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 # /home/getracing/Desktop/get/jarvic-mono/environment.sh
-def get_ros_message(request):
-    encoded_topic = request.GET.get('topic')
-    
-    if not encoded_topic:
-        return JsonResponse({"error": "Topic not provided"}, status=400)
 
-    # Decode the topic name
-    topic = unquote(encoded_topic)
-
-    # Create a temporary shell script to source the environment and run rostopic echo
-    script_content = f"""
-    #!/bin/bash
-    source /home/getracing/Desktop/get/jarvic-mono/environment.sh > /dev/null
-    rostopic echo -n 1 {topic}
-    """
-    
-    # Write the script to a temporary file
-    with open('/tmp/ros_temp_script.sh', 'w') as script_file:
-        script_file.write(script_content)
-    
-    # Make the script executable
-    subprocess.run(['chmod', '+x', '/tmp/ros_temp_script.sh'])
-    
+def get_code_labels(request):
     try:
-        # Run the temporary script and capture the output
-        result = subprocess.check_output('/tmp/ros_temp_script.sh', shell=True, executable='/bin/bash', stderr=subprocess.STDOUT)
-        message_str = result.decode('utf-8')
-      
-        # Parse the YAML-like output from rostopic into a Python dictionary
-        polished_str = remove_trailing_document(message_str)
-        message_dict = yaml.safe_load(polished_str)
+        code_labels = []
+        for item in general["scripts"]:
+            code_labels.append(item["label"])
+    
+        return JsonResponse({"status": "success", "message": code_labels})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+
+
+
+def find_script_by_label(label):
+    for item in general["scripts"]:
+        if item["label"] == label:
+            return item
+    return None
+
+
+
+def runCode(code_label):
+    item = find_script_by_label(code_label)
+    ros_service.subscribe_to_topic(item['topic'])
+    x = ros_service.get_message()
+
+    exec_globals= {'x': x}
+    exec(item['code'],exec_globals)
+    value = exec_globals['value']
+    return value
+
+def evaluate(request):
+    try:
+        encoded_topic_name = request.GET.get('topic')
+        if not encoded_topic_name:
+            return JsonResponse({'error': 'No topic specified'}, status=400)
+
+        topic_name = unquote(encoded_topic_name)
+    
+        code_label = request.GET.get('label')
         
-        return JsonResponse({"topic": topic, "message": message_dict})
+        code = find_script_by_label(code_label)
+        ros_service.subscribe_to_topic(topic_name)
+        x = ros_service.get_message()
 
-    except subprocess.CalledProcessError as e:
-        return JsonResponse({"error": f"Failed to retrieve message: {str(e.output.decode('utf-8'))}"}, status=500)
+        exec_globals= {'x': x}
+        exec(code,exec_globals)
+        value = exec_globals['value']
 
-def remove_trailing_document(yaml_string):
-    # Find the index of the trailing '---'
-    separator_index = yaml_string.rfind('---')
+        return JsonResponse({"status": "success", "message": f"{value}"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+
+
+def executeTopicMessages(request):
+    try:        
+        
+        # Parse the JSON data from the request body
+        data = json.loads(request.body)
+        
+        # Extract 'topics' and 'labels' from the dictionary
+        topicJsons = data.get('topics', [])
+        code_labels = data.get('labels', [])
+        
+        messages = []
+
+        topic_dict = defaultdict(list)
+
+        for item in topicJsons:
+            topic = item["topic"]
+            key = item["value_key"]
+            topic_dict[topic].append(key)
+        print(topic_dict)
+
+        # Convert the defaultdict to the desired output format
+        topics = [{"topic": topic, "value_keys": keys} for topic, keys in topic_dict.items()]
+        
+
+        # Handle ROS messages
+        for topicJson in topics:
+            ros_service.subscribe_to_topic(topicJson['topic'])
+            message = ros_service.get_message()
+            for key in topicJson['value_keys']:
+                messages.append({'value_key':key,'topic': topicJson['topic'],'value': message})
+
+            print(message)
+        
+        # Handle code execution
+        for label in code_labels:
+            message = runCode(label)
+            item = find_script_by_label(label)
+            topic = item['topic']
+            messages.append({'label':label, 'topic':topic, 'value':message})
+            
+        
+        # Return the successful response
+        return JsonResponse({"status": "success", "messages": messages})
     
-    if separator_index != -1:
-        # Slice the string to exclude the trailing separator and any content after it
-        cleaned_yaml = yaml_string[203:separator_index].rstrip()
-    else:
-        # No separator found, return the original string
-        cleaned_yaml = yaml_string
-    
-    return cleaned_yaml
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "error", "message": "Invalid JSON data."})
+    except Exception as e:
+        # Return the error response
+        return JsonResponse({"status": "error", "message": str(e)})
 
 
 # def get_ros_topics2(request):
@@ -178,7 +234,7 @@ def remove_trailing_document(yaml_string):
     #     }
 
     #     current_section = None
-    #     for line in lines:
+    #     for line in lines::
     #         if line.startswith("Node "):
     #             node_info["node"] = line.split("[")[1].split("]")[0]
     #         elif line.startswith("Publications:"):
