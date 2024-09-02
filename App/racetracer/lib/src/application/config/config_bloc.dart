@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
-import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/local/local_storage_data_source.dart';
 import 'package:racetracer/src/infrastructure/repositories/config_repository.dart';
 import 'package:racetracer/src/presentation/constants/api_constant.dart';
 
@@ -11,7 +11,7 @@ part 'config_event.dart';
 part 'config_state.dart';
 
 class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
-  final LocalDataSource localDataSource = LocalDataSource();
+  final LocalStorageDataSource localDataSource = LocalStorageDataSource();
   final ConfigRepository configRepository = ConfigRepository();
   ConfigBloc() : super(ConfigInitial()) {
     on<SaveEvent>(_onSaveEvent);

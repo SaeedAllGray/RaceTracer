@@ -4,12 +4,18 @@ part 'value_object.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class ValueObject {
-  final String value;
-  final String label;
-
+  @JsonKey(includeIfNull: false)
+  dynamic value;
+  @JsonKey(includeIfNull: false)
+  final String? label;
+  final String topic;
+  @JsonKey(includeIfNull: false)
+  final String? valueKey;
   ValueObject({
-    required this.value,
-    required this.label,
+    this.value,
+    this.label,
+    required this.topic,
+    this.valueKey,
   });
 
   factory ValueObject.fromJson(Map<String, dynamic> json) =>

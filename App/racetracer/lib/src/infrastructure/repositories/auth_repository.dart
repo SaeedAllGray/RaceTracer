@@ -6,13 +6,13 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
 import 'package:racetracer/src/domain/entries/token/git_token.dart';
 import 'package:racetracer/src/infrastructure/datasources/git_remote/gitlab_data_source.dart';
-import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/local/local_storage_data_source.dart';
 import 'package:racetracer/src/presentation/constants/api_constant.dart';
 
 class AuthRepository {
   final FlutterAppAuth appAuth = const FlutterAppAuth();
   final GitAuthsDataSource datasource = GitAuthsDataSource();
-  final LocalDataSource localDataSource = LocalDataSource();
+  final LocalStorageDataSource localDataSource = LocalStorageDataSource();
 
   Future<AuthorizationTokenResponse?> signInWithGitLab(
       OauthAtrributes oauth) async {

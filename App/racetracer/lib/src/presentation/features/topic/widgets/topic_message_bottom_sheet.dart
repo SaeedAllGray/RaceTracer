@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:json_view/json_view.dart';
 import 'package:racetracer/src/application/ros_topic/ros_topic_bloc.dart';
 import 'package:racetracer/src/domain/entries/ros_topic.dart';
+import 'package:racetracer/src/domain/entries/value_object.dart';
+import 'package:racetracer/src/infrastructure/datasources/local/value_object_local_data_source.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/helpers/value_object_helper.dart';
@@ -35,67 +37,85 @@ class _TopicMessageBottomSheetState extends State<TopicMessageBottomSheet> {
         create: (context) =>
             RosTopicBloc()..add(GetRosTopicMessage(topic: widget.rosTopic)),
         child: RoundedBottomSheet(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                widget.rosTopic.name,
-                style: FontStyles.BLACK_BOLD_18,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: BlocBuilder<RosTopicBloc, RosTopicState>(
-                  builder: (context, state) {
-                    if (state is RosTopicMessageFetched) {
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: JsonConfig(
-                              data: JsonConfigData(
-                                  style: const JsonStyleScheme(
-                                    keysStyle: FontStyles.CODE_REGULAR_16,
-                                    valuesStyle: FontStyles.CODE_REGULAR_16,
-                                    // openAtStart: true,
-                                  ),
-                                  color: const JsonColorScheme(
-                                      normalColor: AppColors.BLACK)),
-                              child: JsonView(
-                                json: state.message,
+          child: Scaffold(
+            body: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  widget.rosTopic.name,
+                  style: FontStyles.BLACK_BOLD_18,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: BlocBuilder<RosTopicBloc, RosTopicState>(
+                    builder: (context, state) {
+                      if (state is RosTopicMessageFetched) {
+                        return Column(
+                          children: [
+                            Expanded(
+                              child: JsonConfig(
+                                data: JsonConfigData(
+                                    style: const JsonStyleScheme(
+                                      keysStyle: FontStyles.CODE_REGULAR_16,
+                                      valuesStyle: FontStyles.CODE_REGULAR_16,
+                                      // openAtStart: true,
+                                    ),
+                                    color: const JsonColorScheme(
+                                        normalColor: AppColors.BLACK)),
+                                child: JsonView(
+                                  json: state.message,
+                                ),
                               ),
                             ),
-                          ),
-                          TextField(
-                            onChanged: (value) => setState(() {}),
-                            controller: codeController,
-                            style: FontStyles.CODE_REGULAR_16,
-                            decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: AppColors.lightGrey,
-                                border: InputBorder.none,
-                                hintText: "Enter the address of the value"),
-                          ),
-                          StretchedButton(
-                            onPressed: ValueObjectHelper.isValid(
-                                    codeController.text, state.message)
-                                ? () {
-                                    // print(
-                                    //   pickDeep(state.message, ["clock", "secs"])
-                                    //       .value,
-                                    // );
-                                  }
-                                : null,
-                            child: Text(AppLocalizations.of(context)!.observe),
-                          )
-                        ],
-                      );
-                    }
-                    return const LoadingWidget();
-                  },
+                            TextField(
+                              onChanged: (value) => setState(() {}),
+                              controller: codeController,
+                              style: FontStyles.CODE_REGULAR_16,
+                              decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: AppColors.lightGrey,
+                                  border: InputBorder.none,
+                                  hintText: "Enter the address of the value"),
+                            ),
+                            StretchedButton(
+                              onPressed: ValueObjectHelper.isValid(
+                                      codeController.text, state.message)
+                                  ? () {
+                                      try {
+                                        ValueObjectLocalDataSource()
+                                            .writeEntity(
+                                          ValueObject(
+                                            topic: widget.rosTopic.name,
+                                            valueKey: codeController.text,
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content:
+                                              Text("Watch List is updated."),
+                                        ));
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text("Error!"),
+                                        ));
+                                      }
+                                    }
+                                  : null,
+                              child:
+                                  Text(AppLocalizations.of(context)!.observe),
+                            )
+                          ],
+                        );
+                      }
+                      return const LoadingWidget();
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

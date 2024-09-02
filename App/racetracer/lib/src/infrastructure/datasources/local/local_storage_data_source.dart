@@ -3,8 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
 import 'package:racetracer/src/domain/entries/token/git_token.dart';
 
-class LocalDataSource {
-  //TODO: rename this later
+class LocalStorageDataSource {
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   Future<void> saveOauth(OauthAtrributes oauth) async {

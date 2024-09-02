@@ -1,5 +1,5 @@
 import 'package:racetracer/src/domain/entries/token/git_token.dart';
-import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/local/local_storage_data_source.dart';
 
 class TokenHelper {
   static String userToken = '';
@@ -18,7 +18,7 @@ class TokenHelper {
   }
 
   static Future<void> setToken() async {
-    gitToken = await LocalDataSource().getGitToken();
+    gitToken = await LocalStorageDataSource().getGitToken();
 
     userToken = gitToken?.accessToken ?? '';
   }

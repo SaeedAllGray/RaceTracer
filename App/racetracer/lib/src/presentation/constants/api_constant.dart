@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
-import 'package:racetracer/src/infrastructure/datasources/local/local_data_source.dart';
+import 'package:racetracer/src/infrastructure/datasources/local/local_storage_data_source.dart';
 
 class ApiConstants {
   // static const String baseUrl = 'http://192.168.178.48:8888';
@@ -22,9 +22,11 @@ class ApiConstants {
   static const String TOKEN = 'token';
   static const String ROS = 'ros';
   static const String MESSAGE = 'message';
+  static const String VALUES = 'values';
   static const String TESTSESSIONS = 'testsessions';
   static const String GIT = 'git';
   static const String RAW = 'raw';
+  static const String TOPIC = 'topic';
 
   static late OauthAtrributes _oauthAtrributes;
 
@@ -39,11 +41,11 @@ class ApiConstants {
   static bool isTheFirstTimeAppLaunch = false;
 
   static Future<void> setBaseUrl() async {
-    _baseUrl = await LocalDataSource().getHostIP() ?? '';
+    _baseUrl = await LocalStorageDataSource().getHostIP() ?? '';
   }
 
   static Future<void> setProjectId() async {
-    projectId = await LocalDataSource().getProjectID() ?? '';
+    projectId = await LocalStorageDataSource().getProjectID() ?? '';
   }
 
   static String get getProjectId {

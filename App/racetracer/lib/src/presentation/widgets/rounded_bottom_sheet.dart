@@ -14,9 +14,9 @@ class RoundedBottomSheet extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         // height: 800,
-        decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20))),
         child: SafeArea(
           child: Column(
