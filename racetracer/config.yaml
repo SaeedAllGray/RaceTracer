@@ -21,13 +21,13 @@ gitlab:
 
 
 scripts:
-- title: blue_cones
+- label: blue_cones
   topic: /jarvic/estimation/map
   code: |
     def ahah(x):
       return len(x['cones'])
     value = ahah(x)
-- title: clock
+- label: clock
   topic: /clock
   code: |
     value = x['clock']['secs']
