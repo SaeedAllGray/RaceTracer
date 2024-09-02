@@ -44,7 +44,7 @@ class _ConfigPageState extends State<ConfigPage> {
             print(state.hostIP);
             _urlController.text = state.hostIP;
             if (widget.firstPage!) {
-              Navigator.pushReplacementNamed(context, HomePage.routeName);
+              Navigator.pushReplacementNamed(context, AuthPage.routeName);
             }
           }
         },
