@@ -1,44 +1,25 @@
-import os
 import roslibpy
-from pathlib import Path
-import subprocess
+# import rospy
 import time
 
 class RosService:
     def __init__(self):
-        try:
-            command = 'source /opt/ros/noetic/setup.bash'
-            proc = subprocess.Popen(['bash', '-c', command + ' && env'], stdout=subprocess.PIPE, executable='/bin/bash')
-            output, _ = proc.communicate()
-
-            for line in output.splitlines():
-                key, _, value = line.partition(b"=")
-                os.environ[key.decode("utf-8")] = value.decode("utf-8")
-
-        except Exception as e:
-            print(f"Failed to source ROS environment: {e}")
-            raise
 
         self.ros = roslibpy.Ros(host='localhost', port=9091)
         self.ros.on_ready(self.on_ready)
         self.ros.run()
+        self.subscriber = None
+        self.message = None
+
+
 
         if not self.ros.is_connected:
             print("Failed to connect to ROS bridge")
         else:
             print("Successfully connected to ROS bridge")
 
-        self.message = None
-        self.subscriber = None
-        self.LOG_DIR = Path.home() / 'Desktop/Projects/logs'
-        self.LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-    def start_service(self, command, log_name, sleep_time):
-        log_path = self.LOG_DIR / f'{log_name}.log'
-        with open(log_path, 'w') as log_file:
-            process = subprocess.Popen(command, shell=True, stdout=log_file, stderr=log_file)
-        time.sleep(sleep_time)
-        return process
+
 
     def get_nodes(self):
         return self.ros.get_nodes()
@@ -82,31 +63,48 @@ class RosService:
         # Initialize other aspects of your ROS setup here
 
     def subscribe_to_topic(self, topic_name):
+        # self.rospy_message(topic_name)
+        self.message = {'message':'No Value Published','ros_error':True}
+        if self.subscriber:
+            self.subscriber.unsubscribe()
+            print('unsubed.....')
+
+
         type = self.ros.get_topic_type(topic_name)
-        print(f"Topic type of {topic_name}: {type}")
 
         if not type:
             print(f"Failed to get type for topic {topic_name}")
             return
-
-        if self.subscriber:
-            self.subscriber.unsubscribe()
-            print(f"Unsubscribed from previous topic")
-
+        
         self.subscriber = roslibpy.Topic(self.ros, topic_name, type)
-        print(f"Subscribing to topic {topic_name} with type {type}")
-        # time.sleep(10)
 
         self.subscriber.subscribe(self.callback)
         time.sleep(2)
         print('Subscription completed')
 
+       
+
     def callback(self, message):
         print('Received message:', message)
         self.message = message
+        self.subscriber.unsubscribe()
+        
 
     def get_message(self):
         return self.message
 
+
+    # def rospy_message(self,topic_name):
+        # rospy.init_node('my_node')
+        # type = self.ros.get_topic_type(topic_name)
+
+
+        # try:
+        #     # Wait for a message on the topic '/chatter'
+        #     message = rospy.wait_for_message(topic_name, type, timeout=1)  # Timeout in seconds
+        #     print('Received message:', message.data)
+            
+        # except rospy.ROSException:
+        #     print('No message received within the timeout period.')
 
 

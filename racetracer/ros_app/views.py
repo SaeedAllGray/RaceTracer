@@ -13,6 +13,7 @@ import os
 import json
 import roslibpy
 import time
+from racetracer.utils import general
 
 ros_service = RosService()
 
@@ -102,55 +103,98 @@ def get_message(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 # /home/getracing/Desktop/get/jarvic-mono/environment.sh
-def get_ros_message(request):
-    encoded_topic = request.GET.get('topic')
-    
-    if not encoded_topic:
-        return JsonResponse({"error": "Topic not provided"}, status=400)
 
-    # Decode the topic name
-    topic = unquote(encoded_topic)
-
-    # Create a temporary shell script to source the environment and run rostopic echo
-    script_content = f"""
-    #!/bin/bash
-    source /home/getracing/Desktop/get/jarvic-mono/environment.sh > /dev/null
-    rostopic echo -n 1 {topic}
-    """
-    
-    # Write the script to a temporary file
-    with open('/tmp/ros_temp_script.sh', 'w') as script_file:
-        script_file.write(script_content)
-    
-    # Make the script executable
-    subprocess.run(['chmod', '+x', '/tmp/ros_temp_script.sh'])
-    
+def get_code_titles(request):
     try:
-        # Run the temporary script and capture the output
-        result = subprocess.check_output('/tmp/ros_temp_script.sh', shell=True, executable='/bin/bash', stderr=subprocess.STDOUT)
-        message_str = result.decode('utf-8')
-      
-        # Parse the YAML-like output from rostopic into a Python dictionary
-        polished_str = remove_trailing_document(message_str)
-        message_dict = yaml.safe_load(polished_str)
+        code_titles = []
+        for item in general["scripts"]:
+            code_titles.append(item["title"])
+    
+        return JsonResponse({"status": "success", "message": code_titles})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+
+
+
+def find_script_by_title(title):
+    for item in general["scripts"]:
+        if item["title"] == title:
+            return item
+    return None
+
+
+
+def runCode(code_title):
+    item = find_script_by_title(code_title)
+    ros_service.subscribe_to_topic(item['topic'])
+    x = ros_service.get_message()
+
+    exec_globals= {'x': x}
+    exec(item['code'],exec_globals)
+    value = exec_globals['value']
+    return value
+
+def evaluate(request):
+    try:
+        encoded_topic_name = request.GET.get('topic')
+        if not encoded_topic_name:
+            return JsonResponse({'error': 'No topic specified'}, status=400)
+
+        topic_name = unquote(encoded_topic_name)
+    
+        code_title = request.GET.get('title')
         
-        return JsonResponse({"topic": topic, "message": message_dict})
+        code = find_script_by_title(code_title)
+        ros_service.subscribe_to_topic(topic_name)
+        x = ros_service.get_message()
 
-    except subprocess.CalledProcessError as e:
-        return JsonResponse({"error": f"Failed to retrieve message: {str(e.output.decode('utf-8'))}"}, status=500)
+        exec_globals= {'x': x}
+        exec(code,exec_globals)
+        value = exec_globals['value']
 
-def remove_trailing_document(yaml_string):
-    # Find the index of the trailing '---'
-    separator_index = yaml_string.rfind('---')
+        return JsonResponse({"status": "success", "message": f"{value}"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
+
+@csrf_exempt
+def executeTopicMessages(request):
+    try:
+        # Ensure the request is a POST request
+        if request.method != 'POST':
+            return JsonResponse({"status": "error", "message": "Invalid request method. Use POST."})
+        
+        # Parse the JSON data from the request body
+        data = json.loads(request.body)
+        
+        # Extract 'topics' and 'titles' from the dictionary
+        topics = data.get('topics', [])
+        code_titles = data.get('titles', [])
+        
+        messages = []
+        
+        # Handle ROS messages
+        for topic in topics:
+            ros_service.subscribe_to_topic(topic)
+            message = ros_service.get_message()
+            messages.append({'title':None,'topic': topic,'data': message})
+            print(message)
+        
+        # Handle code execution
+        for title in code_titles:
+            message = runCode(title)
+            item = find_script_by_title(title)
+            topic = item['topic']
+            messages.append({'title':title, 'topic':topic, 'data':message})
+            
+        
+        # Return the successful response
+        return JsonResponse({"status": "success", "messages": messages})
     
-    if separator_index != -1:
-        # Slice the string to exclude the trailing separator and any content after it
-        cleaned_yaml = yaml_string[203:separator_index].rstrip()
-    else:
-        # No separator found, return the original string
-        cleaned_yaml = yaml_string
-    
-    return cleaned_yaml
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "error", "message": "Invalid JSON data."})
+    except Exception as e:
+        # Return the error response
+        return JsonResponse({"status": "error", "message": str(e)})
 
 
 # def get_ros_topics2(request):
@@ -178,7 +222,7 @@ def remove_trailing_document(yaml_string):
     #     }
 
     #     current_section = None
-    #     for line in lines:
+    #     for line in lines::
     #         if line.startswith("Node "):
     #             node_info["node"] = line.split("[")[1].split("]")[0]
     #         elif line.startswith("Publications:"):
