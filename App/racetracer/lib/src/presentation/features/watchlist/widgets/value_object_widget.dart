@@ -25,12 +25,12 @@ class ValueObjectWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            valueObject.value,
+            valueObject.value ?? '',
             style: FontStyles.BLACK_BOLD_36,
           ),
           const Spacer(),
           Text(
-            valueObject.label,
+            valueObject.label ?? '',
             style: FontStyles.BLACK_MEDIUM_16,
           ),
           // SizedBox(

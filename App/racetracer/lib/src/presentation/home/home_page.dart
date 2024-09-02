@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> getTabs() => <Widget>[
         const DashboardPage(),
         const TestSessionsPage(),
-        const EmbedPage(),
+        const WatchlistPage(),
         const ConfigPage(
           firstPage: false,
         )

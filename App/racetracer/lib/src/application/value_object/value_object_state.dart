@@ -1,0 +1,16 @@
+part of 'value_object_bloc.dart';
+
+sealed class ValueObjectState extends Equatable {
+  const ValueObjectState();
+
+  @override
+  List<Object> get props => [];
+}
+
+final class ValueObjectInitial extends ValueObjectState {}
+
+final class ValueObjectsFetched extends ValueObjectState {
+  final List<ValueObject> valueObjects;
+
+  const ValueObjectsFetched({required this.valueObjects});
+}

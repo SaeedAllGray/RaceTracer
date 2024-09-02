@@ -1,4 +1,5 @@
 import 'package:deep_pick/deep_pick.dart';
+import 'package:racetracer/src/domain/entries/value_object.dart';
 
 class ValueObjectHelper {
   static List<Object> parseData(String data) {
@@ -18,5 +19,14 @@ class ValueObjectHelper {
 
   static bool isValid(String input, dynamic message) {
     return !pickDeep(message, ValueObjectHelper.parseData(input)).isAbsent;
+  }
+
+  static ValueObject convert(ValueObject valueObject) {
+    return ValueObject(
+        topic: valueObject.topic,
+        label: valueObject.valueKey,
+        value: pickDeep(valueObject.value,
+                ValueObjectHelper.parseData(valueObject.valueKey!))
+            .asStringOrNull());
   }
 }
