@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:blinking_text/blinking_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -26,44 +28,50 @@ class _AuthPageState extends State<AuthPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/car.jpg"),
+            image: AssetImage("assets/images/car.jpeg"),
             fit: BoxFit.cover,
           ),
         ),
         child: /* add child content here */
 
-            BlocProvider(
-          create: (context) => AuthBloc()..add(RetrieveDataEvent()),
-          child: BlocConsumer<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is AuthSuceedState) {
-                Navigator.pushReplacementNamed(context, HomePage.routeName);
-              }
-            },
-            builder: (context, state) {
-              return state is! AuthInProgress
-                  ? Align(
-                      alignment: FractionalOffset.bottomCenter,
-                      child: StretchedButton(
-                        onPressed: () async {
-                          BlocProvider.of<AuthBloc>(context).add(LoginEvent());
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.signIn,
-                        ),
-                      ),
-                    )
-                  : Align(
-                      alignment: FractionalOffset.bottomCenter,
-                      child: BlinkText(
-                        endColor: AppColors.white,
-                        beginColor: AppColors.primary,
-                        duration: const Duration(seconds: 2),
-                        AppLocalizations.of(context)!.loading,
-                        style: FontStyles.WHITE_BOLD_24,
-                      ),
-                    );
-            },
+            SafeArea(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
+            child: BlocProvider(
+              create: (context) => AuthBloc()..add(RetrieveDataEvent()),
+              child: BlocConsumer<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthSuceedState) {
+                    Navigator.pushReplacementNamed(context, HomePage.routeName);
+                  }
+                },
+                builder: (context, state) {
+                  return state is! AuthInProgress
+                      ? Align(
+                          alignment: FractionalOffset.bottomCenter,
+                          child: StretchedButton(
+                            onPressed: () async {
+                              BlocProvider.of<AuthBloc>(context)
+                                  .add(LoginEvent());
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.signIn,
+                            ),
+                          ),
+                        )
+                      : Align(
+                          alignment: FractionalOffset.bottomCenter,
+                          child: BlinkText(
+                            endColor: AppColors.white,
+                            beginColor: AppColors.primary,
+                            duration: const Duration(seconds: 2),
+                            AppLocalizations.of(context)!.loading,
+                            style: FontStyles.WHITE_BOLD_24,
+                          ),
+                        );
+                },
+              ),
+            ),
           ),
         ),
       ),
