@@ -34,6 +34,8 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
       FetchDataEvent event, Emitter<ConfigState> emit) async {
     emit(ConfigInProgressState());
     final String? hostIP = await localDataSource.getHostIP();
+    await ApiConstants.setBaseUrl();
+    await ApiConstants.setProjectId();
     if (hostIP != null) {
       emit(FetchSucceedState(hostIP: hostIP));
     }
@@ -57,6 +59,8 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
 
       await localDataSource.saveOauth(oauthAtrributes);
       await localDataSource.saveHostIP(event.hostIP);
+      await ApiConstants.setBaseUrl();
+      await ApiConstants.setProjectId();
       emit(DownloadSucceedState());
     } catch (e) {
       emit(DownloadFailedState());
