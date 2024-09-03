@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:racetracer/src/domain/entries/value_object.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/value_object_local_data_source.dart';
 import 'package:racetracer/src/infrastructure/datasources/remote/value_object_remote_data_source.dart';
@@ -30,5 +32,24 @@ class ValueObjectRepository {
   Future<List<ValueObject>> getLocalEntities() async {
     List<ValueObject> valueObjects = await localDataSource.getEntities();
     return valueObjects;
+  }
+
+  Stream<List<ValueObject>> fetchValueObjectsEvery15Seconds() async* {
+    while (true) {
+      try {
+        // Call the API to get the data
+        List<ValueObject> valueObjects = await getRemoteEntities();
+
+        // Yield the list of ValueObjects to the stream
+        yield valueObjects;
+      } catch (error) {
+        // Handle errors by logging or yielding an error state
+        print("Error fetching data: $error");
+        // Optionally, you could yield an empty list or other error-related data
+      }
+
+      // Wait for 15 seconds before making the next call
+      await Future.delayed(Duration(seconds: 15));
+    }
   }
 }

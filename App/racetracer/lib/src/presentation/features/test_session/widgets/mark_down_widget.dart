@@ -7,7 +7,7 @@ import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 class MarkdownWidget extends StatelessWidget {
   final String markdownData;
 
-  MarkdownWidget({required this.markdownData});
+  const MarkdownWidget({super.key, required this.markdownData});
 
   @override
   Widget build(BuildContext context) {

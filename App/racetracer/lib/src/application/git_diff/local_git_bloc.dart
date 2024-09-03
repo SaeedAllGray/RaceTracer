@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:racetracer/src/domain/entries/git_commit.dart';
 import 'package:racetracer/src/infrastructure/repositories/git_commit_repository.dart';
 import 'package:racetracer/src/infrastructure/repositories/local_git_repository.dart';
-import 'package:racetracer/src/domain/entries/attribute_diff.dart';
 
 part 'local_git_event.dart';
 part 'local_git_state.dart';
@@ -32,7 +31,6 @@ class LocalGitBloc extends Bloc<LocalGitEvent, LocalGitState> {
       String commitSha = await localGitRepository.commitAndPush(event.message);
       GitCommit gitCommit =
           await GitCommitRepository().fetchEntityWithSha(commitSha);
-      print(gitCommit);
       emit(GitPushSucceed(gitCommit: gitCommit));
     } catch (e) {
       log(e.toString());

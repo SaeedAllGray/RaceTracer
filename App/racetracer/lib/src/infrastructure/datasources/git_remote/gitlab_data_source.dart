@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:racetracer/src/domain/entries/oauth/oauth_attributes.dart';
-import 'package:racetracer/src/infrastructure/datasources/local/local_storage_data_source.dart';
 import 'package:racetracer/src/presentation/constants/api_constant.dart';
 
 class GitAuthsDataSource {

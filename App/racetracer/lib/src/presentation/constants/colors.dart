@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color BLACK = Colors.black;
   static const Color primary = Colors.blueGrey;
+  static const Color primaryDark = Color(0xff116682);
   static const Color primaryPale = Color.fromRGBO(255, 9, 29, 1);
   static const Color white = Colors.white;
   static const Color scaffoldBackgroundColor = Color.fromRGBO(240, 240, 240, 1);

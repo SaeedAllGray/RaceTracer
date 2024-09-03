@@ -25,7 +25,7 @@ class RoundedTileWidget extends StatelessWidget {
                 onTap != null ? const Icon(Icons.chevron_right_rounded) : null,
             title: Text(
               title,
-              style: FontStyles.BLACK_MEDIUM_16,
+              style: FontStyles.BLACK_MEDIUM_18,
             ),
           ),
           Padding(

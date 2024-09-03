@@ -10,6 +10,7 @@ import 'package:racetracer/src/presentation/features/watchlist/widgets/observe_t
 import 'package:racetracer/src/presentation/features/watchlist/widgets/value_object_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
+import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
 class WatchlistPage extends StatefulWidget {
   const WatchlistPage({super.key});
@@ -39,27 +40,45 @@ class _WatchlistPageState extends State<WatchlistPage> {
                 icon: const Icon(Icons.add_rounded))
           ],
         ),
-        body: BlocBuilder<ValueObjectBloc, ValueObjectState>(
-          builder: (context, state) {
-            if (state is ValueObjectsFetched) {
-              return GridView.builder(
-                itemCount: state.valueObjects.length + 1,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                padding: const EdgeInsets.all(5),
-                itemBuilder: (context, index) {
-                  if (index == state.valueObjects.length) {
-                    return ObserveTopicButton();
+        body: Column(
+          children: [
+            Expanded(
+              child: BlocBuilder<ValueObjectBloc, ValueObjectState>(
+                builder: (context, state) {
+                  if (state is ValueObjectsFetched) {
+                    return GridView.builder(
+                      itemCount: state.valueObjects.length + 1,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      padding: const EdgeInsets.all(5),
+                      itemBuilder: (context, index) {
+                        if (index == state.valueObjects.length) {
+                          return ObserveTopicButton();
+                        }
+                        return ValueObjectWidget(
+                            valueObject: state.valueObjects[index]);
+                      },
+                    );
+                    // ObserveTopicButton()
                   }
-                  return ValueObjectWidget(
-                      valueObject: state.valueObjects[index]);
+                  return const LoadingWidget();
                 },
-              );
-              // ObserveTopicButton()
-            }
-            return const LoadingWidget();
-          },
+              ),
+            ),
+            BlocBuilder<ValueObjectBloc, ValueObjectState>(
+              builder: (context, state) {
+                return StretchedButton(
+                  child: const Icon(Icons.refresh_rounded),
+                  onPressed: () {
+                    BlocProvider.of<ValueObjectBloc>(context)
+                        .add(FetchValueObjects());
+                  },
+                );
+              },
+            )
+          ],
         ),
       ),
     );

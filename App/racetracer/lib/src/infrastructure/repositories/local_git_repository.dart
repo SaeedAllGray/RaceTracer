@@ -1,5 +1,4 @@
 import 'package:racetracer/src/infrastructure/datasources/remote/local_git_data_source.dart';
-import 'package:racetracer/src/domain/entries/attribute_diff.dart';
 
 class LocalGitRepository {
   LocalGitDataSource dataSource = LocalGitDataSource();

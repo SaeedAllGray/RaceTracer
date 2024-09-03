@@ -39,7 +39,6 @@ class GitCommitRepository
       );
   }
 
-  @override
   Future<GitComment> createComment(GitCommit gitCommit, String note) async {
     dynamic response = await api.createComment(gitCommit.id, note);
     return GitComment.fromJson(response);

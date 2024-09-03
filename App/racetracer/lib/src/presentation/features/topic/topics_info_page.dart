@@ -39,7 +39,7 @@ class TopicsInfoPage extends StatelessWidget {
                             itemBuilder: (context, index) => ListTile(
                               title: Text(
                                 state.rosTopics[index].name,
-                                style: FontStyles.BLACK_MEDIUM_16,
+                                style: FontStyles.BLACK_MEDIUM_18,
                               ),
                               leading: const Icon(Icons.adjust),
                               subtitle: Column(

@@ -16,7 +16,7 @@ class ValueObjectWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.bubble,
+        color: AppColors.bubble.withOpacity(0.7),
         borderRadius: BorderRadius.circular(15),
       ),
       margin: const EdgeInsets.all(5),
@@ -30,8 +30,13 @@ class ValueObjectWidget extends StatelessWidget {
           ),
           const Spacer(),
           Text(
+            valueObject.topic,
+            style: FontStyles.BLACK_MEDIUM_12,
+          ),
+          Text(
             valueObject.label ?? '',
-            style: FontStyles.BLACK_MEDIUM_16,
+            style: FontStyles.BLACK_MEDIUM_18
+                .copyWith(color: Theme.of(context).colorScheme.primary),
           ),
           // SizedBox(
           //   height: 50,

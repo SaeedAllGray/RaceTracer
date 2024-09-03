@@ -5,10 +5,15 @@ import 'package:racetracer/src/presentation/constants/colors.dart';
 
 class FontStyles {
   static const BLACK_BOLD_36 = TextStyle(
-    color: AppColors.BLACK,
-    fontSize: 36.0,
-    fontWeight: FontWeight.bold,
-  );
+      color: AppColors.primaryDark,
+      fontSize: 36.0,
+      fontWeight: FontWeight.bold,
+      shadows: [
+        Shadow(
+          color: AppColors.white,
+          offset: Offset(0, 1),
+        ),
+      ]);
   static const WHITE_BOLD_24 = TextStyle(
     color: AppColors.white,
     fontSize: 24.0,
@@ -95,7 +100,12 @@ class FontStyles {
     fontSize: 14.0,
     fontWeight: FontWeight.bold,
   );
-  static const BLACK_MEDIUM_16 = TextStyle(
+  static const BLACK_MEDIUM_12 = TextStyle(
+    color: AppColors.BLACK,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+  );
+  static const BLACK_MEDIUM_18 = TextStyle(
     color: AppColors.BLACK,
     fontSize: 18.0,
     fontWeight: FontWeight.w500,
