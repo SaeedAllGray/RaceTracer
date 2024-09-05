@@ -109,7 +109,7 @@ def get_code_labels(request):
     try:
         code_labels = []
         for item in general["scripts"]:
-            code_labels.append(item["label"])
+            code_labels.append({'label':item["label"],'topic':item["topic"]})
     
         return JsonResponse({"status": "success", "message": code_labels})
     except Exception as e:
@@ -126,14 +126,18 @@ def find_script_by_label(label):
 
 
 def runCode(code_label):
-    item = find_script_by_label(code_label)
-    ros_service.subscribe_to_topic(item['topic'])
-    x = ros_service.get_message()
+    try: 
+        item = find_script_by_label(code_label)
+        ros_service.subscribe_to_topic(item['topic'])
+        x = ros_service.get_message()
 
-    exec_globals= {'x': x}
-    exec(item['code'],exec_globals)
-    value = exec_globals['value']
-    return value
+        exec_globals= {'x': x}
+        exec(item['code'],exec_globals)
+        value = exec_globals['value']
+        return value
+    except Exception as e:
+        return {"racetracer_log":"Topic might not be published", "error":str(e)}
+
 
 def evaluate(request):
     try:

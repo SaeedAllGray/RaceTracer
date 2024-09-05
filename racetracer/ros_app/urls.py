@@ -16,7 +16,7 @@ urlpatterns = [
     path('bag/stop/', views.stop_rosbag_recording, name='stop_rosbag_recording'),
     path('topic/message/', views.get_message, name='show_message'),
     path('topic/message/evaluate/', views.evaluate, name='evaluate message'),
-    path('code/titles/', views.get_code_labels, name='get code titles'),
+    path('scripts/', views.get_code_labels, name='get code titles'),
     path('topic/values/', views.executeTopicMessages, name='get the values'),
 
 

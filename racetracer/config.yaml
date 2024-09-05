@@ -16,8 +16,9 @@ gitlab:
 
 
 
-# Name input to 'x', and output to 'value'
-# titles should be unique
+# Name input to 'x', and output to 'value'.
+# labels should be unique.
+# After any change in code, server should be restarted.
 
 
 scripts:
