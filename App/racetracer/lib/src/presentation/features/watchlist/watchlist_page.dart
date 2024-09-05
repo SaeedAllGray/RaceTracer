@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:racetracer/src/application/value_object/value_object_bloc.dart';
-import 'package:racetracer/src/domain/entries/value_object.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
-import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/watchlist/widgets/add_value_object_bottom_sheet.dart';
 import 'package:racetracer/src/presentation/features/watchlist/widgets/observe_topic_button.dart';
 import 'package:racetracer/src/presentation/features/watchlist/widgets/value_object_widget.dart';
@@ -20,6 +17,7 @@ class WatchlistPage extends StatefulWidget {
 }
 
 class _WatchlistPageState extends State<WatchlistPage> {
+  bool isEditing = false;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -61,7 +59,9 @@ class _WatchlistPageState extends State<WatchlistPage> {
                           return const ObserveTopicButton();
                         }
                         return ValueObjectWidget(
-                            valueObject: state.valueObjects[index]);
+                          valueObject: state.valueObjects[index],
+                          isEditing: isEditing,
+                        );
                       },
                     );
                     // ObserveTopicButton()
@@ -70,20 +70,60 @@ class _WatchlistPageState extends State<WatchlistPage> {
                       stream: state.valueObjectsStream,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return GridView.builder(
-                            itemCount: snapshot.data.length + 1,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
+                          return GestureDetector(
+                            onLongPress: () => setState(() {
+                              isEditing = !isEditing;
+                              print(isEditing);
+                            }),
+                            child: GridView.builder(
+                              itemCount: snapshot.data.length + 1,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                              ),
+                              padding: const EdgeInsets.all(5),
+                              itemBuilder: (context, index) {
+                                if (index == snapshot.data.length) {
+                                  return const ObserveTopicButton();
+                                }
+                                return Stack(
+                                  children: [
+                                    ValueObjectWidget(
+                                      valueObject: snapshot.data[index],
+                                      isEditing: isEditing,
+                                    ),
+                                    if (isEditing)
+                                      Positioned(
+                                          top: 2,
+                                          left: 2,
+                                          child: SizedBox(
+                                            width: 25,
+                                            height: 25,
+                                            child: IconButton(
+                                              padding: EdgeInsets.zero,
+                                              style: OutlinedButton.styleFrom(
+                                                padding: EdgeInsets.zero,
+                                                foregroundColor:
+                                                    AppColors.primaryDark,
+                                                backgroundColor: AppColors
+                                                    .primaryDark
+                                                    .withOpacity(0.2),
+                                              ),
+                                              icon: const Icon(
+                                                  Icons.remove_rounded),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            ValueObjectBloc>(
+                                                        context)
+                                                    .add(RemoveValueObject(
+                                                        index: index));
+                                              },
+                                            ),
+                                          ))
+                                  ],
+                                );
+                              },
                             ),
-                            padding: const EdgeInsets.all(5),
-                            itemBuilder: (context, index) {
-                              if (index == snapshot.data.length) {
-                                return const ObserveTopicButton();
-                              }
-                              return ValueObjectWidget(
-                                  valueObject: snapshot.data[index]);
-                            },
                           );
                         }
                         return CircularProgressIndicator.adaptive();
@@ -94,17 +134,17 @@ class _WatchlistPageState extends State<WatchlistPage> {
                 },
               ),
             ),
-            BlocBuilder<ValueObjectBloc, ValueObjectState>(
-              builder: (context, state) {
-                return StretchedButton(
-                  child: const Icon(Icons.refresh_rounded),
-                  onPressed: () {
-                    BlocProvider.of<ValueObjectBloc>(context)
-                        .add(FetchValueObjects());
-                  },
-                );
-              },
-            )
+            // BlocBuilder<ValueObjectBloc, ValueObjectState>(
+            //   builder: (context, state) {
+            //     return StretchedButton(
+            //       child: const Icon(Icons.refresh_rounded),
+            //       onPressed: () {
+            //         BlocProvider.of<ValueObjectBloc>(context)
+            //             .add(FetchValueObjects());
+            //       },
+            //     );
+            //   },
+            // )
           ],
         ),
       ),

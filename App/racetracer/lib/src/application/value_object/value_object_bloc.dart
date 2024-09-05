@@ -9,11 +9,13 @@ part 'value_object_event.dart';
 part 'value_object_state.dart';
 
 class ValueObjectBloc extends Bloc<ValueObjectEvent, ValueObjectState> {
+  Stream? valueObjectsStream;
   ValueObjectBloc() : super(ValueObjectInitial()) {
     on<FetchValueObjects>(_onFetchValueObjectsEvent);
     on<FetchServerScripts>(_onFetchServerScriptsEvent);
     on<SaveScriptValueObject>(_onSaveScriptValueObjectEvent);
     on<FetchValueObjectsStream>(_onFetchValueObjectsStreamEvent);
+    on<RemoveValueObject>(_onRemoveValueObjectEvent);
   }
   FutureOr<void> _onFetchValueObjectsEvent(
       FetchValueObjects event, Emitter<ValueObjectState> emit) async {
@@ -26,9 +28,9 @@ class ValueObjectBloc extends Bloc<ValueObjectEvent, ValueObjectState> {
   FutureOr<void> _onFetchValueObjectsStreamEvent(
       FetchValueObjectsStream event, Emitter<ValueObjectState> emit) async {
     ValueObjectRepository repository = ValueObjectRepository();
-    Stream stream = repository.getEntitiesStream();
+    valueObjectsStream = repository.getEntitiesStream();
 
-    emit(ValueObjectsStreaming(valueObjectsStream: stream));
+    emit(ValueObjectsStreaming(valueObjectsStream: valueObjectsStream!));
   }
 
   FutureOr<void> _onFetchServerScriptsEvent(
@@ -43,5 +45,11 @@ class ValueObjectBloc extends Bloc<ValueObjectEvent, ValueObjectState> {
       SaveScriptValueObject event, Emitter<ValueObjectState> emit) async {
     ValueObjectRepository repository = ValueObjectRepository();
     await repository.saveScript(event.valueObject);
+  }
+
+  FutureOr<void> _onRemoveValueObjectEvent(
+      RemoveValueObject event, Emitter<ValueObjectState> emit) async {
+    ValueObjectRepository repository = ValueObjectRepository();
+    await repository.removeEntity(event.index);
   }
 }

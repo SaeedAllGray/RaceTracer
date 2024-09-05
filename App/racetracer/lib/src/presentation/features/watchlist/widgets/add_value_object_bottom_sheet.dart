@@ -41,17 +41,21 @@ class AddValueObjectBottomSheet extends StatelessWidget {
                           state.valueObjects[index].label!,
                           style: FontStyles.BLACK_MEDIUM_18,
                         ),
-                        trailing: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryDark,
-                              foregroundColor: AppColors.white,
-                              padding: const EdgeInsets.all(5)),
-                          child: Text(AppLocalizations.of(context)!.add),
-                          onPressed: () {
-                            BlocProvider.of<ValueObjectBloc>(context).add(
-                                SaveScriptValueObject(
-                                    valueObject: state.valueObjects[index]));
-                          },
+                        trailing: SizedBox(
+                          height: 35,
+                          width: 60,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryDark,
+                                foregroundColor: AppColors.white,
+                                padding: EdgeInsets.zero),
+                            child: Text(AppLocalizations.of(context)!.add),
+                            onPressed: () {
+                              BlocProvider.of<ValueObjectBloc>(context).add(
+                                  SaveScriptValueObject(
+                                      valueObject: state.valueObjects[index]));
+                            },
+                          ),
                         ),
                       ),
                     );

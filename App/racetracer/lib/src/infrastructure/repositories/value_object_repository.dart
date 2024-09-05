@@ -47,10 +47,15 @@ class ValueObjectRepository {
     await localDataSource.writeEntity(valueObject);
   }
 
+  Future<void> removeEntity(int index) async {
+    await localDataSource.removeEntity(index);
+  }
+
   Stream<List<ValueObject>> streamEntities() async* {
+    List<ValueObject> valueObjects = await getLocalEntities();
     while (true) {
-      List<ValueObject> valueObjects = await getRemoteEntities();
       yield valueObjects;
+      valueObjects = await getRemoteEntities();
       Future.delayed(Duration(seconds: 10));
     }
   }

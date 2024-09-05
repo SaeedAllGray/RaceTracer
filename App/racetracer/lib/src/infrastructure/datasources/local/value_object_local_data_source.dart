@@ -49,4 +49,22 @@ class ValueObjectLocalDataSource {
 
     return jsonData;
   }
+
+  Future<void> removeEntity(int index) async {
+    try {
+      // Get the directory to save the file
+      final file = await _localFile;
+
+      List<ValueObject> jsonData = await getEntities();
+
+      // If the file exists, read its contents
+
+      // Append the new object to the list
+      jsonData.removeAt(index);
+      // Save the updated list back to the file
+      await file.writeAsString(jsonEncode(jsonData));
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

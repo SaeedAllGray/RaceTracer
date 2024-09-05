@@ -18,3 +18,9 @@ class SaveScriptValueObject extends ValueObjectEvent {
 
   const SaveScriptValueObject({required this.valueObject});
 }
+
+class RemoveValueObject extends ValueObjectEvent {
+  final int index;
+
+  const RemoveValueObject({required this.index});
+}

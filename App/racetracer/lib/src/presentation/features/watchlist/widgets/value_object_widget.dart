@@ -1,21 +1,20 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:racetracer/src/domain/entries/value_object.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
-import 'package:racetracer/src/presentation/features/watchlist/widgets/add_value_object_bottom_sheet.dart';
-import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
 class ValueObjectWidget extends StatelessWidget {
+  final bool isEditing;
   final ValueObject valueObject;
-  const ValueObjectWidget({super.key, required this.valueObject});
+  const ValueObjectWidget(
+      {super.key, required this.valueObject, required this.isEditing});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+      width: double.infinity,
       decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(15),
@@ -28,7 +27,7 @@ class ValueObjectWidget extends StatelessWidget {
               offset: const Offset(0, 5),
             )
           ]),
-      margin: const EdgeInsets.all(5),
+      margin: EdgeInsets.all(isEditing ? 10 : 5),
       padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,6 +67,8 @@ class ValueObjectWidget extends StatelessWidget {
         valueObject.value.toString(),
         style: FontStyles.BLACK_MEDIUM_12,
       );
+    } else if (valueObject.value == null) {
+      return const CircularProgressIndicator.adaptive();
     } else {
       return Text(
         valueObject.value.toString(),
