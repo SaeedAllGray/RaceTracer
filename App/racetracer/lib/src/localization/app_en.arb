@@ -62,5 +62,7 @@
   "refresh":"refresh",
   "watchList":"Watch List",
   "observe_topic": "Observe a Topic",
-  "observe": "Observe"
+  "observe": "Observe",
+  "add": "Add",
+  "predefined_scripts": "Pre-defined Scripts"
 }

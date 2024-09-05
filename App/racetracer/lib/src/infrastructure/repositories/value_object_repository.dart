@@ -34,22 +34,29 @@ class ValueObjectRepository {
     return valueObjects;
   }
 
-  Stream<List<ValueObject>> fetchValueObjectsEvery15Seconds() async* {
+  Future<List<ValueObject>> getScripts() async {
+    dynamic response = await remoteDataSource.getScripts();
+    return (response as List)
+        .map(
+          (e) => ValueObject.fromJson(e),
+        )
+        .toList();
+  }
+
+  Future<void> saveScript(ValueObject valueObject) async {
+    await localDataSource.writeEntity(valueObject);
+  }
+
+  Stream<List<ValueObject>> streamEntities() async* {
     while (true) {
-      try {
-        // Call the API to get the data
-        List<ValueObject> valueObjects = await getRemoteEntities();
-
-        // Yield the list of ValueObjects to the stream
-        yield valueObjects;
-      } catch (error) {
-        // Handle errors by logging or yielding an error state
-        print("Error fetching data: $error");
-        // Optionally, you could yield an empty list or other error-related data
-      }
-
-      // Wait for 15 seconds before making the next call
-      await Future.delayed(Duration(seconds: 15));
+      List<ValueObject> valueObjects = await getRemoteEntities();
+      yield valueObjects;
+      Future.delayed(Duration(seconds: 10));
     }
+  }
+
+  Stream getEntitiesStream() {
+    Stream stream = streamEntities();
+    return stream;
   }
 }

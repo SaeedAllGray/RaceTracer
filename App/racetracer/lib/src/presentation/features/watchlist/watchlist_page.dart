@@ -23,7 +23,7 @@ class _WatchlistPageState extends State<WatchlistPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ValueObjectBloc()..add(FetchValueObjects()),
+      create: (context) => ValueObjectBloc()..add(FetchValueObjectsStream()),
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.watchList),
@@ -35,7 +35,10 @@ class _WatchlistPageState extends State<WatchlistPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AddValueObjectBottomSheet();
-                      });
+                      }).whenComplete(
+                    () => BlocProvider.of<ValueObjectBloc>(context)
+                        .add(FetchValueObjects()),
+                  );
                 },
                 icon: const Icon(Icons.add_rounded))
           ],
@@ -55,13 +58,37 @@ class _WatchlistPageState extends State<WatchlistPage> {
                       padding: const EdgeInsets.all(5),
                       itemBuilder: (context, index) {
                         if (index == state.valueObjects.length) {
-                          return ObserveTopicButton();
+                          return const ObserveTopicButton();
                         }
                         return ValueObjectWidget(
                             valueObject: state.valueObjects[index]);
                       },
                     );
                     // ObserveTopicButton()
+                  } else if (state is ValueObjectsStreaming) {
+                    return StreamBuilder(
+                      stream: state.valueObjectsStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return GridView.builder(
+                            itemCount: snapshot.data.length + 1,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                            ),
+                            padding: const EdgeInsets.all(5),
+                            itemBuilder: (context, index) {
+                              if (index == snapshot.data.length) {
+                                return const ObserveTopicButton();
+                              }
+                              return ValueObjectWidget(
+                                  valueObject: snapshot.data[index]);
+                            },
+                          );
+                        }
+                        return CircularProgressIndicator.adaptive();
+                      },
+                    );
                   }
                   return const LoadingWidget();
                 },

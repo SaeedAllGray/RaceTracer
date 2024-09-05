@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
@@ -7,7 +8,7 @@ import 'package:racetracer/src/domain/entries/value_object.dart';
 class ValueObjectLocalDataSource {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-
+    log(directory.path);
     return directory.path;
   }
 

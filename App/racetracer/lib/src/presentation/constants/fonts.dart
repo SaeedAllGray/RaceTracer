@@ -96,7 +96,7 @@ class FontStyles {
     fontWeight: FontWeight.bold,
   );
   static const RED_LIGHT_14 = TextStyle(
-    color: AppColors.warning,
+    color: AppColors.error,
     fontSize: 14.0,
     fontWeight: FontWeight.bold,
   );
@@ -126,7 +126,7 @@ class FontStyles {
     fontWeight: FontWeight.bold,
   );
   static const WARNING_BOLD_14 = TextStyle(
-    color: AppColors.warning,
+    color: AppColors.error,
     fontSize: 14.0,
     fontWeight: FontWeight.bold,
   );

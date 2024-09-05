@@ -20,10 +20,17 @@ class ValueObjectRemoteDataSource {
           "topics": topics,
           "labels": labels,
         }));
-    log(jsonEncode({
-      "topics": topics,
-      "labels": labels,
-    }).toString());
+
     return response.data['messages'];
+  }
+
+  FutureOr<dynamic> getScripts() async {
+    dio.interceptors.add(PrettyDioLogger(requestBody: true));
+
+    Response response = await dio.get(
+      '${ApiConstants.getBaseUrl}/${ApiConstants.ROS}/${ApiConstants.SCRIPTS}/',
+    );
+
+    return response.data['message'];
   }
 }

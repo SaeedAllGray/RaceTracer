@@ -9,6 +9,8 @@ sealed class ValueObjectState extends Equatable {
 
 final class ValueObjectInitial extends ValueObjectState {}
 
+final class ValueObjectInProgress extends ValueObjectState {}
+
 final class ValueObjectsFetched extends ValueObjectState {
   final List<ValueObject> valueObjects;
 

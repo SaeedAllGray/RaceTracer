@@ -8,3 +8,13 @@ sealed class ValueObjectEvent extends Equatable {
 }
 
 class FetchValueObjects extends ValueObjectEvent {}
+
+class FetchValueObjectsStream extends ValueObjectEvent {}
+
+class FetchServerScripts extends ValueObjectEvent {}
+
+class SaveScriptValueObject extends ValueObjectEvent {
+  final ValueObject valueObject;
+
+  const SaveScriptValueObject({required this.valueObject});
+}
