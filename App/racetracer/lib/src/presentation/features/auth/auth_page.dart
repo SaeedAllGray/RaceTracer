@@ -2,13 +2,10 @@ import 'dart:ui';
 
 import 'package:blinking_text/blinking_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:racetracer/src/application/auth/auth_bloc.dart';
-import 'package:racetracer/src/infrastructure/datasources/git_remote/gitlab_data_source.dart';
 import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
-import 'package:racetracer/src/presentation/features/config/config_page.dart';
 import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

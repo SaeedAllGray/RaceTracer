@@ -12,7 +12,6 @@ import 'package:racetracer/src/presentation/features/test_session/widgets/chat_b
 import 'package:racetracer/src/presentation/features/test_session/widgets/commit_detail_action_bottom_sheet.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 import 'package:racetracer/src/presentation/widgets/loading_widget.dart';
-import 'package:vania/vania.dart';
 
 class CommitDetailPage extends StatefulWidget {
   final GitCommit gitCommit;

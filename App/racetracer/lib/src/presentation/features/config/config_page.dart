@@ -1,6 +1,5 @@
 import 'package:blinking_text/blinking_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:racetracer/src/application/config/config_bloc.dart';
 import 'package:racetracer/src/application/core/validators.dart';
@@ -8,7 +7,6 @@ import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
-import 'package:racetracer/src/presentation/home/home_page.dart';
 import 'package:racetracer/src/presentation/widgets/outlined_text_field.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 
@@ -41,7 +39,6 @@ class _ConfigPageState extends State<ConfigPage> {
           } else if (state is SavedSucceedState) {
             _urlController.text = state.hostIP;
           } else if (state is FetchSucceedState) {
-            print(state.hostIP);
             _urlController.text = state.hostIP;
             if (widget.firstPage!) {
               Navigator.pushReplacementNamed(context, AuthPage.routeName);

@@ -22,11 +22,14 @@ class ValueObjectHelper {
   }
 
   static ValueObject convert(ValueObject valueObject) {
+    print(pickDeep(valueObject.value,
+            ValueObjectHelper.parseData(valueObject.valueKey!))
+        .value);
     return ValueObject(
         topic: valueObject.topic,
         label: valueObject.valueKey,
         value: pickDeep(valueObject.value,
                 ValueObjectHelper.parseData(valueObject.valueKey!))
-            .asStringOrNull());
+            .value);
   }
 }

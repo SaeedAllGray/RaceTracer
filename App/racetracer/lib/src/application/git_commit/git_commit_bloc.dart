@@ -6,7 +6,6 @@ import 'package:racetracer/src/domain/entries/git_comment.dart';
 import 'package:racetracer/src/domain/entries/git_commit.dart';
 import 'package:racetracer/src/domain/entries/uploaded_file.dart';
 import 'package:racetracer/src/infrastructure/repositories/git_commit_repository.dart';
-import 'package:racetracer/src/infrastructure/repositories/git_file_repository.dart';
 
 part 'git_commit_event.dart';
 part 'git_commit_state.dart';
