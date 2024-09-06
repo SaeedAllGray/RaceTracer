@@ -8,8 +8,8 @@ class RosService:
         self.ros = roslibpy.Ros(host='localhost', port=9091)
         self.ros.on_ready(self.on_ready)
         self.ros.run()
-        self.subscriber = None
-        self.message = None
+        self.subscriber = {}
+        self.message = {}
 
 
 
@@ -64,10 +64,11 @@ class RosService:
 
     def subscribe_to_topic(self, topic_name):
         # self.rospy_message(topic_name)
-        self.message = {'message':'No Value Published','ros_error':True}
-        if self.subscriber:
-            self.subscriber.unsubscribe()
-            print('unsubed.....')
+        # self.message[topic_name] = {'message':'No Value Published','ros_error':True}
+        self.message[topic_name] = {}
+        # if self.subscriber:
+        #     self.subscriber.unsubscribe()
+        #     print('unsubed.....')
 
 
         type = self.ros.get_topic_type(topic_name)
@@ -76,22 +77,24 @@ class RosService:
             print(f"Failed to get type for topic {topic_name}")
             return
         
-        self.subscriber = roslibpy.Topic(self.ros, topic_name, type)
+        self.subscriber[topic_name] = roslibpy.Topic(self.ros, topic_name, type)
 
-        self.subscriber.subscribe(self.callback)
-        time.sleep(2)
+        self.subscriber[topic_name].subscribe(lambda msg: self.callback(msg, topic_name))
+        # time.sleep(2)
         print('Subscription completed')
 
        
 
-    def callback(self, message):
-        print('Received message:', message)
-        self.message = message
-        self.subscriber.unsubscribe()
+    def callback(self, message, topic_name):
+        # print('Received message:', message, 'on topic', topic_name)
+        self.message[topic_name] = message
+        # self.subscriber.unsubscribe()
         
 
-    def get_message(self):
-        return self.message
+    def get_message(self, topic):
+        if topic in self.message:
+            return self.message[topic]
+        return {}
 
 
     # def rospy_message(self,topic_name):
