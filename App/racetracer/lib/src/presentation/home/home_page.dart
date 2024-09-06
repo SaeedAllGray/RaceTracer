@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: const Icon(
-              Icons.assignment_rounded,
+              Icons.sports_motorsports,
             ),
             label: AppLocalizations.of(context)!.documentation,
           ),
@@ -58,6 +58,12 @@ class _HomePageState extends State<HomePage> {
               Icons.settings,
             ),
             label: AppLocalizations.of(context)!.configuration,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(
+              Icons.article,
+            ),
+            label: AppLocalizations.of(context)!.datalogger,
           ),
         ],
         currentIndex: _selectedIndex,
@@ -72,8 +78,8 @@ class _HomePageState extends State<HomePage> {
         const WatchlistPage(),
         const ConfigPage(
           firstPage: false,
-        )
-        // const WebViewLogger()
+        ),
+        const EmbedPage()
         // const DocumentationPage(),
       ];
 }
