@@ -25,8 +25,11 @@ class _AuthPageState extends State<AuthPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/car.jpeg"),
-            fit: BoxFit.cover,
+            scale: 0.3,
+            fit: BoxFit.fitWidth,
+            image: AssetImage(
+              "assets/images/car.jpg",
+            ),
           ),
         ),
         child: /* add child content here */
