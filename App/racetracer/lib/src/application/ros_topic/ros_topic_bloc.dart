@@ -68,9 +68,13 @@ class RosTopicBloc extends Bloc<RosTopicEvent, RosTopicState> {
 
   FutureOr<void> _onGetRosTopicMessageEvent(
       GetRosTopicMessage event, Emitter<RosTopicState> emit) async {
-    RosTopicRepository repository = RosTopicRepository();
-    Map<String, dynamic> topicMessage =
-        await repository.fetchTopicMessage(event.topic.name);
-    emit(RosTopicMessageFetched(topicMessage));
+    try {
+      RosTopicRepository repository = RosTopicRepository();
+      Map<String, dynamic> topicMessage =
+          await repository.fetchTopicMessage(event.topic.name);
+      emit(RosTopicMessageFetched(topicMessage));
+    } catch (e) {
+      emit(RosTopicFailed());
+    }
   }
 }

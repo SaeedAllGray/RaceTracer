@@ -109,6 +109,27 @@ class _TopicMessageBottomSheetState extends State<TopicMessageBottomSheet> {
                             )
                           ],
                         );
+                      } else if (state is RosTopicFailed) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error_rounded),
+                              Text(
+                                AppLocalizations.of(context)!.try_again,
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    BlocProvider.of<RosTopicBloc>(context).add(
+                                        GetRosTopicMessage(
+                                            topic: widget.rosTopic));
+                                  },
+                                  child:
+                                      Text(AppLocalizations.of(context)!.retry))
+                            ],
+                          ),
+                        );
                       }
                       return const LoadingWidget();
                     },

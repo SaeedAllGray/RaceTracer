@@ -73,7 +73,6 @@ class _WatchlistPageState extends State<WatchlistPage> {
                           return GestureDetector(
                             onLongPress: () => setState(() {
                               isEditing = !isEditing;
-                              print(isEditing);
                             }),
                             child: GridView.builder(
                               itemCount: snapshot.data.length + 1,
