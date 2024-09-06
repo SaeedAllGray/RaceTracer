@@ -25,11 +25,8 @@ scripts:
 - label: blue_cones
   topic: /jarvic/estimation/map
   code: |
-    def ahah(x):
-      return len(x['cones'])
-    value = ahah(x)
+    value = sum([(1 if max(range(len(c)), key=lambda i: c[i]) == 1 else 0) for c in x['cones']])
 - label: clock
   topic: /clock
   code: |
     value = x['clock']['secs']
-
