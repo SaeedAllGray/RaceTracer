@@ -64,5 +64,7 @@
   "observe_topic": "Observe a Topic",
   "observe": "Observe",
   "add": "Add",
-  "predefined_scripts": "Pre-defined Scripts"
+  "predefined_scripts": "Pre-defined Scripts",
+  "try_again": "Try again!",
+  "retry": "Retry"
 }

@@ -52,12 +52,17 @@ class ValueObjectRepository {
   }
 
   Stream<List<ValueObject>> streamEntities() async* {
+    // Fetch the initial local entities
     List<ValueObject> valueObjects = await getLocalEntities();
-    while (true) {
-      yield valueObjects;
-      valueObjects = await getRemoteEntities();
-      Future.delayed(Duration(seconds: 10));
-    }
+    yield valueObjects; // Yield the local entities immediately
+
+    // Return a Stream that periodically fetches and yields remote entities
+    yield* Stream.periodic(Duration(seconds: 10), (_) async {
+      // Fetch the remote entities periodically
+      List<ValueObject> updatedValueObjects = await getRemoteEntities();
+      return updatedValueObjects;
+    }).asyncMap(
+        (event) async => await event); // Unwrap the Future from periodic
   }
 
   Stream getEntitiesStream() {
