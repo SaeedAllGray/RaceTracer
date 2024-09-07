@@ -95,12 +95,12 @@ def get_message(request):
     
         ros_service.subscribe_to_topic(topic_name)
        
-        message = ros_service.get_message()
+        message = ros_service.get_message(topic_name)
 
         if message:
             return JsonResponse({"status": "success", "message": message})
         else:
-            return JsonResponse({"status": "error", "message": "No message received"}, status=500)
+            return JsonResponse({"status": "success", "message": {"output": "no message received yet"}})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
 # /home/getracing/Desktop/get/jarvic-mono/environment.sh
@@ -109,7 +109,7 @@ def get_code_labels(request):
     try:
         code_labels = []
         for item in general["scripts"]:
-            code_labels.append(item["label"])
+            code_labels.append({'label':item["label"],'topic':item["topic"]})
     
         return JsonResponse({"status": "success", "message": code_labels})
     except Exception as e:
@@ -126,14 +126,18 @@ def find_script_by_label(label):
 
 
 def runCode(code_label):
-    item = find_script_by_label(code_label)
-    ros_service.subscribe_to_topic(item['topic'])
-    x = ros_service.get_message()
+    try: 
+        item = find_script_by_label(code_label)
+        ros_service.subscribe_to_topic(item['topic'])
+        x = ros_service.get_message(item['topic'])
 
-    exec_globals= {'x': x}
-    exec(item['code'],exec_globals)
-    value = exec_globals['value']
-    return value
+        exec_globals= {'x': x}
+        exec(item['code'],exec_globals)
+        value = exec_globals['value']
+        return value
+    except Exception as e:
+        return {"racetracer_log":"Topic might not be published", "error":str(e)}
+
 
 def evaluate(request):
     try:
@@ -147,7 +151,7 @@ def evaluate(request):
         
         code = find_script_by_label(code_label)
         ros_service.subscribe_to_topic(topic_name)
-        x = ros_service.get_message()
+        x = ros_service.get_message(topic_name)
 
         exec_globals= {'x': x}
         exec(code,exec_globals)
@@ -185,7 +189,7 @@ def executeTopicMessages(request):
         # Handle ROS messages
         for topicJson in topics:
             ros_service.subscribe_to_topic(topicJson['topic'])
-            message = ros_service.get_message()
+            message = ros_service.get_message(topicJson['topic'])
             for key in topicJson['value_keys']:
                 messages.append({'value_key':key,'topic': topicJson['topic'],'value': message})
 

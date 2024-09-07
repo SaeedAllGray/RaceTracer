@@ -7,6 +7,8 @@ sealed class EmbedEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class FetchSavedLinkEvent extends EmbedEvent {}
+
 class AddLinkEvent extends EmbedEvent {
   final String url;
 
@@ -16,4 +18,4 @@ class AddLinkEvent extends EmbedEvent {
   List<Object> get props => [url];
 }
 
-class removeLinkEvent extends EmbedEvent {}
+class RemoveLinkEvent extends EmbedEvent {}

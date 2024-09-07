@@ -62,6 +62,16 @@ class LocalStorageDataSource {
     await secureStorage.write(key: 'project_id', value: projectID);
   }
 
+  Future<String?> getLink() async {
+    final String? key = await secureStorage.read(key: 'link');
+
+    return key;
+  }
+
+  Future<void> saveLink(String link) async {
+    await secureStorage.write(key: 'link', value: link);
+  }
+
   Future<void> signOut() async {
     await secureStorage.delete(key: 'git_token');
     await secureStorage.delete(key: 'host_ip');

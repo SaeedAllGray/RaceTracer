@@ -88,7 +88,7 @@ class _EmbedPageState extends State<EmbedPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EmbedBloc(),
+      create: (context) => EmbedBloc()..add(FetchSavedLinkEvent()),
       child: BlocBuilder<EmbedBloc, EmbedState>(
         builder: (context, state) {
           return Scaffold(
