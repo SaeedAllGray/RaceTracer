@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:racetracer/src/domain/entries/value_object.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ValueObjectLocalDataSource {
   Future<String> get _localPath async {
@@ -66,5 +67,11 @@ class ValueObjectLocalDataSource {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> shareFile() async {
+    final file = await _localFile;
+
+    await Share.shareXFiles([XFile(file.path)]);
   }
 }

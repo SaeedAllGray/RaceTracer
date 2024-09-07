@@ -66,5 +66,7 @@
   "add": "Add",
   "predefined_scripts": "Pre-defined Scripts",
   "try_again": "Try again!",
-  "retry": "Retry"
+  "retry": "Retry",
+  "import": "Import",
+  "import_from_file": "Import from a file"
 }

@@ -25,6 +25,16 @@ class _WatchlistPageState extends State<WatchlistPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.watchList),
+          leading: BlocBuilder<ValueObjectBloc, ValueObjectState>(
+            builder: (context, state) {
+              return IconButton(
+                icon: const Icon(Icons.share_rounded),
+                onPressed: () {
+                  BlocProvider.of<ValueObjectBloc>(context).add(ShareConfig());
+                },
+              );
+            },
+          ),
           actions: [
             IconButton(
                 onPressed: () {
@@ -125,7 +135,7 @@ class _WatchlistPageState extends State<WatchlistPage> {
                             ),
                           );
                         }
-                        return CircularProgressIndicator.adaptive();
+                        return const LoadingWidget();
                       },
                     );
                   }

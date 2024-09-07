@@ -35,29 +35,59 @@ class AddValueObjectBottomSheet extends StatelessWidget {
                       separatorBuilder: (context, index) => const Divider(
                         thickness: 0.3,
                       ),
-                      itemCount: state.valueObjects.length,
-                      itemBuilder: (context, index) => ListTile(
-                        title: Text(
-                          state.valueObjects[index].label!,
-                          style: FontStyles.BLACK_MEDIUM_18,
-                        ),
-                        trailing: SizedBox(
-                          height: 35,
-                          width: 60,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryDark,
-                                foregroundColor: AppColors.white,
-                                padding: EdgeInsets.zero),
-                            child: Text(AppLocalizations.of(context)!.add),
-                            onPressed: () {
-                              BlocProvider.of<ValueObjectBloc>(context).add(
-                                  SaveScriptValueObject(
-                                      valueObject: state.valueObjects[index]));
-                            },
+                      itemCount: state.valueObjects.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index != state.valueObjects.length) {
+                          return ListTile(
+                            leading: const Icon(Icons.code_rounded),
+                            title: Text(
+                              state.valueObjects[index].label!,
+                              style: FontStyles.BLACK_MEDIUM_18,
+                            ),
+                            trailing: SizedBox(
+                              height: 30,
+                              width: 80,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.primaryDark,
+                                    foregroundColor: AppColors.white,
+                                    padding: EdgeInsets.zero),
+                                child: Text(AppLocalizations.of(context)!.add),
+                                onPressed: () {
+                                  BlocProvider.of<ValueObjectBloc>(context).add(
+                                      SaveScriptValueObject(
+                                          valueObject:
+                                              state.valueObjects[index]));
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                        return ListTile(
+                          leading: const Icon(Icons.insert_drive_file_rounded),
+                          title: Text(
+                            AppLocalizations.of(context)!.import_from_file,
+                            style: FontStyles.BLACK_MEDIUM_18,
                           ),
-                        ),
-                      ),
+                          trailing: SizedBox(
+                            height: 30,
+                            width: 80,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primaryDark,
+                                  foregroundColor: AppColors.white,
+                                  padding: EdgeInsets.zero),
+                              child: Text(AppLocalizations.of(context)!.import),
+                              onPressed: () {
+                                BlocProvider.of<ValueObjectBloc>(context).add(
+                                    SaveScriptValueObject(
+                                        valueObject:
+                                            state.valueObjects[index]));
+                              },
+                            ),
+                          ),
+                        );
+                      },
                     );
                   }
                   return const LoadingWidget();
