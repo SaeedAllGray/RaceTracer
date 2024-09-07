@@ -48,7 +48,8 @@ class AuthRepository {
   }
 
   Future<GitToken?> refreshToken(OauthAtrributes oauth) async {
-    final AuthorizationResponse? authRes = await datasource.requestAuthCode();
+    final AuthorizationResponse? authRes =
+        await datasource.requestAuthCode(oauth);
     final GitToken? gitToken = await localDataSource.getGitToken();
     if (authRes != null && gitToken != null) {
       final Response response =

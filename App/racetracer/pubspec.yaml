@@ -37,6 +37,7 @@ dependencies:
   path_provider: ^2.1.4
   yaml: ^3.1.2
   json2yaml: ^3.0.1
+  flutter_3d_controller: ^1.3.1
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +56,8 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/models/car.obj
+    - assets/models/car.glb
   fonts:
     - family: Courier
       fonts:

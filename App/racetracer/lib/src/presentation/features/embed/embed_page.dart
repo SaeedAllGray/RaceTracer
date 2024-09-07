@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -126,25 +127,33 @@ class _EmbedPageState extends State<EmbedPage> {
       builder: (BuildContext context) {
         return BlocProvider.value(
           value: bloc,
-          child: AlertDialog.adaptive(
+          child: CupertinoAlertDialog(
             title: Text(AppLocalizations.of(context)!.urlInput),
-            content: Material(
-              child: TextField(
-                decoration: const InputDecoration(labelText: 'URL'),
-                autofocus: true,
-                controller: urlTextController,
-              ),
+            content: Column(
+              children: <Widget>[
+                CupertinoTextField(
+                  placeholder: 'URL',
+                  autofocus: true,
+                  controller: urlTextController,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 6.0),
+                ),
+              ],
             ),
-            actions: <Widget>[
-              TextButton(
+            actions: <CupertinoDialogAction>[
+              CupertinoDialogAction(
+                child: Text(AppLocalizations.of(context)!.cancel),
+                onPressed: () => Navigator.pop(context),
+              ),
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text(AppLocalizations.of(context)!.add),
                 onPressed: () {
                   if (urlTextController.text.isNotEmpty) {
                     bloc.add(AddLinkEvent(url: urlTextController.text));
-
                     Navigator.pop(context);
                   }
                 },
-                child: Text(AppLocalizations.of(context)!.add),
               ),
             ],
           ),
