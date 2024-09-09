@@ -64,6 +64,6 @@ class ValueObjectBloc extends Bloc<ValueObjectEvent, ValueObjectState> {
   FutureOr<void> _onImportFromFileEvent(
       ImportFromFile event, Emitter<ValueObjectState> emit) async {
     ValueObjectRepository repository = ValueObjectRepository();
-    await repository.shareFile();
+    await repository.importFile();
   }
 }

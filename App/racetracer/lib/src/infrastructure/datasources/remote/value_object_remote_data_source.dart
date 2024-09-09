@@ -12,7 +12,7 @@ class ValueObjectRemoteDataSource {
 
   FutureOr<dynamic> getEntities(
       List<ValueObject> topics, List<String> labels) async {
-    dio.interceptors.add(PrettyDioLogger(requestBody: true));
+    // dio.interceptors.add(PrettyDioLogger(requestBody: true));
 
     Response response = await dio.get(
         '${ApiConstants.getBaseUrl}/${ApiConstants.ROS}/${ApiConstants.TOPIC}/${ApiConstants.VALUES}/',

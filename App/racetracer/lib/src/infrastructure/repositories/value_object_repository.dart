@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:racetracer/src/domain/entries/value_object.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/value_object_local_data_source.dart';
 import 'package:racetracer/src/infrastructure/datasources/remote/value_object_remote_data_source.dart';
@@ -76,5 +78,9 @@ class ValueObjectRepository {
     } on Exception catch (e) {
       print(e);
     }
+  }
+
+  Future<void> importFile() async {
+    await localDataSource.importFile();
   }
 }

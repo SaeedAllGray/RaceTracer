@@ -79,10 +79,8 @@ class AddValueObjectBottomSheet extends StatelessWidget {
                                   padding: EdgeInsets.zero),
                               child: Text(AppLocalizations.of(context)!.import),
                               onPressed: () {
-                                BlocProvider.of<ValueObjectBloc>(context).add(
-                                    SaveScriptValueObject(
-                                        valueObject:
-                                            state.valueObjects[index]));
+                                BlocProvider.of<ValueObjectBloc>(context)
+                                    .add(ImportFromFile());
                               },
                             ),
                           ),
