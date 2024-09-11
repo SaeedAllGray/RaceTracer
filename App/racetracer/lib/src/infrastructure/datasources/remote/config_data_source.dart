@@ -12,8 +12,8 @@ class ConfigDataSource {
           'http://$hostIP/${ApiConstants.GIT}/setup',
         )
         .timeout(const Duration(seconds: 5));
-    ;
+
     print(response.data['message']['oauth']);
-    return response.data['message']['oauth']; //TODO: will add ['gitlab']
+    return response.data['message']; //TODO: will add ['gitlab']
   }
 }
