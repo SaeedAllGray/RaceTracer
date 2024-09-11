@@ -65,5 +65,9 @@
   "observe": "Observe",
   "add": "Add",
   "cancel":"Cancel",
-  "predefined_scripts": "Pre-defined Scripts"
+  "predefined_scripts": "Pre-defined Scripts",
+  "try_again": "Try again!",
+  "retry": "Retry",
+  "import": "Import",
+  "import_from_file": "Import from a file"
 }

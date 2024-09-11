@@ -20,8 +20,8 @@ class DashboardPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const RosNodesWidget(),
             const RosTopicsWidget(),
+            const RosNodesWidget(),
             StretchedButton(
               onPressed: () => Navigator.pushNamed(
                 context,

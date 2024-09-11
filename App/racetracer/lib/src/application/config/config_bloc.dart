@@ -24,9 +24,10 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
       SaveEvent event, Emitter<ConfigState> emit) async {
     emit(ConfigInProgressState());
     await localDataSource.saveHostIP(event.hostIP);
+    // await configRepository.setupGitlabConfig(event.hostIP);
 
     await ApiConstants.setBaseUrl();
-    await ApiConstants.setProjectId();
+    // await ApiConstants.setProjectId();
     emit(SavedSucceedState(hostIP: event.hostIP));
   }
 
@@ -35,8 +36,10 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
     emit(ConfigInProgressState());
     final String? hostIP = await localDataSource.getHostIP();
     await ApiConstants.setBaseUrl();
-    await ApiConstants.setProjectId();
     if (hostIP != null) {
+      print(hostIP);
+      await configRepository.setupGitlabConfig(hostIP);
+
       emit(FetchSucceedState(hostIP: hostIP));
     }
   }
@@ -54,13 +57,12 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
       emit(ConfigInProgressState());
 
       final OauthAtrributes oauthAtrributes =
-          await configRepository.setupConfigurations(event.hostIP);
+          await configRepository.setupOauthConfig(event.hostIP);
       ApiConstants.setOauth = oauthAtrributes;
 
       await localDataSource.saveOauth(oauthAtrributes);
       await localDataSource.saveHostIP(event.hostIP);
       await ApiConstants.setBaseUrl();
-      await ApiConstants.setProjectId();
       emit(DownloadSucceedState());
     } catch (e) {
       emit(DownloadFailedState());

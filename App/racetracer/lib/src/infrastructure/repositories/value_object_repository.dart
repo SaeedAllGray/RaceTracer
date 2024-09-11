@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:racetracer/src/domain/entries/value_object.dart';
 import 'package:racetracer/src/infrastructure/datasources/local/value_object_local_data_source.dart';
 import 'package:racetracer/src/infrastructure/datasources/remote/value_object_remote_data_source.dart';
@@ -52,16 +54,33 @@ class ValueObjectRepository {
   }
 
   Stream<List<ValueObject>> streamEntities() async* {
+    // Fetch the initial local entities
+
     List<ValueObject> valueObjects = await getLocalEntities();
-    while (true) {
-      yield valueObjects;
+    yield valueObjects; // Yield the local entities immediately
+    valueObjects = await getRemoteEntities();
+    yield valueObjects;
+    yield* Stream.periodic(const Duration(seconds: 10), (_) async {
       valueObjects = await getRemoteEntities();
-      Future.delayed(Duration(seconds: 10));
-    }
+      return valueObjects;
+    }).asyncMap(
+        (event) async => await event); // Unwrap the Future from periodic
   }
 
   Stream getEntitiesStream() {
     Stream stream = streamEntities();
     return stream;
+  }
+
+  Future<void> shareFile() async {
+    try {
+      await localDataSource.shareFile();
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> importFile() async {
+    await localDataSource.importFile();
   }
 }

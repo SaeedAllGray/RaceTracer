@@ -24,3 +24,7 @@ class RemoveValueObject extends ValueObjectEvent {
 
   const RemoveValueObject({required this.index});
 }
+
+class ShareConfig extends ValueObjectEvent {}
+
+class ImportFromFile extends ValueObjectEvent {}

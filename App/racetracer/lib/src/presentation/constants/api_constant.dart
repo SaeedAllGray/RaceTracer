@@ -9,9 +9,9 @@ class ApiConstants {
   static String _baseUrl = '';
   // static const String baseUrl = 'http://10.208.6.128:8888';
   // https://gitlab.fachschaften.org/api/v4/projects/448/repository/commits/5ddd9b2560d050b419b90388a2b84614949eb515/
-  static const String gitUrl = 'https://gitlab.fachschaften.org/api/v4/';
+  static String gitUrl = '';
   // static const String projectUrl =  'https://gitlab.fachschaften.org/-/project/448';
-  static String projectId = '';
+  static String _projectId = '';
   static const String COMMITS = 'commits';
   static const String COMMENTS = 'comments';
   static const String PUSH = 'push';
@@ -39,12 +39,16 @@ class ApiConstants {
     _baseUrl = await LocalStorageDataSource().getHostIP() ?? '';
   }
 
-  static Future<void> setProjectId() async {
-    projectId = await LocalStorageDataSource().getProjectID() ?? '';
+  static void setGitlabUrl(String gitlabUrl) {
+    gitUrl = gitlabUrl;
+  }
+
+  static void setProjectId(String projectId) {
+    _projectId = projectId;
   }
 
   static String get getProjectId {
-    return projectId;
+    return _projectId;
   }
 
   static String get getBaseUrl {
@@ -53,6 +57,10 @@ class ApiConstants {
 
   static String get projectUrl {
     return 'https://gitlab.fachschaften.org/-/project/$getProjectId/';
+  }
+
+  static String get gitlabUrl {
+    return gitUrl;
   }
 
   static set setOauth(OauthAtrributes oauthAtt) {

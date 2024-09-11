@@ -70,9 +70,11 @@ class ValueObjectWidget extends StatelessWidget {
     } else if (valueObject.value == null) {
       return const CircularProgressIndicator.adaptive();
     } else {
-      return Text(
-        valueObject.value.toString(),
-        style: FontStyles.BLACK_BOLD_36,
+      return FittedBox(
+        child: Text(
+          valueObject.value.toString(),
+          style: FontStyles.BLACK_BOLD_36,
+        ),
       );
     }
   }

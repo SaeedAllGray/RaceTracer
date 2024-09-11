@@ -49,9 +49,9 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: const Icon(
-              Icons.sports_motorsports,
+              Icons.bookmark_rounded,
             ),
-            label: AppLocalizations.of(context)!.documentation,
+            label: AppLocalizations.of(context)!.watchList,
           ),
           BottomNavigationBarItem(
             icon: const Icon(
