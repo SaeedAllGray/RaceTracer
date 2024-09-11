@@ -47,12 +47,18 @@ class ValueObjectBloc extends Bloc<ValueObjectEvent, ValueObjectState> {
       SaveScriptValueObject event, Emitter<ValueObjectState> emit) async {
     ValueObjectRepository repository = ValueObjectRepository();
     await repository.saveScript(event.valueObject);
+    // valueObjectsStream = repository.getEntitiesStream();
+
+    // emit(ValueObjectsStreaming(valueObjectsStream: valueObjectsStream!));
   }
 
   FutureOr<void> _onRemoveValueObjectEvent(
       RemoveValueObject event, Emitter<ValueObjectState> emit) async {
     ValueObjectRepository repository = ValueObjectRepository();
     await repository.removeEntity(event.index);
+    valueObjectsStream = repository.getEntitiesStream();
+
+    emit(ValueObjectsStreaming(valueObjectsStream: valueObjectsStream!));
   }
 
   FutureOr<void> _onShareCongigEvent(
@@ -65,5 +71,8 @@ class ValueObjectBloc extends Bloc<ValueObjectEvent, ValueObjectState> {
       ImportFromFile event, Emitter<ValueObjectState> emit) async {
     ValueObjectRepository repository = ValueObjectRepository();
     await repository.importFile();
+    // valueObjectsStream = repository.getEntitiesStream();
+
+    // emit(ValueObjectsStreaming(valueObjectsStream: valueObjectsStream!));
   }
 }

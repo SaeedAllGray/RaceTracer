@@ -12,8 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settingsController = SettingsController(SettingsService());
   TokenHelper.setToken();
-  ApiConstants.setBaseUrl();
-  ApiConstants.setProjectId();
+
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
