@@ -8,11 +8,11 @@ class GitAuthsDataSource {
   final FlutterAppAuth appAuth = const FlutterAppAuth();
   final Dio dio = Dio();
 
-  Future<AuthorizationResponse?> requestAuthCode() async {
+  Future<AuthorizationResponse?> requestAuthCode(OauthAtrributes ouath) async {
     final AuthorizationRequest request = AuthorizationRequest(
-      ApiConstants.CLIENT_ID,
+      ouath.clientId,
       ApiConstants.REDIRECT_URL,
-      discoveryUrl: ApiConstants.DISCOVERY_URL,
+      discoveryUrl: ouath.discoveryUrl,
       scopes: [
         'openid',
         'profile',
@@ -41,14 +41,15 @@ class GitAuthsDataSource {
     return result;
   }
 
-  Future<Response> requestToken(AuthorizationResponse authRes) async {
+  Future<Response> requestToken(
+      AuthorizationResponse authRes, OauthAtrributes ouath) async {
     dio.interceptors.add(PrettyDioLogger());
     Response response =
-        await dio.post('${ApiConstants.ISSUER}/oauth/token', queryParameters: {
-      'client_id': ApiConstants.CLIENT_ID,
+        await dio.post('${ouath.issuer}/oauth/token', queryParameters: {
+      'client_id': ouath.clientId,
       'code': authRes.authorizationCode,
       'grant_type': 'authorization_code',
-      'client_secret': ApiConstants.CLIENT_SECTRET,
+      'client_secret': ouath.clientSecret,
       'redirect_uri': ApiConstants.REDIRECT_URL,
       'code_verifier': authRes.codeVerifier,
     });
@@ -59,7 +60,7 @@ class GitAuthsDataSource {
       String refreshToken, OauthAtrributes oauth) async {
     dio.interceptors.add(PrettyDioLogger());
     Response response =
-        await dio.post('${ApiConstants.ISSUER}/oauth/token', queryParameters: {
+        await dio.post('${oauth.issuer}/oauth/token', queryParameters: {
       'client_id': oauth.clientId,
       'refresh_token': refreshToken,
       'grant_type': 'refresh_token',

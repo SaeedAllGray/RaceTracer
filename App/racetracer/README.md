@@ -18,7 +18,7 @@ It's assumed that you are using gitlab for development. In this case the followi
 -  Create a user-owned application [Read More](https://docs.gitlab.com/ee/integration/oauth_provider.html#create-a-user-owned-application)
 - Navigate to `lib/src/presentation/constants/api_constant.dart` and change the following attributes based on the Gitlab: 
 
-```dart
+```python
 static const String CLIENT_ID = 'TO BE CHANGED';
 static const String CLIENT_SECTRET = 'TO BE CHANGED';
 static const String REDIRECT_URL = 'TO BE CHANGED';

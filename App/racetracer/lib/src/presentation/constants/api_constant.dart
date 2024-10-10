@@ -31,14 +31,8 @@ class ApiConstants {
 
   static late OauthAtrributes _oauthAtrributes;
 
-  static const String CLIENT_ID =
-      'eeb2fc864632a0d97159329e35207be737efc6df3c9f0ccc2dcb1a92197ca8dc';
-  static const String CLIENT_SECTRET =
-      'gloas-544cca91b6282ab73ceaf6ad6d597d31d54787085d95ac9b9fdda63d2cd24193';
   static const String REDIRECT_URL = 'racetracerapp://oauth/callback';
-  static const String ISSUER = 'https://gitlab.fachschaften.org';
-  static const String DISCOVERY_URL =
-      'https://gitlab.fachschaften.org/.well-known/openid-configuration';
+
   static bool isTheFirstTimeAppLaunch = false;
 
   static Future<void> setBaseUrl() async {
