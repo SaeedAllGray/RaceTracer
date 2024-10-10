@@ -14,6 +14,6 @@ class ConfigDataSource {
         .timeout(const Duration(seconds: 5));
 
     print(response.data['message']['oauth']);
-    return response.data['message']; //TODO: will add ['gitlab']
+    return response.data['message'];
   }
 }

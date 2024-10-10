@@ -28,7 +28,7 @@ class GitCommitDataSource implements RemoteDataSource {
     dio.interceptors.add(PrettyDioLogger());
     // TODO: project_id is hard-coded for now
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$sha',
+      '${ApiConstants.gitUrl}projects/${ApiConstants.getProjectId}/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$sha',
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 
@@ -39,7 +39,7 @@ class GitCommitDataSource implements RemoteDataSource {
   Future fetchEntities() async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.get(
-      '${ApiConstants.gitUrl}projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}?ref_name=racetracer', //TODO: change this
+      '${ApiConstants.gitUrl}projects/${ApiConstants.getProjectId}/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}?ref_name=racetracer', //TODO: change this
       options: Options(headers: TokenHelper.getHeaderToken),
     );
 
@@ -54,7 +54,7 @@ class GitCommitDataSource implements RemoteDataSource {
     do {
       pageNumber++;
       response = await dio.get(
-        '${ApiConstants.gitUrl}/projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+        '${ApiConstants.gitUrl}/projects/${ApiConstants.getProjectId}/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
         queryParameters: {
           "order_by": "created_at",
           "sort": "asc",
@@ -76,7 +76,7 @@ class GitCommitDataSource implements RemoteDataSource {
   Future createComment(String id, String note) async {
     dio.interceptors.add(PrettyDioLogger());
     Response response = await dio.post(
-      '${ApiConstants.gitUrl}/projects/448/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
+      '${ApiConstants.gitUrl}/projects/${ApiConstants.getProjectId}/${ApiConstants.REPOSITORY}/${ApiConstants.COMMITS}/$id/${ApiConstants.COMMENTS}',
       queryParameters: {'note': note},
       options: Options(headers: TokenHelper.getHeaderToken),
     );

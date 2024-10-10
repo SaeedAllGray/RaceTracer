@@ -7,6 +7,7 @@ import 'package:racetracer/src/presentation/constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:racetracer/src/presentation/constants/fonts.dart';
 import 'package:racetracer/src/presentation/features/auth/auth_page.dart';
+import 'package:racetracer/src/presentation/features/test_session/test_sessions_page.dart';
 import 'package:racetracer/src/presentation/widgets/outlined_text_field.dart';
 import 'package:racetracer/src/presentation/widgets/stretched_button.dart';
 

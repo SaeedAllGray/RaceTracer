@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:racetracer/src/presentation/constants/api_constant.dart';
 import 'package:racetracer/src/presentation/helpers/token_helper.dart';
 
 import 'src/app.dart';
