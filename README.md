@@ -102,7 +102,7 @@ python manage.py runserver 0.0.0.0:8000
 ```
 
  
-## How to use the App [TODO]
+## How to use the App [Coming soon]
 
 ### Configuration 
 Enter the backend IP to let app obtain the configurations.
