@@ -74,7 +74,7 @@ scripts:
 ### Mobile App
 
 
-- The latest version of RaceTracer App for iOS and Android can be found [here](https://apple.de).
+- The latest version of RaceTracer App for iOS and Android can be found [Coming soon](https://apple.de).
 
 - The mobile app is developed with Flutter and Dart. In case you wish to customize the app: [Read More](https://docs.flutter.dev/get-started/install) 
 
