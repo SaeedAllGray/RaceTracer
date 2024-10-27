@@ -1,6 +1,6 @@
 # RaceTracer
 
-An open‐source full‐stack software powered by Python(Django) and ROS (C/C++). RaceTracer automates the testing and documentation of our autonomous racing car on the track. By connecting directly to the car, it provides a platform for all team members to record detailed observations, making the test procedures more coordinated and the analysis more meaningful.
+An open‐source full‐stack software powered by Python(Django), Flutter(Dart) and ROS (C/C++). RaceTracer automates the testing and documentation of our autonomous racing car on the track. By connecting directly to the car, it provides a platform for all team members to record detailed observations, making the test procedures more coordinated and the analysis more meaningful.
 
 The backends runs directly on the car to maintain a direct connection with the driverless software, git and ROS.
 
