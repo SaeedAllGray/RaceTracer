@@ -2,9 +2,12 @@
 <img src="https://github.com/user-attachments/assets/d0fdfb1b-e8fb-4510-addf-71c980846909" alt="Screenshot 2025-01-04 at 13 13 59" width="10000"/>
 
 
+<a href="https://www.buymeacoffee.com/saeedallgray">
+  <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" 
+       alt="Buy Me A Coffee" 
+       style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;">
 
-
-# RaceTracer
+# RaceTracer 
 
 An open‐source full‐stack software powered by Python(Django), Flutter(Dart) and ROS (C/C++). RaceTracer automates the testing and documentation of our autonomous racing car on the track. By connecting directly to the car, it provides a platform for all team members to record detailed observations, making the test procedures more coordinated and the analysis more meaningful.
 
