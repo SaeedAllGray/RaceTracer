@@ -148,8 +148,8 @@ You can even write scripts on backend config file and see them on the mobile app
 <img src="https://github.com/user-attachments/assets/b912fbaf-1232-4596-9e74-f5ee7545afa7" alt="18" width="200"/>
 <img src="https://github.com/user-attachments/assets/83c5ea60-6756-4e50-80db-dd29aec4411e" alt="16" width="200"/>
 
-### Share the watch list
-<img src="https://github.com/user-attachments/assets/393d2583-9682-42ab-a039-6c7e1a9ca3b5" alt="15" width="300"/>
+### Share the watch list with your team mates
+<img src="https://github.com/user-attachments/assets/393d2583-9682-42ab-a039-6c7e1a9ca3b5" alt="15" width="200"/>
 
 
 
