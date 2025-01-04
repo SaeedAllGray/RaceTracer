@@ -141,8 +141,12 @@ RaceTracer commit the changes of your code automatically on the racetrack. We kn
 
 ### Watch List
 RaceTracer offers an overview of the data recieved from ROS nodes and topics. You can filter and specify the exact data you wish to have a glance in watchlist page.
+You can even write scripts on backend config file and see them on the mobile app.
 
-
+<img src="https://github.com/user-attachments/assets/14fffddd-a0cc-4408-9364-c020da52020f" alt="25" width="200"/>
+<img src="https://github.com/user-attachments/assets/7f7b5da5-f68c-4f5f-9827-a2a435469c02" alt="23" width="200"/>
+<img src="https://github.com/user-attachments/assets/b912fbaf-1232-4596-9e74-f5ee7545afa7" alt="18" width="200"/>
+<img src="https://github.com/user-attachments/assets/83c5ea60-6756-4e50-80db-dd29aec4411e" alt="16" width="200"/>
 
 
 
