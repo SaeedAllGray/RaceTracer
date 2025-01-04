@@ -131,8 +131,6 @@ RaceTracer provides and overview of the nodes and topics. You can search through
 ### one commit == one test session
 RaceTracer commit the changes of your code automatically on the racetrack. We know this process was pain in the neck and we are always lazy to do it because we are under pressure and stress during the tornoment. As soon as the commit is generated, you can record the incidents in the discussion section integrated to racetracer. RaceTracer can generate a document using all the data you submited in the chat.
 
-
-
 <img src="https://github.com/user-attachments/assets/fbeaa9a1-4ebc-44fe-90a8-f931a7f1b1b4" alt="9" width="200"/>
 <img src="https://github.com/user-attachments/assets/4d9eaee1-528c-4208-b858-e66e6b589fac" alt="10" width="200"/>
 <img src="https://github.com/user-attachments/assets/82de2531-e6ce-433b-95c0-02016c9421c9" alt="8" width="200"/>
@@ -141,7 +139,8 @@ RaceTracer commit the changes of your code automatically on the racetrack. We kn
 <img src="https://github.com/user-attachments/assets/414b090d-8bba-48e5-91e9-d79a8d622440" alt="5" width="200"/>
 <img src="https://github.com/user-attachments/assets/3e414cb5-4cd1-4a4f-95a6-d9f69d91a9b2" alt="3" width="200"/>
 
-
+### Watch List
+RaceTracer offers an overview of the data recieved from ROS nodes and topics. You can filter and specify the exact data you wish to have a glance in watchlist page.
 
 
 
