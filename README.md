@@ -109,6 +109,13 @@ python manage.py runserver 0.0.0.0:8000
 ### Configuration 
 Enter the backend IP to let app obtain the configurations.
 
+<img src="https://github.com/user-attachments/assets/c82ae3bb-3187-4905-abfd-b3403e0bbf67" alt="29" width="200"/>
+<img src="https://github.com/user-attachments/assets/cf946706-bda1-4c41-8d62-b3ecf12ae317" alt="28" width="200"/>
+
+
+
+
+
 ### Authentication
 After configuration obtained successfully, sign in with gitlab credentials. 
 
