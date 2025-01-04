@@ -4,7 +4,7 @@ An open‐source full‐stack software powered by Python(Django), Flutter(Dart) 
 
 The backends runs directly on the car to maintain a direct connection with the driverless software, git and ROS.
 
-# [RaceTracer introduction on GET racing developers' confrence](https://www.youtube.com/watch?v=0kCfCOqn7T0)
+## [RaceTracer introduction on GET racing developers' confrence](https://www.youtube.com/watch?v=0kCfCOqn7T0)
 
 # GET racing Dortmund e.V
 In 2024, GET Racing Dortmund soared to victory as the champion of France, celebrating the most successful year in its 20-year history. This remarkable achievement highlights two decades of dedication, innovation, and excellence in racing.
