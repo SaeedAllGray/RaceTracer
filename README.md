@@ -8,10 +8,7 @@ An open‐source full‐stack software powered by Python(Django), Flutter(Dart) 
 
 The backends runs directly on the car to maintain a direct connection with the driverless software, git and ROS.
 
-<a href="https://www.buymeacoffee.com/saeedallgray">
-  <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" 
-       alt="Buy Me A Coffee" 
-       style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;">
+<a href="https://www.buymeacoffee.com/saeedallgray"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=saeedallgray&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
   
 ## [RaceTracer introduction on GET racing developers' confrence](https://www.youtube.com/watch?v=0kCfCOqn7T0)
 
@@ -164,10 +161,6 @@ You can even write scripts on backend config file and see them on the mobile app
 -------------------------------------------------------
 
 
-<a href="https://www.buymeacoffee.com/saeedallgray">
-  <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" 
-       alt="Buy Me A Coffee" 
-       style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;">
-
+<a href="https://www.buymeacoffee.com/saeedallgray"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=saeedallgray&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 Made with ♥️ in Dortmund, Germany 🇩🇪. 
