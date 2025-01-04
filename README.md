@@ -3,7 +3,8 @@
 An open‐source full‐stack software powered by Python(Django), Flutter(Dart) and ROS (C/C++). RaceTracer automates the testing and documentation of our autonomous racing car on the track. By connecting directly to the car, it provides a platform for all team members to record detailed observations, making the test procedures more coordinated and the analysis more meaningful.
 
 The backends runs directly on the car to maintain a direct connection with the driverless software, git and ROS.
-[Watch the video on YouTube](https://www.youtube.com/watch?v=0kCfCOqn7T0)
+
+# [RaceTracer introduction on GET racing developers' confrence](https://www.youtube.com/watch?v=0kCfCOqn7T0)
 
 # GET racing Dortmund e.V
 In 2024, GET Racing Dortmund soared to victory as the champion of France, celebrating the most successful year in its 20-year history. This remarkable achievement highlights two decades of dedication, innovation, and excellence in racing.
