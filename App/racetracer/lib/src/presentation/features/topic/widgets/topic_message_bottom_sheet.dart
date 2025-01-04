@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:deep_pick/deep_pick.dart';
 import 'package:flutter/material.dart';
@@ -41,9 +42,26 @@ class _TopicMessageBottomSheetState extends State<TopicMessageBottomSheet> {
             body: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  widget.rosTopic.name,
-                  style: FontStyles.BLACK_BOLD_18,
+                BlocBuilder<RosTopicBloc, RosTopicState>(
+                  builder: (context, state) {
+                    return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.rosTopic.name,
+                              style: FontStyles.BLACK_BOLD_18,
+                              maxLines: 2,
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                BlocProvider.of<RosTopicBloc>(context).add(
+                                    GetRosTopicMessage(topic: widget.rosTopic));
+                              },
+                              icon: const Icon(Icons.refresh_rounded))
+                        ]);
+                  },
                 ),
                 const SizedBox(
                   height: 10,

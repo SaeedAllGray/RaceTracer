@@ -75,18 +75,38 @@ class _CommitDetailPageState extends State<CommitDetailPage> {
                 child: BlocBuilder<GitCommitBloc, GitCommitState>(
                   builder: (context, state) {
                     if (state is GitCommitCommentsFetched) {
-                      return Scrollbar(
+                      return RefreshIndicator(
+                        triggerMode: RefreshIndicatorTriggerMode.anywhere,
+                        onRefresh: () async {},
                         child: ListView.builder(
-                          itemCount: state.gitComments.length,
-                          keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.onDrag,
-                          controller: messagesScrollController,
-                          reverse: true,
-                          padding: const EdgeInsets.all(10),
-                          itemBuilder: (context, index) => ChatBubble(
-                            gitComment: state.gitComments[index],
-                          ),
-                        ),
+                            itemCount: state.gitComments.length + 1,
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            controller: messagesScrollController,
+                            reverse: true,
+                            padding: const EdgeInsets.all(10),
+                            itemBuilder: (context, index) {
+                              if (index == 0) {
+                                return BlocBuilder<GitCommitBloc,
+                                    GitCommitState>(
+                                  builder: (context, state) {
+                                    return OutlinedButton(
+                                      style: TextButton.styleFrom(
+                                          shape: const CircleBorder()),
+                                      onPressed: () {
+                                        BlocProvider.of<GitCommitBloc>(context)
+                                            .add(GetGitCommitComments(
+                                                gitCommit: widget.gitCommit));
+                                      },
+                                      child: const Icon(Icons.refresh_rounded),
+                                    );
+                                  },
+                                );
+                              }
+                              return ChatBubble(
+                                gitComment: state.gitComments[index - 1],
+                              );
+                            }),
                       );
                     }
                     return const LoadingWidget();

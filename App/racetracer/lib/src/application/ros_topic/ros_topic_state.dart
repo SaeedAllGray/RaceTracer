@@ -33,4 +33,6 @@ class RosTopicMessageFetched extends RosTopicState {
   final Map<String, dynamic> message;
 
   const RosTopicMessageFetched(this.message);
+  @override
+  List<Object> get props => [message];
 }
