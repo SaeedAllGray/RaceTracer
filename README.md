@@ -113,9 +113,6 @@ Enter the backend IP to let app obtain the configurations.
 <img src="https://github.com/user-attachments/assets/cf946706-bda1-4c41-8d62-b3ecf12ae317" alt="28" width="200"/>
 
 
-
-
-
 ### Authentication
 After configuration obtained successfully, sign in with gitlab credentials. 
 
@@ -123,7 +120,13 @@ After configuration obtained successfully, sign in with gitlab credentials.
 <img src="https://github.com/user-attachments/assets/d9d709f1-4067-4711-b4f7-e01bf611bbf6" alt="37" width="200"/>
 <img src="https://github.com/user-attachments/assets/275f0c4c-c96d-44fe-832d-f20839b2117b" alt="34" width="200"/>
 
+### Dashboard
+RaceTracer provides and overview of the nodes and topics. You can search through the topics and see the nodes' publishers and subscribers.
 
+<img src="https://github.com/user-attachments/assets/446fd32c-fd94-4e47-8ea3-2771853ccf01" alt="32" width="200"/>
+<img src="https://github.com/user-attachments/assets/f78906be-82b2-4b89-88a9-90dc6036931f" alt="31" width="200"/>
+<img src="https://github.com/user-attachments/assets/8323c013-59ab-4e1f-b328-c3a0c044ab46" alt="27" width="200"/>
+<img src="https://github.com/user-attachments/assets/0ca55956-1998-43a7-ac04-0286f6730257" alt="24" width="200"/>
 
 
 
