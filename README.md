@@ -119,8 +119,8 @@ Enter the backend IP to let app obtain the configurations.
 ### Authentication
 After configuration obtained successfully, sign in with gitlab credentials. 
 
-<img src="https://github.com/user-attachments/assets/d9d709f1-4067-4711-b4f7-e01bf611bbf6" alt="37" width="200"/>
 <img src="https://github.com/user-attachments/assets/e0e2c4d3-b0bb-4d13-9cd7-1545a6cb9e3f" alt="36" width="200"/>
+<img src="https://github.com/user-attachments/assets/d9d709f1-4067-4711-b4f7-e01bf611bbf6" alt="37" width="200"/>
 <img src="https://github.com/user-attachments/assets/275f0c4c-c96d-44fe-832d-f20839b2117b" alt="34" width="200"/>
 
 
