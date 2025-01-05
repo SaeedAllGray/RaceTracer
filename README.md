@@ -1,6 +1,4 @@
-
-<img src="https://github.com/user-attachments/assets/d0fdfb1b-e8fb-4510-addf-71c980846909" alt="Screenshot 2025-01-04 at 13 13 59" width="10000"/>
-
+<img width="866" alt="Screenshot 2025-01-05 at 11 40 55" src="https://github.com/user-attachments/assets/56d25ae2-586b-4871-b6cd-bdaa9700a02e" width="1000"  />
 
 # RaceTracer 
 
