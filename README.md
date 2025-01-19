@@ -11,7 +11,7 @@ The backends runs directly on the car to maintain a direct connection with the d
 ## [RaceTracer introduction on GET racing developers' confrence](https://www.youtube.com/watch?v=0kCfCOqn7T0)
 
 # GET racing Dortmund e.V
-In 2024, GET Racing Dortmund soared to victory as the champion of France, celebrating the most successful year in its 20-year history. This remarkable achievement highlights two decades of dedication, innovation, and excellence in racing.
+In 2024, GET Racing Dortmund soared to victory as the 2nd title of France, celebrating the most successful year in its 20-year history. This remarkable achievement highlights two decades of dedication, innovation, and excellence in racing.
 
 We are thrilled to share our achievements with the community! By standardizing and enhancing our software tools, teams can minimize the time spent troubleshooting basic functionalities, allowing them to dedicate more energy to advancing their driverless vehicle solutions. This shift not only elevates the quality of competition in tournaments but also empowers teams to concentrate on groundbreaking innovations in driverless technology. Together, we are paving the way for a new era of automotive excellence!
 
