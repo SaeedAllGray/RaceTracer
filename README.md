@@ -142,6 +142,9 @@ RaceTracer commit the changes of your code automatically on the racetrack. We kn
 <img src="https://github.com/user-attachments/assets/ccd27852-9e9b-4b72-bb81-87cd25ab7c3b" alt="4" width="200"/>
 <img src="https://github.com/user-attachments/assets/414b090d-8bba-48e5-91e9-d79a8d622440" alt="5" width="200"/>
 <img src="https://github.com/user-attachments/assets/3e414cb5-4cd1-4a4f-95a6-d9f69d91a9b2" alt="3" width="200"/>
+<video src="https://github.com/user-attachments/assets/904ee44c-0387-422e-a225-4e7aa471ea5d" width="150" controls>
+  Your browser does not support the video tag.
+</video>
 
 ### Watch List
 RaceTracer offers an overview of the data recieved from ROS nodes and topics. You can filter and specify the exact data you wish to have a glance in watchlist page.
@@ -154,6 +157,8 @@ You can even write scripts on backend config file and see them on the mobile app
 
 ### Share the watch list with your teammates
 <img src="https://github.com/user-attachments/assets/393d2583-9682-42ab-a039-6c7e1a9ca3b5" alt="15" width="200"/>
+
+
 
 
 -------------------------------------------------------
